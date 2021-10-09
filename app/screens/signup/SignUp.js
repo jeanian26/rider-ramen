@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /**
  * Foodvila - React Native Template
  *
@@ -14,6 +15,7 @@ import {
   Text,
   TouchableWithoutFeedback,
   View,
+  ToastAndroid,
 } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
@@ -25,7 +27,14 @@ import UnderlineTextInput from '../../components/textinputs/UnderlineTextInput';
 // import colors, layout
 import Colors from '../../theme/colors';
 import Layout from '../../theme/layout';
-
+import {
+  testAPP,
+  checkLoggedIn,
+  signUpUser,
+  testing,
+  passAuth,
+} from '../../config/firebase';
+import {createUserWithEmailAndPassword} from 'firebase/auth';
 // SignUp Config
 const PLACEHOLDER_TEXT_COLOR = Colors.onPrimaryColor;
 const INPUT_TEXT_COLOR = Colors.onPrimaryColor;
@@ -109,7 +118,7 @@ export default class SignUp extends Component {
     };
   }
 
-  emailChange = text => {
+  emailChange = (text) => {
     this.setState({
       email: text,
     });
@@ -123,7 +132,7 @@ export default class SignUp extends Component {
     });
   };
 
-  phoneChange = text => {
+  phoneChange = (text) => {
     this.setState({
       phone: text,
     });
@@ -137,7 +146,7 @@ export default class SignUp extends Component {
     });
   };
 
-  passwordChange = text => {
+  passwordChange = (text) => {
     this.setState({
       password: text,
     });
@@ -158,24 +167,47 @@ export default class SignUp extends Component {
     });
   };
 
-  navigateTo = screen => () => {
+  navigateTo = (screen) => () => {
     const {navigation} = this.props;
     navigation.navigate(screen);
   };
 
-  createAccount = () => {
-    // const { email, phone, password } = this.state;
-    this.setState(
-      {
-        emailFocused: false,
-        phoneFocused: false,
-        passwordFocused: false,
-      },
-      this.navigateTo('HomeNavigator '),
-    );
+  createAccount = async () => {
+    this.setState({
+      emailFocused: false,
+      phoneFocused: false,
+      passwordFocused: false,
+    });
+    console.log('test');
+    createUserWithEmailAndPassword(
+      passAuth(),
+      this.state.email,
+      this.state.password,
+    )
+      .then((userCredential) => {
+        const user = userCredential.user;
+        if (user) {
+          console.log('success');
+          ToastAndroid.showWithGravity(
+            'SUCCESS CREATING AN ACCOUNT',
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER,
+          );
+          this.props.navigation.navigate('SignIn');
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        ToastAndroid.showWithGravity(
+          'FAILED CREATING AN ACCOUNT',
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER,
+        );
+        // ..
+      });
   };
 
-  focusOn = nextFiled => () => {
+  focusOn = (nextFiled) => () => {
     if (nextFiled) {
       nextFiled.focus();
     }
@@ -204,7 +236,7 @@ export default class SignUp extends Component {
 
             <View style={styles.form}>
               <UnderlineTextInput
-                onRef={r => {
+                onRef={(r) => {
                   this.email = r;
                 }}
                 onChangeText={this.emailChange}
@@ -223,7 +255,7 @@ export default class SignUp extends Component {
               />
 
               <UnderlineTextInput
-                onRef={r => {
+                onRef={(r) => {
                   this.phone = r;
                 }}
                 onChangeText={this.phoneChange}
@@ -242,7 +274,7 @@ export default class SignUp extends Component {
               />
 
               <UnderlinePasswordInput
-                onRef={r => {
+                onRef={(r) => {
                   this.password = r;
                 }}
                 onChangeText={this.passwordChange}
@@ -262,9 +294,9 @@ export default class SignUp extends Component {
 
               <View style={styles.buttonContainer}>
                 <Button
-                color={'#fff'}
-                rounded
-                borderRadius
+                  color={'#fff'}
+                  rounded
+                  borderRadius
                   onPress={this.createAccount}
                   title={'Create Account'.toUpperCase()}
                   titleColor={Colors.primaryColor}
@@ -292,7 +324,7 @@ export default class SignUp extends Component {
                 <View style={styles.vSpacer} />
 
                 <Button
-                  onPress={this.createAccount}
+                  onPress={checkLoggedIn}
                   color="#fe4c1c"
                   socialIconName="google"
                   iconColor={Colors.white}

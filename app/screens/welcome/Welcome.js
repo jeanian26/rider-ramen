@@ -1,3 +1,4 @@
+/* eslint-disable react/self-closing-comp */
 /**
  * Foodvila - React Native Template
  *
