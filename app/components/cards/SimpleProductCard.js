@@ -7,7 +7,14 @@
 
 // import dependencies
 import React, {Component} from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View, Platform} from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Platform,
+} from 'react-native';
 
 // import utils
 import getImgSource from '../../utils/getImgSource.js';
@@ -76,19 +83,20 @@ const styles = StyleSheet.create({
     color: Colors.primaryColor,
     textAlign: 'left',
   },
-  starContainer:{
-    flex:1,flexDirection: 'row',
+  starContainer: {
+    flex: 1,
+    flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    padding: 0
+    padding: 0,
   },
-  starText:{
-    backgroundColor:Colors.primaryColor,
-    paddingVertical:1, 
-    paddingHorizontal:4,
-    borderRadius:4, 
-    color:Colors.white
-  }
+  starText: {
+    backgroundColor: Colors.primaryColor,
+    paddingVertical: 1,
+    paddingHorizontal: 4,
+    borderRadius: 4,
+    color: Colors.white,
+  },
 });
 
 // SimpleProductCard State
@@ -119,7 +127,7 @@ export default class SimpleProductCard extends Component<Props, State> {
       imageUri,
       title,
       price = 0,
-      rating=4.5,
+      rating = 4.5,
       description,
     } = this.props;
 
@@ -140,11 +148,18 @@ export default class SimpleProductCard extends Component<Props, State> {
                 {title}
               </Subtitle1>
 
-              <Text style={styles.priceText}>{`$ ${price.toFixed(2)}`}</Text>
+              <Text style={styles.priceText}>{`₱ ${price.toFixed(2)}`}</Text>
             </View>
             <View style={styles.starContainer}>
-                    <Text style={styles.starText}>{rating} <Icon name={RATING_ICON} size={12} color={Colors.onPrimaryColor} /></Text>
-                </View>
+              <Text style={styles.starText}>
+                {rating}{' '}
+                <Icon
+                  name={RATING_ICON}
+                  size={12}
+                  color={Colors.onPrimaryColor}
+                />
+              </Text>
+            </View>
             <View style={styles.secondLine}>
               <Subtitle2 numberOfLines={2} style={styles.descriptionText}>
                 {description}

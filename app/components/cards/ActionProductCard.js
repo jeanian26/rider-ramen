@@ -6,15 +6,15 @@
  */
 
 // import dependencies
-import React, { Component } from 'react';
-import { Image, Platform, StyleSheet, Text, View } from 'react-native';
+import React, {Component} from 'react';
+import {Image, Platform, StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/dist/Ionicons';
 
 // import utils
 import getImgSource from '../../utils/getImgSource.js';
 
 // import components
-import { ButtonText } from '../text/CustomText';
+import {ButtonText} from '../text/CustomText';
 import TouchableItem from '../TouchableItem';
 
 // import colors, layout
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 12,
   },
-  oldPriceContainer: { marginLeft: 5, paddingTop: 2 },
+  oldPriceContainer: {marginLeft: 5, paddingTop: 2},
   oldPrice: {
     fontSize: 15,
     fontWeight: 'bold',
@@ -141,20 +141,19 @@ const styles = StyleSheet.create({
     color: Colors.onPrimaryColor,
   },
   starContainer: {
-    flex: 1, flexDirection: 'row',
+    flex: 1,
+    flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
     padding: 4,
-    
-    
   },
   starText: {
     color: Colors.white,
     backgroundColor: Colors.primaryColor,
     paddingVertical: 2,
     paddingHorizontal: 3,
-    borderRadius: 4
-  }
+    borderRadius: 4,
+  },
 });
 
 // ActionProductCard State
@@ -204,7 +203,7 @@ export default class ActionProductCard extends Component<Props, State> {
   }
 
   onPressAdd = () => {
-    const { quantity } = this.state;
+    const {quantity} = this.state;
     const newQuantity = quantity + 1;
 
     this.setState({
@@ -213,7 +212,7 @@ export default class ActionProductCard extends Component<Props, State> {
   };
 
   onPressRemove = () => {
-    const { quantity } = this.state;
+    const {quantity} = this.state;
     const newQuantity = quantity - 1;
 
     this.setState({
@@ -247,12 +246,12 @@ export default class ActionProductCard extends Component<Props, State> {
       imageUri,
       title,
       price = 0,
-      rating=4.5,
+      rating = 4.5,
       discountPercentage,
       label,
     } = this.props;
 
-    const { quantity } = this.state;
+    const {quantity} = this.state;
 
     return (
       <View style={styles.container}>
@@ -275,28 +274,36 @@ export default class ActionProductCard extends Component<Props, State> {
                 </Text>
               </View>
 
-              <View style={{ flex: 1, flexDirection: 'row' }}>
+              <View style={{flex: 1, flexDirection: 'row'}}>
                 {discountPercentage ? (
                   <View style={styles.productFooter}>
                     <Text style={styles.price}>
-                      {`$ ${(((100 - discountPercentage) / 100) * price).toFixed(
-                        2,
-                      )}`}
+                      {`₱ ${(
+                        ((100 - discountPercentage) / 100) *
+                        price
+                      ).toFixed(2)}`}
                     </Text>
                     <View style={styles.oldPriceContainer}>
                       <Text style={styles.oldPrice}>
-                        {`$ ${price.toFixed(2)}`}
+                        {`₱ ${price.toFixed(2)}`}
                       </Text>
                       <View style={styles.hr} />
                     </View>
                   </View>
                 ) : (
                   <View style={styles.productFooter}>
-                    <Text style={styles.price}>{`$ ${price.toFixed(2)}`}</Text>
+                    <Text style={styles.price}>{`₱ ${price.toFixed(2)}`}</Text>
                   </View>
                 )}
                 <View style={styles.starContainer}>
-                  <Text style={styles.starText}>{rating} <Icon name={RATING_ICON} size={12} color={Colors.onPrimaryColor} /></Text>
+                  <Text style={styles.starText}>
+                    {rating}{' '}
+                    <Icon
+                      name={RATING_ICON}
+                      size={12}
+                      color={Colors.onPrimaryColor}
+                    />
+                  </Text>
                 </View>
               </View>
 

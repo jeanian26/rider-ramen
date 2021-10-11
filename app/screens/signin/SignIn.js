@@ -14,6 +14,7 @@ import {
   Text,
   TouchableWithoutFeedback,
   View,
+  ToastAndroid,
 } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
@@ -26,6 +27,8 @@ import UnderlineTextInput from '../../components/textinputs/UnderlineTextInput';
 // import colors, layout
 import Colors from '../../theme/colors';
 import Layout from '../../theme/layout';
+import {signInWithEmailAndPassword} from 'firebase/auth';
+import {passAuth} from '../../config/firebase';
 
 // SignIn Config
 const PLACEHOLDER_TEXT_COLOR = Colors.onPrimaryColor;
@@ -112,7 +115,7 @@ export default class SignIn extends Component {
     };
   }
 
-  emailChange = text => {
+  emailChange = (text) => {
     this.setState({
       email: text,
     });
@@ -125,7 +128,7 @@ export default class SignIn extends Component {
     });
   };
 
-  passwordChange = text => {
+  passwordChange = (text) => {
     this.setState({
       password: text,
     });
@@ -145,31 +148,51 @@ export default class SignIn extends Component {
     });
   };
 
-  focusOn = nextFiled => () => {
+  focusOn = (nextFiled) => () => {
     if (nextFiled) {
       nextFiled.focus();
     }
   };
 
-  showInputModal = value => () => {
+  showInputModal = (value) => () => {
     this.setState({
       inputModalVisible: value,
     });
   };
 
-  navigateTo = screen => () => {
+  navigateTo = (screen) => () => {
     const {navigation} = this.props;
     navigation.navigate(screen);
   };
 
   signIn = () => {
-    this.setState(
-      {
-        emailFocused: false,
-        passwordFocused: false,
-      },
-      this.navigateTo('HomeNavigator'),
-    );
+    const {navigation} = this.props;
+    this.setState({
+      emailFocused: false,
+      passwordFocused: false,
+    });
+    signInWithEmailAndPassword(
+      passAuth(),
+      this.state.email,
+      this.state.password,
+    )
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log('Success');
+        navigation.navigate('HomeNavigator');
+        ToastAndroid.showWithGravity(
+          'SUCCESS LOGGING IN',
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER,
+        );
+      })
+      .catch((error) => {
+        ToastAndroid.showWithGravity(
+          'ERROR LOGGING IN',
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER,
+        );
+      });
   };
 
   render() {
@@ -196,7 +219,7 @@ export default class SignIn extends Component {
 
             <View style={styles.form}>
               <UnderlineTextInput
-                onRef={r => {
+                onRef={(r) => {
                   this.email = r;
                 }}
                 onChangeText={this.emailChange}
@@ -215,7 +238,7 @@ export default class SignIn extends Component {
               />
 
               <UnderlinePasswordInput
-                onRef={r => {
+                onRef={(r) => {
                   this.password = r;
                 }}
                 onChangeText={this.passwordChange}
@@ -239,7 +262,7 @@ export default class SignIn extends Component {
                   color={'#fff'}
                   rounded
                   borderRadius
-                  onPress={this.navigateTo('HomeNavigator')}
+                  onPress={this.signIn}
                   title={'Sign in'.toUpperCase()}
                   titleColor={Colors.primaryColor}
                 />
@@ -256,32 +279,7 @@ export default class SignIn extends Component {
 
               <View style={styles.separator}>
                 <View style={styles.line} />
-                <Text style={styles.orText}>or</Text>
                 <View style={styles.line} />
-              </View>
-
-              <View style={styles.buttonsGroup}>
-                <Button
-                  onPress={this.navigateTo('HomeNavigator')}
-                  color="#063d8a"
-                  socialIconName="facebook-square"
-                  iconColor={Colors.white}
-                  title={'Sign in with Facebook'.toUpperCase()}
-                  rounded
-                  borderRadius
-                  titleColor={'#fff'}
-                />
-                <View style={styles.vSpacer} />
-                <Button
-                  onPress={this.navigateTo('HomeNavigator')}
-                  color="#fe4c1c"
-                  socialIconName="google"
-                  iconColor={Colors.white}
-                  title={'Sign in with Google'.toUpperCase()}
-                  rounded
-                  borderRadius
-                  titleColor={'#fff'}
-                />
               </View>
             </View>
 

@@ -269,7 +269,7 @@ export default class WideProductCard extends Component<Props, State> {
                         ).toFixed(2)}`}
                       </Text>
                       <View style={styles.oldPriceContainer}>
-                        <Text style={styles.oldPrice}>{`$ ${price.toFixed(
+                        <Text style={styles.oldPrice}>{`₱ ${price.toFixed(
                           2,
                         )}`}</Text>
                         <View style={styles.hr} />
@@ -294,7 +294,7 @@ export default class WideProductCard extends Component<Props, State> {
                   </View>
                 ) : (
                   <View style={styles.priceContainer}>
-                    <Text style={styles.price}>{`$ ${price.toFixed(2)}`}</Text>
+                    <Text style={styles.price}>{`₱ ${price.toFixed(2)}`}</Text>
 
                     <TouchableOpacity
                       onPress={this.onPressFavorite}

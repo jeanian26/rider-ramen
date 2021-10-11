@@ -18,7 +18,6 @@ import {
   ToastAndroid,
 } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-
 // import components
 import Button from '../../components/buttons/Button';
 import UnderlinePasswordInput from '../../components/textinputs/UnderlinePasswordInput';
@@ -27,13 +26,7 @@ import UnderlineTextInput from '../../components/textinputs/UnderlineTextInput';
 // import colors, layout
 import Colors from '../../theme/colors';
 import Layout from '../../theme/layout';
-import {
-  testAPP,
-  checkLoggedIn,
-  signUpUser,
-  testing,
-  passAuth,
-} from '../../config/firebase';
+import {passAuth} from '../../config/firebase';
 import {createUserWithEmailAndPassword} from 'firebase/auth';
 // SignUp Config
 const PLACEHOLDER_TEXT_COLOR = Colors.onPrimaryColor;
@@ -305,34 +298,7 @@ export default class SignUp extends Component {
 
               <View style={styles.separator}>
                 <View style={styles.line} />
-                <Text style={styles.orText}>or</Text>
                 <View style={styles.line} />
-              </View>
-
-              <View style={styles.buttonsGroup}>
-                <Button
-                  onPress={this.createAccount}
-                  color="#063d8a"
-                  socialIconName="facebook-square"
-                  iconColor={Colors.white}
-                  title={'Sign up with Facebook'.toUpperCase()}
-                  rounded
-                  borderRadius
-                  titleColor={'#fff'}
-                />
-
-                <View style={styles.vSpacer} />
-
-                <Button
-                  onPress={checkLoggedIn}
-                  color="#fe4c1c"
-                  socialIconName="google"
-                  iconColor={Colors.white}
-                  title={'Sign up with Google'.toUpperCase()}
-                  rounded
-                  borderRadius
-                  titleColor={'#fff'}
-                />
               </View>
             </View>
 

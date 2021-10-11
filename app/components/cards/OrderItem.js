@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const renderOrderItemsTotal = items => {
+const renderOrderItemsTotal = (items) => {
   const total = items.reduce((prev, next) => prev + next.price, 0);
   return total;
 };
@@ -123,12 +123,12 @@ const OrderItem = ({
           <Caption>{orderDate}</Caption>
         </View>
         <View style={styles.flexEnd}>
-          <Subtitle1>{`$ ${renderOrderItemsTotal(orderItems)}`}</Subtitle1>
+          <Subtitle1>{`₱ ${renderOrderItemsTotal(orderItems)}`}</Subtitle1>
           <Caption>{`${orderItems.length} items`}</Caption>
         </View>
       </View>
 
-      <Divider type="middle" color={Colors.primaryColor}/>
+      <Divider type="middle" color={Colors.primaryColor} />
 
       <View style={styles.pv8}>
         {orderItems.map((item, index) => (
@@ -136,7 +136,7 @@ const OrderItem = ({
             <TouchableItem onPress={onPress} activeOpacity={activeOpacity}>
               <View style={styles.item}>
                 <Subtitle2>{item.name}</Subtitle2>
-                <Subtitle2>{`$ ${item.price}`}</Subtitle2>
+                <Subtitle2>{`₱ ${item.price}`}</Subtitle2>
               </View>
             </TouchableItem>
           </View>
@@ -151,7 +151,7 @@ const OrderItem = ({
           </View>
 
           <Button
-            color={Colors.primaryColor }
+            color={Colors.primaryColor}
             title="Track"
             titleColor={Colors.white}
             buttonStyle={styles.extraSmallButton}
@@ -167,7 +167,7 @@ const OrderItem = ({
           </View>
 
           <Button
-            color={Colors.primaryColor }
+            color={Colors.primaryColor}
             title="Cancel"
             titleColor={Colors.white}
             buttonStyle={styles.extraSmallButton}
@@ -183,7 +183,7 @@ const OrderItem = ({
           </View>
 
           <Button
-            color={Colors.primaryColor }
+            color={Colors.primaryColor}
             title="Reorder"
             titleColor={Colors.white}
             buttonStyle={styles.extraSmallButton}

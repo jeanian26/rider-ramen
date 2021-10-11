@@ -17,7 +17,7 @@ import {
 import remove from 'lodash/remove';
 
 // import components
-import ActionProductCardHorizontal from '../../components/cards/ActionProductCardHorizontal'
+import ActionProductCardHorizontal from '../../components/cards/ActionProductCardHorizontal';
 import Button from '../../components/buttons/Button';
 import {Heading6, Subtitle1} from '../../components/text/CustomText';
 import Divider from '../../components/divider/Divider';
@@ -92,16 +92,16 @@ export default class Cart extends Component {
     this.updateTotalAmount();
   };
 
-  navigateTo = screen => () => {
+  navigateTo = (screen) => () => {
     const {navigation} = this.props;
     navigation.navigate(screen);
   };
 
-  swipeoutOnPressRemove = item => () => {
+  swipeoutOnPressRemove = (item) => () => {
     let {products} = this.state;
     const index = products.indexOf(item);
 
-    products = remove(products, n => products.indexOf(n) !== index);
+    products = remove(products, (n) => products.indexOf(n) !== index);
 
     this.setState(
       {
@@ -113,10 +113,10 @@ export default class Cart extends Component {
     );
   };
 
-  onRefreshCart = () =>{
+  onRefreshCart = () => {
     let {products} = this.state;
-  }
-  onPressRemove = item => () => {
+  };
+  onPressRemove = (item) => () => {
     let {quantity} = item;
     quantity -= 1;
 
@@ -124,7 +124,7 @@ export default class Cart extends Component {
     const index = products.indexOf(item);
 
     if (quantity === 0) {
-      products = remove(products, n => products.indexOf(n) !== index);
+      products = remove(products, (n) => products.indexOf(n) !== index);
     } else {
       products[index].quantity = quantity;
     }
@@ -139,7 +139,7 @@ export default class Cart extends Component {
     );
   };
 
-  onPressAdd = item => () => {
+  onPressAdd = (item) => () => {
     const {quantity} = item;
     const {products} = this.state;
 
@@ -160,7 +160,7 @@ export default class Cart extends Component {
     const {products} = this.state;
     let total = 0.0;
 
-    products.forEach(product => {
+    products.forEach((product) => {
       let {price} = product;
       const {discountPercentage, quantity} = product;
 
@@ -175,7 +175,7 @@ export default class Cart extends Component {
     });
   };
 
-  keyExtractor = item => item.id.toString();
+  keyExtractor = (item) => item.id.toString();
 
   renderProductItem = ({item}) => (
     <ActionProductCardHorizontal
@@ -212,7 +212,7 @@ export default class Cart extends Component {
             <View style={styles.inline}>
               <Subtitle1 style={styles.subTotalText}> Subtotal: </Subtitle1>
               <Heading6 style={styles.subTotalPriceText}>
-                {`$ ${parseFloat(Math.round(total * 100) / 100).toFixed(2)}`}
+                {`₱ ${parseFloat(Math.round(total * 100) / 100).toFixed(2)}`}
               </Heading6>
             </View>
           )}
@@ -224,7 +224,6 @@ export default class Cart extends Component {
             iconName={EMPTY_STATE_ICON}
             title="Your Cart is Empty"
             message="Looks like you haven't added any food to your cart yet"
-            
           />
         ) : (
           <Fragment>

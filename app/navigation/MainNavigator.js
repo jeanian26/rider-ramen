@@ -173,7 +173,7 @@ function MainNavigatorA() {
           name="Category"
           component={Category}
           options={{
-            title: 'Pizza',
+            title: 'Ramen',
           }}
         />
         <Stack.Screen

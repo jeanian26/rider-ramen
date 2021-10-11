@@ -149,12 +149,6 @@ export default class Welcome extends Component {
                 outlined
               />
             </View>
-
-            <LinkButton
-              onPress={this.navigateTo('HomeNavigator')}
-              title="Skip"
-              titleStyle={styles.linkButtonText}
-            />
           </View>
         </View>
       </SafeAreaView>

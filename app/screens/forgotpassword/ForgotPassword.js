@@ -17,6 +17,8 @@ import GradientContainer from '../../components/gradientcontainer/GradientContai
 import {Paragraph} from '../../components/text/CustomText';
 import SafeAreaView from '../../components/SafeAreaView';
 import UnderlineTextInput from '../../components/textinputs/UnderlineTextInput';
+import {sendPasswordResetEmail} from 'firebase/auth';
+import {passAuth} from '../../config/firebase';
 
 // import colors
 import Colors from '../../theme/colors';
@@ -110,18 +112,18 @@ export default class ForgotPassword extends Component {
     });
   };
 
-  emailChange = text => {
+  emailChange = (text) => {
     this.setState({
       email: text,
     });
   };
 
-  navigateTo = screen => {
+  navigateTo = (screen) => {
     const {navigation} = this.props;
     navigation.navigate(screen);
   };
 
-  resetPassword = () => {
+  resetPassword = async () => {
     Keyboard.dismiss();
     this.setState(
       {
@@ -129,12 +131,18 @@ export default class ForgotPassword extends Component {
         emailFocused: false,
       },
       () => {
-        // for demo purpose after 3s close modal
         this.timeout = setTimeout(() => {
           this.closeModal();
         }, 3000);
       },
     );
+    sendPasswordResetEmail(passAuth(), this.state.email)
+      .then(() => {
+        console.log('success');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   closeModal = () => {
@@ -146,7 +154,7 @@ export default class ForgotPassword extends Component {
   };
 
   render() {
-    const {emailFocused, modalVisible} = this.state;
+    const {emailFocused, modalVisible, email} = this.state;
 
     return (
       <GradientContainer>
@@ -202,7 +210,7 @@ export default class ForgotPassword extends Component {
             </View>
 
             <ActivityIndicatorModal
-              statusBarColor={Colors.primaryColor }
+              statusBarColor={Colors.primaryColor}
               message="Please wait . . ."
               onRequestClose={this.closeModal}
               title="Sending instructions"

@@ -4,6 +4,7 @@ import {
   getAuth,
   onAuthStateChanged,
   createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
 } from 'firebase/auth';
 
 const firebaseConfig = {
@@ -44,6 +45,19 @@ export const signUpUser = async (email, password) => {
       console.log(user);
     });
   } catch (error) {
+    return {
+      error: error.message,
+    };
+  }
+};
+
+export const sendEmailWithPassword = async (email) => {
+  try {
+    await sendPasswordResetEmail(email);
+    console.log('success');
+    return {};
+  } catch (error) {
+    console.log(error);
     return {
       error: error.message,
     };

@@ -6,7 +6,7 @@
  */
 
 // import dependencies
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   I18nManager,
   Image,
@@ -15,7 +15,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import { SwipeRow } from 'react-native-swipe-list-view';
+import {SwipeRow} from 'react-native-swipe-list-view';
 
 // import utils
 import getImgSource from '../../utils/getImgSource.js';
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     marginTop: 7,
     marginBottom: 7,
-    marginLeft: 7
+    marginLeft: 7,
   },
   productInfo: {
     flex: 1,
@@ -159,15 +159,15 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     //backgroundColor: Colors.secondaryColor,
   },
-  cartContainer:{
+  cartContainer: {
     justifyContent: 'center',
     alignItems: 'center',
     width: 30,
     height: 30,
     borderRadius: 5,
-    backgroundColor:Colors.primaryColor,
-    marginHorizontal:10,
-    borderRadius:5
+    backgroundColor: Colors.primaryColor,
+    marginHorizontal: 10,
+    borderRadius: 5,
   },
   newLabelContainer: {
     position: 'absolute',
@@ -182,28 +182,29 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: Colors.onPrimaryColor,
   },
-  viewContainer:{
-    flex: 1, 
-    flexDirection: 'row'
+  viewContainer: {
+    flex: 1,
+    flexDirection: 'row',
   },
   starContainer: {
-    flex: 1, flexDirection: 'row',
+    flex: 1,
+    flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
     paddingVertical: 4,
-    paddingHorizontal:12
+    paddingHorizontal: 12,
   },
   starText: {
     backgroundColor: Colors.primaryColor,
     paddingVertical: 2,
     paddingHorizontal: 4,
     borderRadius: 4,
-    color: Colors.white
-  }
+    color: Colors.white,
+  },
 });
 
 // ActionProductCardHorizontal DeleteButton
-const DeleteButton = ({ onPress }) => (
+const DeleteButton = ({onPress}) => (
   <View style={styles.deleteButtonContainer}>
     <TouchableItem onPress={onPress} style={styles.deleteButton}>
       <Icon name={DELETE_ICON} size={26} color={Colors.white} />
@@ -225,15 +226,15 @@ type Props = {
   price: number,
   quantity: number,
   rating: number,
-  starRating:Boolean,
+  starRating: Boolean,
   discountPercentage: number,
   swipeoutDisabled: boolean,
   swipeoutOnPressRemove: () => {},
   label: 'new',
   showTrash: boolean,
   hideCartIcon: false,
-  cartButton:false,
-  plusMinusIcon:false
+  cartButton: false,
+  plusMinusIcon: false,
 };
 
 // ActionProductCardHorizontal
@@ -248,16 +249,16 @@ export default class ActionProductCardHorizontal extends Component<
   }
 
   onCartPress = () => {
-    const { onCartPress = () => { } } = this.props;
+    const {onCartPress = () => {}} = this.props;
     onCartPress();
   };
   onPressAdd = () => {
-    const { onPressAdd = () => { } } = this.props;
+    const {onPressAdd = () => {}} = this.props;
     onPressAdd();
   };
 
   onPressRemove = () => {
-    const { onPressRemove = () => { } } = this.props;
+    const {onPressRemove = () => {}} = this.props;
     onPressRemove();
   };
 
@@ -282,7 +283,7 @@ export default class ActionProductCardHorizontal extends Component<
       price = 0,
       quantity = 0,
       rating = 4.5,
-      starRating=false,
+      starRating = false,
       discountPercentage,
       swipeoutDisabled,
       swipeoutOnPressRemove,
@@ -290,15 +291,13 @@ export default class ActionProductCardHorizontal extends Component<
       showTrash,
       hideCartIcon,
       cartButton,
-      plusMinusIcon
+      plusMinusIcon,
     } = this.props;
 
-    if(!hideCartIcon && !cartButton && !plusMinusIcon)
-    {
-      plusMinusIcon=true;
+    if (!hideCartIcon && !cartButton && !plusMinusIcon) {
+      plusMinusIcon = true;
     }
     return (
-      
       <View style={styles.container}>
         <SwipeRow
           disableLeftSwipe={isRTL ? true : swipeoutDisabled}
@@ -333,14 +332,14 @@ export default class ActionProductCardHorizontal extends Component<
                     {discountPercentage ? (
                       <View style={styles.priceContainer}>
                         <Text style={styles.price}>
-                          {`$ ${(
+                          {`₱ ${(
                             ((100 - discountPercentage) / 100) *
                             price
                           ).toFixed(2)}`}
                         </Text>
                         <View>
                           <Text style={styles.oldPrice}>
-                            {`$ ${price.toFixed(2)}`}
+                            {`₱ ${price.toFixed(2)}`}
                           </Text>
                           <View style={styles.hr} />
                         </View>
@@ -348,54 +347,90 @@ export default class ActionProductCardHorizontal extends Component<
                     ) : (
                       <View style={styles.priceContainer}>
                         <Text style={styles.price}>
-                          {`$ ${price.toFixed(2)}`}
+                          {`₱ ${price.toFixed(2)}`}
                         </Text>
                       </View>
                     )}
                   </View>
                   <View style={styles.viewContainer}>
                     <View style={styles.starContainer}>
-                      {starRating ?
-                      <StarRating rating={rating} starSize={15} />:
-                      <Text style={styles.starText}>{rating} <Icon name={RATING_ICON} size={12} color={Colors.onPrimaryColor} /></Text>}
-                    </View>
-                    {!hideCartIcon && plusMinusIcon ? <View style={styles.actionContainer}>
-                      {quantity > 0 && (
-                        <View style={styles.actions}>
-                          <TouchableItem onPress={this.onPressRemove} borderless>
-                            <View style={styles.iconContainer, { backgroundColor: (quantity == 1 && showTrash) ? Colors.white : Colors.secondaryColor }}>
-                              <Icon
-                                name={(quantity == 1 && showTrash) ? TRASH_ICON : MINUS_ICON}
-                                size={20}
-                                color={(quantity == 1 && showTrash) ? Colors.secondaryColor : Colors.onPrimaryColor}
-                              />
-                            </View>
-                          </TouchableItem>
-
-                          <Text style={styles.quantity}>{quantity}</Text>
-                        </View>
-                      )}
-                      <TouchableItem onPress={this.onPressAdd} borderless>
-                        <View style={styles.iconContainer, { backgroundColor: Colors.secondaryColor }}>
+                      {starRating ? (
+                        <StarRating rating={rating} starSize={15} />
+                      ) : (
+                        <Text style={styles.starText}>
+                          {rating}{' '}
                           <Icon
-                            name={PLUS_ICON}
-                            size={20}
+                            name={RATING_ICON}
+                            size={12}
                             color={Colors.onPrimaryColor}
                           />
-                        </View>
-                      </TouchableItem>
-                    </View> : null}
-                    {!hideCartIcon && cartButton ?<View style={styles.actionContainer}>
-                    <TouchableItem onPress={this.onCartPress} borderless>
-                      <View style={styles.cartContainer}>
-                        <Icon
-                          name={CART_ICON}
-                          size={22}
-                          color={Colors.onPrimaryColor}
-                        />
+                        </Text>
+                      )}
+                    </View>
+                    {!hideCartIcon && plusMinusIcon ? (
+                      <View style={styles.actionContainer}>
+                        {quantity > 0 && (
+                          <View style={styles.actions}>
+                            <TouchableItem
+                              onPress={this.onPressRemove}
+                              borderless>
+                              <View
+                                style={
+                                  (styles.iconContainer,
+                                  {
+                                    backgroundColor:
+                                      quantity == 1 && showTrash
+                                        ? Colors.white
+                                        : Colors.secondaryColor,
+                                  })
+                                }>
+                                <Icon
+                                  name={
+                                    quantity == 1 && showTrash
+                                      ? TRASH_ICON
+                                      : MINUS_ICON
+                                  }
+                                  size={20}
+                                  color={
+                                    quantity == 1 && showTrash
+                                      ? Colors.secondaryColor
+                                      : Colors.onPrimaryColor
+                                  }
+                                />
+                              </View>
+                            </TouchableItem>
+
+                            <Text style={styles.quantity}>{quantity}</Text>
+                          </View>
+                        )}
+                        <TouchableItem onPress={this.onPressAdd} borderless>
+                          <View
+                            style={
+                              (styles.iconContainer,
+                              {backgroundColor: Colors.secondaryColor})
+                            }>
+                            <Icon
+                              name={PLUS_ICON}
+                              size={20}
+                              color={Colors.onPrimaryColor}
+                            />
+                          </View>
+                        </TouchableItem>
                       </View>
-                    </TouchableItem>
-                  </View>:null}
+                    ) : null}
+                    {!hideCartIcon && cartButton ? (
+                      <View style={styles.actionContainer}>
+                        <TouchableItem onPress={this.onCartPress} borderless>
+                          <View style={styles.cartContainer}>
+                            <Icon
+                              name={CART_ICON}
+                              size={22}
+                              color={Colors.onPrimaryColor}
+                            />
+                          </View>
+                        </TouchableItem>
+                      </View>
+                    ) : null}
                   </View>
                 </View>
 
