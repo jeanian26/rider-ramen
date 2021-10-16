@@ -1,5 +1,5 @@
 /**
- * Foodvila - React Native Template
+ * ramennado - React Native Template
  *
  * @format
  * @flow
@@ -100,7 +100,7 @@ const UnderlinePasswordInput = ({
       inputFocused && {borderColor: focusedBorderColor},
     ]}>
     <TextInput
-      ref={r => onRef(r)}
+      ref={(r) => onRef(r)}
       onChangeText={onChangeText}
       onFocus={onFocus}
       onSubmitEditing={onSubmitEditing}

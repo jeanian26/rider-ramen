@@ -1,12 +1,12 @@
 /**
- * Foodvila - React Native Template
+ * ramennado - React Native Template
  *
  * @format
  * @flow
  */
 
 // import dependencies
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   FlatList,
   ImageBackground,
@@ -16,7 +16,7 @@ import {
   StyleSheet,
   Text,
   View,
-  Image
+  Image,
 } from 'react-native';
 
 // import utils
@@ -26,7 +26,7 @@ import getImgSource from '../../utils/getImgSource.js';
 import ActionProductCard from '../../components/cards/ActionProductCard';
 import ActionProductCardHorizontal from '../../components/cards/ActionProductCardHorizontal';
 import LinkButton from '../../components/buttons/LinkButton';
-import { Heading6 } from '../../components/text/CustomText';
+import {Heading6} from '../../components/text/CustomText';
 import TouchableItem from '../../components/TouchableItem';
 
 // import colors
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     height: 228,
     resizeMode: 'contain',
     borderRadius: 0,
-    marginTop:-0.5
+    marginTop: -0.5,
     //backgroundColor:'#000'
   },
   categoriesContainer: {
@@ -74,12 +74,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 10,
-    paddingVertical: 5
+    paddingVertical: 5,
   },
   categoryHeading: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
   },
   titleContainer: {
     flexDirection: 'row',
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     paddingBottom: 12,
   },
   titleText: {
-    fontWeight: '700'
+    fontWeight: '700',
   },
   viewAllText: {
     color: Colors.primaryColor,
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     paddingRight: 16,
     paddingLeft: 5,
   },
-  cardImg: { borderRadius: 4 },
+  cardImg: {borderRadius: 4},
   card: {
     marginLeft: 4,
     width: 110,
@@ -116,7 +116,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
-
   },
   cardTitle: {
     paddingHorizontal: 12,
@@ -125,7 +124,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: Colors.white,
     textShadowColor: 'rgba(0, 0, 0, 0.75)',
-    textShadowOffset: { width: -1, height: 1 },
+    textShadowOffset: {width: -1, height: 1},
     textShadowRadius: 10,
     backgroundColor: Colors.primaryLightColor,
   },
@@ -144,22 +143,22 @@ export default class Home extends Component {
     super(props);
 
     this.state = {
-      products:sample_data.products,
-      categories:sample_data.categories,
-      popularProducts:sample_data.popularProducts
+      products: sample_data.products,
+      categories: sample_data.categories,
+      popularProducts: sample_data.popularProducts,
     };
   }
 
-  navigateTo = screen => () => {
-    const { navigation } = this.props;
+  navigateTo = (screen) => () => {
+    const {navigation} = this.props;
     navigation.navigate(screen);
   };
 
-  onPressRemove = item => () => {
-    let { quantity } = item;
+  onPressRemove = (item) => () => {
+    let {quantity} = item;
     quantity -= 1;
 
-    const { popularProducts } = this.state;
+    const {popularProducts} = this.state;
     const index = popularProducts.indexOf(item);
 
     if (quantity < 0) {
@@ -172,9 +171,9 @@ export default class Home extends Component {
     });
   };
 
-  onPressAdd = item => () => {
-    const { quantity } = item;
-    const { popularProducts } = this.state;
+  onPressAdd = (item) => () => {
+    const {quantity} = item;
+    const {popularProducts} = this.state;
 
     const index = popularProducts.indexOf(item);
     popularProducts[index].quantity = quantity + 1;
@@ -186,7 +185,7 @@ export default class Home extends Component {
 
   keyExtractor = (item, index) => index.toString();
 
-  renderCategoryItem = ({ item, index }) => (
+  renderCategoryItem = ({item, index}) => (
     <ImageBackground
       key={index}
       defaultSource={imgHolder}
@@ -197,7 +196,7 @@ export default class Home extends Component {
         <TouchableItem
           onPress={this.navigateTo('Category')}
           style={styles.cardContainer}
-        // borderless
+          // borderless
         >
           <Text style={styles.cardTitle}>{item.name}</Text>
         </TouchableItem>
@@ -205,7 +204,7 @@ export default class Home extends Component {
     </ImageBackground>
   );
 
-  renderProductItem = ({ item, index }) => (
+  renderProductItem = ({item, index}) => (
     <ActionProductCard
       onPress={this.navigateTo('Product')}
       key={index}
@@ -218,7 +217,7 @@ export default class Home extends Component {
     />
   );
 
-  renderPopularProductItem = ({ item, index }) => (
+  renderPopularProductItem = ({item, index}) => (
     <ActionProductCardHorizontal
       onPress={this.navigateTo('Product')}
       onPressRemove={this.onPressRemove(item)}
@@ -240,14 +239,11 @@ export default class Home extends Component {
   );
 
   render() {
-    const { categories, products, popularProducts } = this.state;
+    const {categories, products, popularProducts} = this.state;
 
     return (
       <SafeAreaView style={styles.screenContainer}>
-        <StatusBar
-          backgroundColor={Colors.white}
-          barStyle="dark-content"
-        />
+        <StatusBar backgroundColor={Colors.white} barStyle="dark-content" />
         <View style={styles.container}>
           <ScrollView>
             <View>
@@ -261,12 +257,18 @@ export default class Home extends Component {
                 <View style={styles.titleContainer}>
                   <View style={styles.category}>
                     <View style={styles.categoryView}>
-                      <Heading6 style={styles.titleText, styles.categoryHeading}>Categories</Heading6>
+                      <Heading6
+                        style={(styles.titleText, styles.categoryHeading)}>
+                        Categories
+                      </Heading6>
                       <LinkButton
                         title="View all"
-                        titleStyle={styles.viewAllText, {
-                          textAlign: 'right'
-                        }}
+                        titleStyle={
+                          (styles.viewAllText,
+                          {
+                            textAlign: 'right',
+                          })
+                        }
                         onPress={this.navigateTo('Categories')}
                       />
                     </View>
@@ -277,14 +279,18 @@ export default class Home extends Component {
                       alwaysBounceHorizontal={false}
                       keyExtractor={this.keyExtractor}
                       renderItem={this.renderCategoryItem}
-                      contentContainerStyle={styles.categoriesList, { marginBottom: 10 }}
+                      contentContainerStyle={
+                        (styles.categoriesList, {marginBottom: 10})
+                      }
                     />
                   </View>
                 </View>
               </View>
             </View>
             <View style={styles.titleContainer}>
-              <Heading6 style={styles.titleText,{paddingTop:10}}>Most Popular</Heading6>
+              <Heading6 style={(styles.titleText, {paddingTop: 10})}>
+                Most Popular
+              </Heading6>
               <LinkButton
                 title="View all"
                 titleStyle={styles.viewAllText}

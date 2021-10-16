@@ -1,5 +1,5 @@
 /**
- * Foodvila - React Native Template
+ * ramennado - React Native Template
  *
  * @format
  * @flow
@@ -7,33 +7,32 @@
 
 // import dependencies
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import type { ColorProp } from 'react-native/Libraries/StyleSheet/ColorPropType';
+import type {ColorProp} from 'react-native/Libraries/StyleSheet/ColorPropType';
 
 // import colors
-import Colors from "../../theme/colors";
+import Colors from '../../theme/colors';
 
 // PriceRating Config
-const CURRENCY_ICON = "dollar";
+const CURRENCY_ICON = 'dollar';
 const MAX_PRICE = 4;
 const defaultCurrencyColor = Colors.primaryColor;
-const emptyCurrencyColor = "rgba(0, 0, 0, 0.48)";
+const emptyCurrencyColor = 'rgba(0, 0, 0, 0.48)';
 
 // PriceRating Styles
 const styles = StyleSheet.create({
   container: {
     left: -1,
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   currencyContainer: {
-    margin: 1
-  }
+    margin: 1,
+  },
 });
 
 // render price function
 const renderPriceRating = (price, currencySize, currencyColor) => {
-
   const prices = new Array(MAX_PRICE).fill(null);
 
   return prices.map((item, index) => (
@@ -41,7 +40,11 @@ const renderPriceRating = (price, currencySize, currencyColor) => {
       <Icon
         name={CURRENCY_ICON}
         size={currencySize || 12}
-        color={ index < price ? (currencyColor || defaultCurrencyColor) : emptyCurrencyColor}
+        color={
+          index < price
+            ? currencyColor || defaultCurrencyColor
+            : emptyCurrencyColor
+        }
       />
     </View>
   ));
@@ -51,15 +54,13 @@ const renderPriceRating = (price, currencySize, currencyColor) => {
 type Props = {
   price: number,
   currencySize: number,
-  currencyColor: ColorProp
+  currencyColor: ColorProp,
 };
 
 // PriceRating
-const PriceRating = ({ price = 0, currencySize, currencyColor }: Props) => (
+const PriceRating = ({price = 0, currencySize, currencyColor}: Props) => (
   <View style={styles.container}>
-    {
-      renderPriceRating(price, currencySize, currencyColor)
-    }
+    {renderPriceRating(price, currencySize, currencyColor)}
   </View>
 );
 

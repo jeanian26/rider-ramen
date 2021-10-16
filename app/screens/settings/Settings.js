@@ -1,5 +1,5 @@
 /**
- * Foodvila - React Native Template
+ * ramennado - React Native Template
  *
  * @format
  * @flow
@@ -18,7 +18,7 @@ import {
   Switch,
   View,
 } from 'react-native';
-import { color } from 'react-native-reanimated';
+import {color} from 'react-native-reanimated';
 
 // import components
 import Avatar from '../../components/avatar/Avatar';
@@ -63,10 +63,10 @@ const styles = StyleSheet.create({
   titleText: {
     paddingTop: 16,
     paddingBottom: 24,
-    paddingLeft:16,
+    paddingLeft: 16,
     fontWeight: '700',
     textAlign: 'left',
-    color:Colors.white
+    color: Colors.white,
   },
   row: {
     flexDirection: 'row',
@@ -77,11 +77,11 @@ const styles = StyleSheet.create({
   profileContainer: {
     paddingBottom: 15,
   },
-  profileCenter:{
-    flex:1,
-    alignItems:'center',
-    marginBottom:10,
-    marginTop:15
+  profileCenter: {
+    flex: 1,
+    alignItems: 'center',
+    marginBottom: 10,
+    marginTop: 15,
   },
   leftSide: {
     flexDirection: 'row',
@@ -94,11 +94,11 @@ const styles = StyleSheet.create({
   name: {
     fontWeight: '500',
     textAlign: 'left',
-    color:Colors.white
+    color: Colors.white,
   },
   email: {
     paddingVertical: 2,
-    color:Colors.white
+    color: Colors.white,
   },
   mediumText: {
     fontWeight: '500',
@@ -169,12 +169,12 @@ export default class Settings extends Component {
     };
   }
 
-  navigateTo = screen => () => {
+  navigateTo = (screen) => () => {
     const {navigation} = this.props;
     navigation.navigate(screen);
   };
 
-  toggleNotifications = value => {
+  toggleNotifications = (value) => {
     this.setState({
       notificationsOn: value,
     });
@@ -208,7 +208,11 @@ export default class Settings extends Component {
           </View> */}
 
           <TouchableItem useForeground onPress={this.navigateTo('EditProfile')}>
-            <View style={[styles.row, styles.profileContainer],{backgroundColor:Colors.primaryColor}}>
+            <View
+              style={
+                ([styles.row, styles.profileContainer],
+                {backgroundColor: Colors.primaryColor})
+              }>
               <View style={styles.profileCenter}>
                 <Avatar
                   imageUri={require('../../assets/img/profile.jpg')}
@@ -218,7 +222,7 @@ export default class Settings extends Component {
                 <View style={styles.profileCenter}>
                   <Subtitle1 style={styles.name}>John Doe</Subtitle1>
                   <Subtitle2 style={styles.email}>
-                  john.doe@example.com
+                    john.doe@example.com
                   </Subtitle2>
                 </View>
               </View>
@@ -266,7 +270,6 @@ export default class Settings extends Component {
           </TouchableItem>
           <Divider type="inset" marginLeft={DIVIDER_MARGIN_LEFT} />
 
-
           <Setting
             onPress={this.navigateTo('DeliveryAddress')}
             icon={ADDRESS_ICON}
@@ -274,11 +277,9 @@ export default class Settings extends Component {
             extraData={
               <View>
                 <Subtitle2 style={styles.extraData}>
-                566  Olen Thomas Drive
+                  566 Olen Thomas Drive
                 </Subtitle2>
-                <Subtitle2 style={styles.extraData}>
-                Dallas TX, USA
-                </Subtitle2>
+                <Subtitle2 style={styles.extraData}>Dallas TX, USA</Subtitle2>
               </View>
             }
           />

@@ -1,5 +1,5 @@
 /**
- * Foodvila - React Native Template
+ * ramennado - React Native Template
  *
  * @format
  * @flow
@@ -59,18 +59,18 @@ export default class Notifications extends Component {
     navigation.goBack();
   };
 
-  navigateTo = screen => () => {
+  navigateTo = (screen) => () => {
     const {navigation} = this.props;
     navigation.navigate(screen);
   };
 
-  swipeoutOnPressRemove = item => () => {
+  swipeoutOnPressRemove = (item) => () => {
     let {notifications} = this.state;
     const index = notifications.indexOf(item);
 
     notifications = remove(
       notifications,
-      n => notifications.indexOf(n) !== index,
+      (n) => notifications.indexOf(n) !== index,
     );
 
     this.setState({
@@ -78,7 +78,7 @@ export default class Notifications extends Component {
     });
   };
 
-  keyExtractor = item => item.notificationId.toString();
+  keyExtractor = (item) => item.notificationId.toString();
 
   renderItem = ({item, index}) => (
     <NotificationItem

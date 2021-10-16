@@ -1,5 +1,5 @@
 /**
- * Foodvila - React Native Template
+ * ramennado - React Native Template
  *
  * @format
  * @flow
@@ -185,7 +185,9 @@ export default class AboutUs extends Component {
               activeDotStyle={styles.activeDot}
               dotStyle={styles.dot}>
               <ImageBackground
-                source={getImgSource('https://ik.imagekit.io/6bxllfhzy/foodvila/assets/img/about_1_F78goywjMj.jpg')}
+                source={getImgSource(
+                  'https://ik.imagekit.io/6bxllfhzy/ramennado/assets/img/about_1_F78goywjMj.jpg',
+                )}
                 style={styles.bgImg}>
                 <GradientContainer
                   colors={
@@ -206,7 +208,7 @@ export default class AboutUs extends Component {
                     </View>
                     <View style={styles.pl8}>
                       <Subtitle1 style={[styles.info, styles.infoText]}>
-                       Jane Doe
+                        Jane Doe
                       </Subtitle1>
                       <Caption style={styles.caption}>Main Chef</Caption>
                     </View>
@@ -214,14 +216,17 @@ export default class AboutUs extends Component {
 
                   <View style={styles.description}>
                     <Subtitle1 style={styles.infoText}>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                      Lorem Ipsum is simply dummy text of the printing and
+                      typesetting industry.
                     </Subtitle1>
                   </View>
                 </GradientContainer>
               </ImageBackground>
 
               <ImageBackground
-                source={getImgSource('https://ik.imagekit.io/6bxllfhzy/foodvila/assets/img/about_3_BTgyTa1wu.jpg')}
+                source={getImgSource(
+                  'https://ik.imagekit.io/6bxllfhzy/ramennado/assets/img/about_3_BTgyTa1wu.jpg',
+                )}
                 style={styles.bgImg}>
                 <GradientContainer
                   colors={
@@ -234,14 +239,17 @@ export default class AboutUs extends Component {
                   containerStyle={styles.swiperContent}>
                   <View style={styles.description}>
                     <Subtitle1 style={styles.infoText}>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                      Lorem Ipsum is simply dummy text of the printing and
+                      typesetting industry.
                     </Subtitle1>
                   </View>
                 </GradientContainer>
               </ImageBackground>
 
               <ImageBackground
-                source={getImgSource('https://ik.imagekit.io/6bxllfhzy/foodvila/assets/img/about_2_-3DFjz0B4n.jpg')}
+                source={getImgSource(
+                  'https://ik.imagekit.io/6bxllfhzy/ramennado/assets/img/about_2_-3DFjz0B4n.jpg',
+                )}
                 style={styles.bgImg}>
                 <GradientContainer
                   colors={
@@ -282,10 +290,13 @@ export default class AboutUs extends Component {
             </Heading5>
           </View>
           <View style={styles.description}>
-                    <Subtitle1>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-                    </Subtitle1>
-                  </View>
+            <Subtitle1>
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry. Lorem Ipsum has been the industry's standard dummy text
+              ever since the 1500s, when an unknown printer took a galley of
+              type and scrambled it to make a type specimen book.
+            </Subtitle1>
+          </View>
           <View style={styles.center}>
             <Subtitle2>FOLLOW US</Subtitle2>
             <View style={styles.social}>
@@ -316,7 +327,11 @@ export default class AboutUs extends Component {
               <View style={styles.socialButton}>
                 <TouchableItem rippleColor={Colors.white} borderless>
                   <View style={styles.socialIconContainer}>
-                    <FAIcon name={TWITTER_ICON} size={21} color={Colors.white} />
+                    <FAIcon
+                      name={TWITTER_ICON}
+                      size={21}
+                      color={Colors.white}
+                    />
                   </View>
                 </TouchableItem>
               </View>
@@ -327,7 +342,7 @@ export default class AboutUs extends Component {
         <View style={styles.footer}>
           <TouchableItem>
             <View style={styles.footerButton}>
-              <Text style={styles.footerButtonText}>www.foodvila.com</Text>
+              <Text style={styles.footerButtonText}>www.ramennado.com</Text>
             </View>
           </TouchableItem>
         </View>

@@ -1,5 +1,5 @@
 /**
- * Foodvila - React Native Template
+ * ramennado - React Native Template
  *
  * @format
  * @flow
@@ -124,12 +124,12 @@ export default class PaymentMethod extends Component {
     navigation.goBack();
   };
 
-  navigateTo = screen => () => {
+  navigateTo = (screen) => () => {
     const {navigation} = this.props;
     navigation.navigate(screen);
   };
 
-  openBottomSheet = cardNumber => () => {
+  openBottomSheet = (cardNumber) => () => {
     this.setState(
       {
         cardNumber,
@@ -204,7 +204,7 @@ export default class PaymentMethod extends Component {
         </View>
 
         <BottomSheet
-          ref={ref => {
+          ref={(ref) => {
             this.bottomSheet = ref;
           }}
           // FIX: closeOnSwipeDown need height to work properly
@@ -238,7 +238,11 @@ export default class PaymentMethod extends Component {
           <TouchableItem>
             <View style={styles.bottomSheetAction}>
               <View style={styles.bottomSheetIconContainer}>
-                <Icon name={REMOVE_ICON} size={22} color={Colors.primaryColor} />
+                <Icon
+                  name={REMOVE_ICON}
+                  size={22}
+                  color={Colors.primaryColor}
+                />
               </View>
               <Subtitle1>Remove card</Subtitle1>
             </View>

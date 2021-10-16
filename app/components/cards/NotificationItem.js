@@ -1,5 +1,5 @@
 /**
- * Foodvila - React Native Template
+ * ramennado - React Native Template
  *
  * @format
  * @flow
@@ -33,14 +33,14 @@ const EXCEPTION_ICON = 'close';
 const DELETE_ICON = 'trash-can-outline';
 
 const DEFAULT_ICON_COLOR = Colors.primaryColor;
-const ON_THE_WAY_ICON_COLOR = Colors.white;//'#1781fe';
-const READY_FOR_DELIVERY_ICON_COLOR = Colors.white;//'#e5910c';
-const FAILED_DELIVERY_ICON_COLOR = Colors.white;//'#924dae';
-const DELIVERED_ICON_COLOR = Colors.white;//'#2ab77c';
-const EXCEPTION_ICON_COLOR = Colors.white;//'#e75674';
+const ON_THE_WAY_ICON_COLOR = Colors.white; //'#1781fe';
+const READY_FOR_DELIVERY_ICON_COLOR = Colors.white; //'#e5910c';
+const FAILED_DELIVERY_ICON_COLOR = Colors.white; //'#924dae';
+const DELIVERED_ICON_COLOR = Colors.white; //'#2ab77c';
+const EXCEPTION_ICON_COLOR = Colors.white; //'#e75674';
 
-const READOUT_ICON_COLOR = Colors.white;//'rgba(35, 47, 52, 0.56)';
-const READOUT_ICON_BACKGROUND = Colors.primaryColor;//'rgba(35, 47, 52, 0.12)';
+const READOUT_ICON_COLOR = Colors.white; //'rgba(35, 47, 52, 0.56)';
+const READOUT_ICON_BACKGROUND = Colors.primaryColor; //'rgba(35, 47, 52, 0.12)';
 
 // NotificationItem Styles
 const styles = StyleSheet.create({
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     margin: 1,
     borderRadius: 4,
-    backgroundColor: Colors.primaryColor
+    backgroundColor: Colors.primaryColor,
   },
   deleteButtonContainer: {
     width: 88,

@@ -1,5 +1,5 @@
 /**
- * Foodvila - React Native Template
+ * ramennado - React Native Template
  *
  * @format
  * @flow
@@ -13,7 +13,7 @@ import {HeaderHeightContext} from '@react-navigation/stack';
 // HeaderHeight
 const HeaderHeight = () => (
   <HeaderHeightContext.Consumer>
-    {headerHeight => <View style={{height: headerHeight}} />}
+    {(headerHeight) => <View style={{height: headerHeight}} />}
   </HeaderHeightContext.Consumer>
 );
 

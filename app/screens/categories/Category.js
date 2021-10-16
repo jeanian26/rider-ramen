@@ -1,5 +1,5 @@
 /**
- * Foodvila - React Native Template
+ * ramennado - React Native Template
  *
  * @format
  * @flow
@@ -51,12 +51,12 @@ export default class Category extends Component {
     navigation.goBack();
   };
 
-  navigateTo = screen => () => {
+  navigateTo = (screen) => () => {
     const {navigation} = this.props;
     navigation.navigate(screen);
   };
 
-  onPressRemove = item => () => {
+  onPressRemove = (item) => () => {
     let {quantity} = item;
     quantity -= 1;
 
@@ -73,7 +73,7 @@ export default class Category extends Component {
     });
   };
 
-  onPressAdd = item => () => {
+  onPressAdd = (item) => () => {
     const {quantity} = item;
     const {products} = this.state;
 
