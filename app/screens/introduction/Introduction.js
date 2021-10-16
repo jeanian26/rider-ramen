@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /**
  * ramennado - React Native Template
  *
@@ -31,34 +32,34 @@ const bgImg =
 
 const slide1Img = {
   uri:
-    'https://ik.imagekit.io/6bxllfhzy/ramennado/assets/img/fyf_Wzj-bXNwsN.png',
+    'https://ik.imagekit.io/6bxllfhzy/foodvila/assets/img/fyf_Wzj-bXNwsN.png',
 };
 const slide2Img = {
   uri:
-    'https://ik.imagekit.io/6bxllfhzy/ramennado/assets/img/payment__wcgkxrFjg.png',
+    'https://ik.imagekit.io/6bxllfhzy/foodvila/assets/img/payment__wcgkxrFjg.png',
 };
 const slide3Img = {
   uri:
-    'https://ik.imagekit.io/6bxllfhzy/ramennado/assets/img/fast-del_LP8Jfhjai.png',
+    'https://ik.imagekit.io/6bxllfhzy/foodvila/assets/img/fast-del_LP8Jfhjai.png',
 };
 
 const slides = [
   {
     id: 'slide1',
     img: slide1Img,
-    title: 'TEST',
-    description: 'Fastest way to order delicious food.',
+    title: 'LOREM IPSUM',
+    description: 'Fastest way to order delicious ramen.',
   },
   {
     id: 'slide2',
     img: slide2Img,
-    title: 'Easy payment',
+    title: 'LOREM IPSUM',
     description: 'Pay online with your credit card.',
   },
   {
     id: 'slide3',
     img: slide3Img,
-    title: 'Fast delivery',
+    title: 'LOREM IPSUM',
     description: 'Get & enjoy delicious food to your door.',
   },
 ];
