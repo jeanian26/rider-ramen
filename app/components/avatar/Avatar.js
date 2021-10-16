@@ -1,5 +1,5 @@
 /**
- * Foodvila - React Native Template
+ * ramennado - React Native Template
  *
  * @format
  * @flow
@@ -39,9 +39,9 @@ const styles = StyleSheet.create({
   },
   rounded: {
     borderRadius: AVATAR_M / 2,
-    borderWidth:1,
-    borderColor:Colors.primaryColor,
-    margin:5
+    borderWidth: 1,
+    borderColor: Colors.primaryColor,
+    margin: 5,
   },
   avatarContainer: {
     justifyContent: 'center',

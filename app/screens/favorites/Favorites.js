@@ -1,5 +1,5 @@
 /**
- * Foodvila - React Native Template
+ * ramennado - React Native Template
  *
  * @format
  * @flow
@@ -72,27 +72,27 @@ export default class Favorites extends Component {
     super(props);
 
     this.state = {
-      products: sample_data.favorites_products
+      products: sample_data.favorites_products,
     };
   }
 
-  navigateTo = screen => () => {
+  navigateTo = (screen) => () => {
     const {navigation} = this.props;
     navigation.navigate(screen);
   };
 
-  swipeoutOnPressRemove = item => () => {
+  swipeoutOnPressRemove = (item) => () => {
     let {products} = this.state;
     const index = products.indexOf(item);
 
-    products = remove(products, n => products.indexOf(n) !== index);
+    products = remove(products, (n) => products.indexOf(n) !== index);
 
     this.setState({
       products,
     });
   };
 
-  onPressRemove = item => () => {
+  onPressRemove = (item) => () => {
     let {quantity} = item;
     quantity -= 1;
 
@@ -109,7 +109,7 @@ export default class Favorites extends Component {
     });
   };
 
-  onPressAdd = item => () => {
+  onPressAdd = (item) => () => {
     const {quantity} = item;
     const {products} = this.state;
 
@@ -121,7 +121,7 @@ export default class Favorites extends Component {
     });
   };
 
-  keyExtractor = item => item.id.toString();
+  keyExtractor = (item) => item.id.toString();
 
   renderProductItem = ({item}) => (
     <ActionProductCardHorizontal

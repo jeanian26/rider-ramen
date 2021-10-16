@@ -1,5 +1,5 @@
 /**
- * Foodvila - React Native Template
+ * ramennado - React Native Template
  *
  * @format
  * @flow
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   caption: {
     paddingBottom: 12,
     textAlign: 'left',
-    color:Colors.onPrimaryColor
+    color: Colors.onPrimaryColor,
   },
   heading: {
     paddingBottom: 16,
@@ -69,15 +69,14 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '48%',
-
   },
-  buttonAccept:{
-    backgroundColor:Colors.primaryColor,
-    color:Colors.onPrimaryColor
+  buttonAccept: {
+    backgroundColor: Colors.primaryColor,
+    color: Colors.onPrimaryColor,
   },
-  buttonDecline:{
+  buttonDecline: {
     //backgroundColor:Colors.primaryColor,
-  }
+  },
 });
 
 // TermsConditions
@@ -138,7 +137,7 @@ export default class TermsConditions extends Component {
         <View style={styles.buttonsContainer}>
           <Button
             onPress={this.goBack}
-            buttonStyle={[styles.button,styles.buttonDecline]}
+            buttonStyle={[styles.button, styles.buttonDecline]}
             title="Decline"
             darkScreenOutlinedTitle
             rounded

@@ -1,5 +1,5 @@
 /**
- * Foodvila - React Native Template
+ * ramennado - React Native Template
  *
  * @format
  * @flow
@@ -54,12 +54,12 @@ export default class Orders extends Component {
     navigation.goBack();
   };
 
-  navigateTo = screen => () => {
+  navigateTo = (screen) => () => {
     const {navigation} = this.props;
     navigation.navigate(screen);
   };
 
-  keyExtractor = item => item.orderNumber.toString();
+  keyExtractor = (item) => item.orderNumber.toString();
 
   renderItem = ({item, index}) => (
     <OrderItem

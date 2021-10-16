@@ -1,5 +1,5 @@
 /**
- * Foodvila - React Native Template
+ * ramennado - React Native Template
  *
  * @format
  * @flow
@@ -150,19 +150,19 @@ export default class AddAddress extends Component {
     navigation.goBack();
   };
 
-  setAddressType = type => () => {
+  setAddressType = (type) => () => {
     this.setState({
       addressType: type,
     });
   };
 
-  onChangeText = key => text => {
+  onChangeText = (key) => (text) => {
     this.setState({
       [key]: text,
     });
   };
 
-  onFocus = key => () => {
+  onFocus = (key) => () => {
     let focusedInputs = {
       numberFocused: false,
       streetFocused: false,
@@ -177,7 +177,7 @@ export default class AddAddress extends Component {
     });
   };
 
-  focusOn = nextFiled => () => {
+  focusOn = (nextFiled) => () => {
     if (nextFiled) {
       nextFiled.focus();
     }
@@ -233,8 +233,6 @@ export default class AddAddress extends Component {
         <KeyboardAwareScrollView
           contentContainerStyle={styles.contentContainerStyle}>
           <View style={styles.row}>
-            
-
             <View style={styles.picker}>
               <View
                 style={[
@@ -311,7 +309,7 @@ export default class AddAddress extends Component {
 
             <View style={styles.inputContainer}>
               <UnderlineTextInput
-                onRef={r => {
+                onRef={(r) => {
                   this.street = r;
                 }}
                 onChangeText={this.onChangeText('street')}
@@ -330,7 +328,7 @@ export default class AddAddress extends Component {
 
             <View style={styles.inputContainer}>
               <UnderlineTextInput
-                onRef={r => {
+                onRef={(r) => {
                   this.district = r;
                 }}
                 onChangeText={this.onChangeText('district')}
@@ -350,7 +348,7 @@ export default class AddAddress extends Component {
             <View style={styles.row}>
               <View style={[styles.inputContainer, styles.small]}>
                 <UnderlineTextInput
-                  onRef={r => {
+                  onRef={(r) => {
                     this.zip = r;
                   }}
                   onChangeText={this.onChangeText('zip')}
@@ -369,7 +367,7 @@ export default class AddAddress extends Component {
 
               <View style={[styles.inputContainer, styles.large]}>
                 <UnderlineTextInput
-                  onRef={r => {
+                  onRef={(r) => {
                     this.city = r;
                   }}
                   onChangeText={this.onChangeText('city')}

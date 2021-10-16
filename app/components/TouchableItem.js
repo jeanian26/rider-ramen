@@ -1,5 +1,5 @@
 /**
- * Foodvila - React Native Template
+ * ramennado - React Native Template
  *
  * @format
  * @flow
@@ -23,7 +23,7 @@ import {
 const ANDROID_VERSION_LOLLIPOP = 21;
 
 // TouchableItem
-const TouchableItem = props => {
+const TouchableItem = (props) => {
   /**
    * TouchableNativeFeedback.Ripple causes a crash on old Android versions,
    * therefore only enable it on Android Lollipop and above

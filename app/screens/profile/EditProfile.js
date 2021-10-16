@@ -1,5 +1,5 @@
 /**
- * Foodvila - React Native Template
+ * ramennado - React Native Template
  *
  * @format
  * @flow
@@ -99,7 +99,7 @@ export default class EditProfile extends Component {
     navigation.goBack();
   };
 
-  nameChange = text => {
+  nameChange = (text) => {
     this.setState({
       name: text,
     });
@@ -113,7 +113,7 @@ export default class EditProfile extends Component {
     });
   };
 
-  emailChange = text => {
+  emailChange = (text) => {
     this.setState({
       email: text,
     });
@@ -127,7 +127,7 @@ export default class EditProfile extends Component {
     });
   };
 
-  phoneChange = text => {
+  phoneChange = (text) => {
     this.setState({
       phone: text,
     });
@@ -141,7 +141,7 @@ export default class EditProfile extends Component {
     });
   };
 
-  focusOn = nextFiled => () => {
+  focusOn = (nextFiled) => () => {
     if (nextFiled) {
       nextFiled.focus();
     }
@@ -190,7 +190,7 @@ export default class EditProfile extends Component {
           <View style={styles.editForm}>
             <Subtitle2 style={styles.overline}>Name</Subtitle2>
             <UnderlineTextInput
-              onRef={r => {
+              onRef={(r) => {
                 this.name = r;
               }}
               value={name}
@@ -205,7 +205,7 @@ export default class EditProfile extends Component {
 
             <Subtitle2 style={styles.overline}>E-mail Address</Subtitle2>
             <UnderlineTextInput
-              onRef={r => {
+              onRef={(r) => {
                 this.email = r;
               }}
               value={email}
@@ -221,7 +221,7 @@ export default class EditProfile extends Component {
 
             <Subtitle2 style={styles.overline}>Phone Number</Subtitle2>
             <UnderlineTextInput
-              onRef={r => {
+              onRef={(r) => {
                 this.phone = r;
               }}
               value={phone}

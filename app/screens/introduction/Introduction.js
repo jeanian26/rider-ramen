@@ -1,5 +1,5 @@
 /**
- * Foodvila - React Native Template
+ * ramennado - React Native Template
  *
  * @format
  * @flow
@@ -31,15 +31,15 @@ const bgImg =
 
 const slide1Img = {
   uri:
-    'https://ik.imagekit.io/6bxllfhzy/foodvila/assets/img/fyf_Wzj-bXNwsN.png',
+    'https://ik.imagekit.io/6bxllfhzy/ramennado/assets/img/fyf_Wzj-bXNwsN.png',
 };
 const slide2Img = {
   uri:
-    'https://ik.imagekit.io/6bxllfhzy/foodvila/assets/img/payment__wcgkxrFjg.png',
+    'https://ik.imagekit.io/6bxllfhzy/ramennado/assets/img/payment__wcgkxrFjg.png',
 };
 const slide3Img = {
   uri:
-    'https://ik.imagekit.io/6bxllfhzy/foodvila/assets/img/fast-del_LP8Jfhjai.png',
+    'https://ik.imagekit.io/6bxllfhzy/ramennado/assets/img/fast-del_LP8Jfhjai.png',
 };
 
 const slides = [

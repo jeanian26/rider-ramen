@@ -1,6 +1,6 @@
 /* eslint-disable react/self-closing-comp */
 /**
- * Foodvila - React Native Template
+ * ramennado - React Native Template
  *
  * @format
  * @flow

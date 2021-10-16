@@ -1,5 +1,5 @@
 /**
- * Foodvila - React Native Template
+ * ramennado - React Native Template
  *
  * @format
  * @flow
@@ -131,13 +131,13 @@ export default class TestComponents extends Component {
     );
   };
 
-  showInputModal = value => () => {
+  showInputModal = (value) => () => {
     this.setState({
       inputModalVisible: value,
     });
   };
 
-  passwordChange = text => {
+  passwordChange = (text) => {
     this.setState({
       password: text,
     });
@@ -487,7 +487,7 @@ export default class TestComponents extends Component {
         </ScrollView>
 
         <BottomSheet
-          ref={ref => {
+          ref={(ref) => {
             this.bottomSheet = ref;
           }}
           height={240}>

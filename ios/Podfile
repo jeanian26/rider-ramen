@@ -3,14 +3,14 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 platform :ios, '10.0'
 
-target 'foodvila' do
+target 'ramennado' do
   config = use_native_modules!
 
   use_react_native!(:path => config["reactNativePath"])
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
-  target 'foodvilaTests' do
+  target 'ramennadoTests' do
     inherit! :complete
     # Pods for testing
   end
@@ -25,10 +25,10 @@ target 'foodvila' do
   end
 end
 
-target 'foodvila-tvOS' do
-  # Pods for foodvila-tvOS
+target 'ramennado-tvOS' do
+  # Pods for ramennado-tvOS
 
-  target 'foodvila-tvOSTests' do
+  target 'ramennado-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end

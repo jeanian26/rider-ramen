@@ -1,5 +1,5 @@
 /**
- * Foodvila - React Native Template
+ * ramennado - React Native Template
  *
  * @format
  * @flow
@@ -204,15 +204,15 @@ export default class DeliveryAddress extends Component {
     navigation.goBack();
   };
 
-  navigateTo = screen => () => {
+  navigateTo = (screen) => () => {
     const {navigation} = this.props;
     navigation.navigate(screen);
   };
 
-  setDeliveryAddress = item => () => {
+  setDeliveryAddress = (item) => () => {
     const {addresses} = this.state;
     const index = addresses.indexOf(item);
-    const activeIndex = addresses.findIndex(e => e.active === true);
+    const activeIndex = addresses.findIndex((e) => e.active === true);
 
     if (activeIndex !== index) {
       addresses[activeIndex].active = false;
@@ -242,9 +242,7 @@ export default class DeliveryAddress extends Component {
     />
   );
 
-  handleFabPress = () => {
-
-  };
+  handleFabPress = () => {};
 
   renderFAB_ICON = () => (
     <Icon name={FAB_ICON} size={24} color={Colors.onAccentColor} />
@@ -276,7 +274,8 @@ export default class DeliveryAddress extends Component {
             renderIcon={this.renderFAB_ICON}
             bgColor={Colors.primaryColor}
             hideShadow
-            fixNativeFeedbackRadius/>
+            fixNativeFeedbackRadius
+          />
         </View>
       </SafeAreaView>
     );

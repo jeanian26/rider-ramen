@@ -1,5 +1,5 @@
 /**
- * Foodvila - React Native Template
+ * ramennado - React Native Template
  *
  * @format
  * @flow
@@ -68,20 +68,18 @@ const styles = StyleSheet.create({
     width: 70,
     justifyContent: 'center',
     alignItems: 'center',
-    
   },
-  bottomActiveBorder:{
-    borderBottomWidth:1,
-    borderBottomColor:Colors.primaryColor,
-    paddingBottom:12
+  bottomActiveBorder: {
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.primaryColor,
+    paddingBottom: 12,
   },
   stepText: {
     color: Colors.primaryColor,
   },
   activeStepText: {
     color: Colors.primaryColor,
-    fontWeight:'bold',
-    
+    fontWeight: 'bold',
   },
   line: {
     width: 48,
@@ -90,7 +88,7 @@ const styles = StyleSheet.create({
   },
   activeLine: {
     backgroundColor: Colors.primaryColor,
-    opacity:0.9
+    opacity: 0.9,
   },
   swiperContainer: {
     flex: 1,
@@ -163,7 +161,7 @@ export default class Checkout extends Component {
     };
   }
 
-  navigateTo = screen => () => {
+  navigateTo = (screen) => () => {
     const {navigation} = this.props;
     navigation.navigate(screen);
   };
@@ -179,7 +177,7 @@ export default class Checkout extends Component {
     this.zip.clear();
   };
 
-  addressChange = text => {
+  addressChange = (text) => {
     this.setState({
       address: text,
     });
@@ -193,7 +191,7 @@ export default class Checkout extends Component {
     });
   };
 
-  cityChange = text => {
+  cityChange = (text) => {
     this.setState({
       city: text,
     });
@@ -207,7 +205,7 @@ export default class Checkout extends Component {
     });
   };
 
-  zipChange = text => {
+  zipChange = (text) => {
     this.setState({
       zip: text,
     });
@@ -221,13 +219,13 @@ export default class Checkout extends Component {
     });
   };
 
-  focusOn = nextFiled => () => {
+  focusOn = (nextFiled) => () => {
     if (nextFiled) {
       nextFiled.focus();
     }
   };
 
-  onIndexChanged = index => {
+  onIndexChanged = (index) => {
     let activeIndex;
     if (isRTL) {
       activeIndex = 2 - index; // 2 = 3 steps - 1
@@ -247,13 +245,13 @@ export default class Checkout extends Component {
     this.swiper.scrollBy(-1, true);
   };
 
-  showInfoModal = value => () => {
+  showInfoModal = (value) => () => {
     this.setState({
       infoModalVisible: value,
     });
   };
 
-  closeInfoModal = value => () => {
+  closeInfoModal = (value) => () => {
     this.setState(
       {
         infoModalVisible: value,
@@ -349,7 +347,7 @@ export default class Checkout extends Component {
 
           <View style={styles.swiperContainer}>
             <Swiper
-              ref={r => {
+              ref={(r) => {
                 this.swiper = r;
               }}
               index={isRTL ? 2 : 0}
@@ -365,7 +363,7 @@ export default class Checkout extends Component {
                 <View style={styles.form}>
                   <Subtitle2 style={styles.overline}>Address</Subtitle2>
                   <UnderlineTextInput
-                    onRef={r => {
+                    onRef={(r) => {
                       this.address = r;
                     }}
                     value={address}
@@ -380,7 +378,7 @@ export default class Checkout extends Component {
 
                   <Subtitle2 style={styles.overline}>City</Subtitle2>
                   <UnderlineTextInput
-                    onRef={r => {
+                    onRef={(r) => {
                       this.city = r;
                     }}
                     value={city}
@@ -395,7 +393,7 @@ export default class Checkout extends Component {
 
                   <Subtitle2 style={styles.overline}>ZIP Code</Subtitle2>
                   <UnderlineTextInput
-                    onRef={r => {
+                    onRef={(r) => {
                       this.zip = r;
                     }}
                     value={zip}
@@ -418,13 +416,13 @@ export default class Checkout extends Component {
 
               {/* STEP 2 */}
               <View>
-              <CreditCard
-                colors={['#0D324D', '#7F5A83']}
-                brand="discover"
-                last4Digits="0123"
-                cardHolder="John Doe"
-                expiry="08 / 20"
-              />
+                <CreditCard
+                  colors={['#0D324D', '#7F5A83']}
+                  brand="discover"
+                  last4Digits="0123"
+                  cardHolder="John Doe"
+                  expiry="08 / 20"
+                />
 
                 <View>
                   <LinkButton

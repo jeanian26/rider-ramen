@@ -1,5 +1,5 @@
 /**
- * Foodvila - React Native Template
+ * ramennado - React Native Template
  *
  * @format
  * @flow
@@ -70,17 +70,17 @@ const styles = StyleSheet.create({
   title: {
     color: Colors.onPrimaryColor,
   },
-  customTitle:{
-    color: Colors.customonOnPrimaryColor
+  customTitle: {
+    color: Colors.customonOnPrimaryColor,
   },
   outlinedTitle: {
     color: Colors.primaryColor,
   },
-  darkScreenOutlinedTitle:{
+  darkScreenOutlinedTitle: {
     borderWidth: 2,
     borderColor: Colors.primaryColor,
     backgroundColor: 'transparent',
-  }
+  },
 });
 
 // Button Props
@@ -145,7 +145,7 @@ const Button = ({
   rounded,
   outlined,
   darkScreenOutlined,
-  darkScreenOutlinedTitle
+  darkScreenOutlinedTitle,
 }: Props) => (
   <TouchableOpacity
     onPress={onPress}
@@ -174,7 +174,7 @@ const Button = ({
     )}
     <ButtonText
       style={[
-       !titleColor&&styles.title,
+        !titleColor && styles.title,
         outlined && styles.outlinedTitle,
         titleColor && {color: titleColor},
       ]}>

@@ -1,12 +1,12 @@
 /**
- * Foodvila - React Native Template
+ * ramennado - React Native Template
  *
  * @format
  * @flow
  */
 
 // import dependencies
-import React, { Component, Fragment } from 'react';
+import React, {Component, Fragment} from 'react';
 import {
   FlatList,
   ImageBackground,
@@ -38,7 +38,7 @@ const CARD_BORDER_RADIUS = 6;
 
 // Categories Styles
 const styles = StyleSheet.create({
-  topArea: { flex: 0, backgroundColor: Colors.primaryColor },
+  topArea: {flex: 0, backgroundColor: Colors.primaryColor},
   screenContainer: {
     flex: 1,
     backgroundColor: Colors.background,
@@ -49,9 +49,9 @@ const styles = StyleSheet.create({
   cardImg: {
     borderRadius: CARD_BORDER_RADIUS,
   },
-  viewContainer:{
-    overflow:'hidden',
-    padding:8
+  viewContainer: {
+    overflow: 'hidden',
+    padding: 8,
   },
   card: {
     //margin: 8,
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
     left: 0,
-    position: 'absolute'
+    position: 'absolute',
   },
   cardTitle: {
     fontWeight: '700',
@@ -78,9 +78,9 @@ const styles = StyleSheet.create({
     color: Colors.white,
     letterSpacing: 1,
     textShadowColor: 'rgba(0, 0, 0, 0.88)',
-    textShadowOffset: { width: -1, height: 1 },
+    textShadowOffset: {width: -1, height: 1},
     textShadowRadius: 10,
-    paddingHorizontal: 5
+    paddingHorizontal: 5,
   },
   items: {
     paddingBottom: 5,
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: Colors.white,
     textShadowColor: 'rgba(0, 0, 0, 0.88)',
-    textShadowOffset: { width: -1, height: 1 },
+    textShadowOffset: {width: -1, height: 1},
     textShadowRadius: 10,
   },
 });
@@ -104,23 +104,20 @@ export default class Categories extends Component {
   }
 
   goBack = () => {
-    const { navigation } = this.props;
+    const {navigation} = this.props;
     navigation.goBack();
   };
 
-  navigateTo = screen => () => {
-    const { navigation } = this.props;
+  navigateTo = (screen) => () => {
+    const {navigation} = this.props;
     navigation.navigate(screen);
   };
 
-  keyExtractor = item => item.key;
+  keyExtractor = (item) => item.key;
 
-  renderCategoryItem = ({ item, index }) => (
+  renderCategoryItem = ({item, index}) => (
     <View style={styles.viewContainer}>
-      <TouchableItem
-        onPress={this.navigateTo('Category')}
-        
-      >
+      <TouchableItem onPress={this.navigateTo('Category')}>
         <ImageBackground
           key={index}
           source={getImgSource(item.imageUri)}
@@ -131,7 +128,7 @@ export default class Categories extends Component {
             <TouchableItem
               onPress={this.navigateTo('Category')}
               style={styles.cardContainer}
-            // borderless
+              // borderless
             >
               <Fragment>
                 <Text style={styles.cardTitle}>{item.name}</Text>
@@ -145,7 +142,7 @@ export default class Categories extends Component {
   );
 
   render() {
-    const { categories } = this.state;
+    const {categories} = this.state;
 
     return (
       <Fragment>

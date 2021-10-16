@@ -1,5 +1,5 @@
 /**
- * Foodvila - React Native Template
+ *
  *
  * @format
  * @flow

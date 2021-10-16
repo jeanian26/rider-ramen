@@ -1,5 +1,5 @@
 /**
- * Foodvila - React Native Template
+ * ramennado - React Native Template
  *
  * @format
  * @flow
@@ -124,7 +124,7 @@ export default class Search extends Component {
     };
   }
 
-  navigateTo = screen => () => {
+  navigateTo = (screen) => () => {
     const {navigation} = this.props;
 
     Keyboard.dismiss();
@@ -132,10 +132,10 @@ export default class Search extends Component {
     navigation.navigate(screen);
   };
 
-  handleFilterPress = item => () => {
+  handleFilterPress = (item) => () => {
     const {filters} = this.state;
     const index = filters.indexOf(item);
-    const filtersActiveIndex = filters.findIndex(e => e.picked === true);
+    const filtersActiveIndex = filters.findIndex((e) => e.picked === true);
     let scrollByIndex;
 
     if (filtersActiveIndex !== index) {
@@ -197,10 +197,10 @@ export default class Search extends Component {
 
   renderSeparator = () => <Divider />;
 
-  onIndexChanged = index => {
+  onIndexChanged = (index) => {
     const {filters} = this.state;
     const filtersLength = filters.length - 1;
-    const filtersActiveIndex = filters.findIndex(e => e.picked === true);
+    const filtersActiveIndex = filters.findIndex((e) => e.picked === true);
 
     if (filtersActiveIndex !== index) {
       filters[filtersActiveIndex].picked = false;
@@ -260,7 +260,7 @@ export default class Search extends Component {
             style={styles.textInput}
           />
           <View style={styles.searchButtonContainer}>
-            <TouchableItem onPress={()=>{}}>
+            <TouchableItem onPress={() => {}}>
               <View style={styles.searchButton}>
                 <Icon
                   name={SEARCH_ICON}
@@ -274,7 +274,7 @@ export default class Search extends Component {
 
         <View>
           <FlatList
-            ref={r => (this.filtersList = r)}
+            ref={(r) => (this.filtersList = r)}
             data={filters}
             keyExtractor={this.keyExtractor}
             renderItem={this.renderFilterItem}
@@ -286,7 +286,7 @@ export default class Search extends Component {
         </View>
 
         <Swiper
-          ref={r => (this.productSwiper = r)}
+          ref={(r) => (this.productSwiper = r)}
           index={isRTL ? filters.length - 1 : 0}
           onIndexChanged={this.onIndexChanged}
           loop={false}

@@ -1,5 +1,5 @@
 /**
- * Foodvila - React Native Template
+ * ramennado - React Native Template
  *
  * @format
  * @flow
@@ -30,8 +30,8 @@ import Settings from '../screens/settings/Settings';
 
 // import colors
 import Colors from '../theme/colors';
-import { color } from 'react-native-reanimated';
-import { Platform, StyleSheet } from 'react-native';
+import {color} from 'react-native-reanimated';
+import {Platform, StyleSheet} from 'react-native';
 
 // HomeNavigator Config
 
@@ -71,59 +71,61 @@ function HomeNavigator() {
         inactiveTintColor: Colors.secondaryText,
         showLabel: false, // hide labels
         style: {
-          backgroundColor: Colors.surface // TabBar background
+          backgroundColor: Colors.surface, // TabBar background
         },
       }}>
-      
       <Tab.Screen name="Search" component={Search} />
-      <Tab.Screen name="Cart" component={Cart}
-      options={{
-        tabBarIcon: props => (
-          <TabBadgeIcon
-            name={`cart${props.focused ? '' : '-outline'}`}
-            badgeCount={5}
-            {...props}
-          />
-        ),
-      }}
-      />
-      <Tab.Screen name="Home" component={Home} 
+      <Tab.Screen
+        name="Cart"
+        component={Cart}
         options={{
-          tabBarIcon: props => (
+          tabBarIcon: (props) => (
+            <TabBadgeIcon
+              name={`cart${props.focused ? '' : '-outline'}`}
+              badgeCount={5}
+              {...props}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Home"
+        component={Home}
+        options={{
+          tabBarIcon: (props) => (
             <TabBadgeIcon
               name={`home${props.focused ? '' : '-outline'}`}
               //badgeCount={5}
               {...props}
               size={35}
               color={Colors.onPrimaryColor}
-              style={Platform.OS == 'ios'? styles.iosMenu:styles.androidMenu}
+              style={Platform.OS == 'ios' ? styles.iosMenu : styles.androidMenu}
             />
           ),
         }}
       />
-      
+
       <Tab.Screen name="Favorites" component={Favorites} />
-      
-      
+
       <Tab.Screen name="Settings" component={Settings} />
     </Tab.Navigator>
   );
 }
 
 const styles = StyleSheet.create({
-  androidMenu:{
-    marginBottom:20, 
-    backgroundColor:Colors.primaryColor, 
-    padding:10, 
-    borderRadius:100
+  androidMenu: {
+    marginBottom: 20,
+    backgroundColor: Colors.primaryColor,
+    padding: 10,
+    borderRadius: 100,
   },
-  iosMenu:{
-    bottom:5, 
-    backgroundColor:Colors.primaryColor, 
-    padding:10, 
-    borderRadius:100,
-    position:'absolute'
-  }
-})
+  iosMenu: {
+    bottom: 5,
+    backgroundColor: Colors.primaryColor,
+    padding: 10,
+    borderRadius: 100,
+    position: 'absolute',
+  },
+});
 
 export default HomeNavigator;
