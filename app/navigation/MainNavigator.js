@@ -1,5 +1,5 @@
 /**
- * ramennado - React Native Template
+ *
  *
  * @format
  * @flow

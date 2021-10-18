@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 /**
- * ramennado - React Native Template
+ *
  *
  * @format
  * @flow
@@ -47,20 +47,20 @@ const slides = [
   {
     id: 'slide1',
     img: slide1Img,
-    title: 'LOREM IPSUM',
+    title: 'Find your ramen',
     description: 'Fastest way to order delicious ramen.',
   },
   {
     id: 'slide2',
     img: slide2Img,
-    title: 'LOREM IPSUM',
-    description: 'Pay online with your credit card.',
+    title: 'Easy payment',
+    description: 'Pay online with your credit card or other e-wallet.',
   },
   {
     id: 'slide3',
     img: slide3Img,
-    title: 'LOREM IPSUM',
-    description: 'Get & enjoy delicious food to your door.',
+    title: 'Fast delivery',
+    description: 'Get & enjoy delicious ramen to your door.',
   },
 ];
 

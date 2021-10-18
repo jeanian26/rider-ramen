@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 /**
- * ramennado - React Native Template
+ *
  *
  * @format
  * @flow
