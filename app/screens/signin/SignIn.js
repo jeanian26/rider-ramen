@@ -160,6 +160,7 @@ export default class SignIn extends Component {
       emailFocused: false,
       passwordFocused: false,
     });
+
     signInWithEmailAndPassword(
       passAuth(),
       this.state.email,
@@ -273,7 +274,9 @@ export default class SignIn extends Component {
             </View>
 
             <TouchableWithoutFeedback>
-              <View style={styles.footer}></View>
+              <View style={styles.footer}>
+                <Text></Text>
+              </View>
             </TouchableWithoutFeedback>
           </View>
         </KeyboardAwareScrollView>

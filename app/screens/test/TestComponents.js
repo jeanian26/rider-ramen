@@ -1,15 +1,8 @@
-/**
- *
- *
- * @format
- * @flow
- */
+/* eslint-disable prettier/prettier */
 
-// import dependencies
 import React, {Component} from 'react';
 import {ScrollView, StatusBar, StyleSheet, View} from 'react-native';
 
-// import components
 import Avatar from '../../components/avatar/Avatar';
 
 import BottomSheet from '../../components/bottomsheet/BottomSheet';
@@ -55,7 +48,6 @@ import {
 import UnderlinePasswordInput from '../../components/textinputs/UnderlinePasswordInput';
 import UnderlineTextInput from '../../components/textinputs/UnderlineTextInput';
 
-// import colors
 import Colors from '../../theme/colors';
 
 const ProductImg = require('../../assets/img/sandwich_2.jpg');
@@ -110,7 +102,6 @@ export default class TestComponents extends Component {
   };
 
   closeActivityIndicatorModal = () => {
-    // for demo purpose clear timeout if user request close modal before 3s timeout
     clearTimeout(this.timeout);
     this.setState({
       activityIndicatorModalVisible: false,
@@ -123,7 +114,6 @@ export default class TestComponents extends Component {
         activityIndicatorModalVisible: true,
       },
       () => {
-        // for demo purpose after 3s close modal
         this.timeout = setTimeout(() => {
           this.closeActivityIndicatorModal();
         }, 3000);

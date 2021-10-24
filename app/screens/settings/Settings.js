@@ -1,11 +1,5 @@
-/**
- *
- *
- * @format
- * @flow
- */
+/* eslint-disable prettier/prettier */
 
-// import dependencies
 import React, {Component} from 'react';
 import {
   Alert,
@@ -20,17 +14,14 @@ import {
 } from 'react-native';
 import {color} from 'react-native-reanimated';
 
-// import components
 import Avatar from '../../components/avatar/Avatar';
 import Divider from '../../components/divider/Divider';
 import Icon from '../../components/icon/Icon';
 import {Heading6, Subtitle1, Subtitle2} from '../../components/text/CustomText';
 import TouchableItem from '../../components/TouchableItem';
 
-// import colors
 import Colors from '../../theme/colors';
 
-// Settings Config
 const isRTL = I18nManager.isRTL;
 const IOS = Platform.OS === 'ios';
 const DIVIDER_MARGIN_LEFT = 60;
@@ -48,7 +39,6 @@ const ABOUT_ICON = IOS
   : 'md-information-circle-outline';
 const LOGOUT_ICON = IOS ? 'ios-log-out' : 'md-log-out';
 
-// Settings Styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -124,7 +114,6 @@ const styles = StyleSheet.create({
   logout: {color: Colors.primaryText},
 });
 
-// Settings Props
 type Props = {
   icon: string,
   title: String,
@@ -132,7 +121,6 @@ type Props = {
   extraData: React.Node,
 };
 
-// Settings Components
 const Setting = ({icon, title, onPress, extraData}: Props) => (
   <TouchableItem onPress={onPress}>
     <View>
@@ -160,7 +148,6 @@ const Setting = ({icon, title, onPress, extraData}: Props) => (
   </TouchableItem>
 );
 
-// Settings
 export default class Settings extends Component {
   constructor(props) {
     super(props);
@@ -203,10 +190,6 @@ export default class Settings extends Component {
         />
 
         <ScrollView contentContainerStyle={styles.contentContainerStyle}>
-          {/* <View style={styles.titleContainer,{backgroundColor:Colors.primaryColor}}>
-            <Heading6 style={styles.titleText}>Settings</Heading6>
-          </View> */}
-
           <TouchableItem useForeground onPress={this.navigateTo('EditProfile')}>
             <View
               style={
@@ -252,10 +235,6 @@ export default class Settings extends Component {
                 <Subtitle1 style={styles.mediumText}>Notifications</Subtitle1>
               </View>
 
-              {/*
-                FIX: when android:supportsRtl="true" not added to AndroidManifest.xml
-                <View style={isRTL && {transform: [{scaleX: -1}]}}> 
-              */}
               <View>
                 <Switch
                   trackColor={{
@@ -304,20 +283,6 @@ export default class Settings extends Component {
             onPress={this.navigateTo('Orders')}
             icon={ORDERS_ICON}
             title="My Orders"
-          />
-          <Divider type="inset" marginLeft={DIVIDER_MARGIN_LEFT} />
-
-          <Setting
-            onPress={this.navigateTo('TermsConditions')}
-            icon={TERMS_ICON}
-            title="Terms and Conditions"
-          />
-          <Divider type="inset" marginLeft={DIVIDER_MARGIN_LEFT} />
-
-          <Setting
-            onPress={this.navigateTo('AboutUs')}
-            icon={ABOUT_ICON}
-            title="About Us"
           />
           <Divider type="inset" marginLeft={DIVIDER_MARGIN_LEFT} />
 

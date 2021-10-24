@@ -1,60 +1,43 @@
-// import config setting
-import config from "../config";
+import config from '../config';
 
-// Color Themes
 const themes = {
   food: {
+    primaryLightColor: '#bc00218c',
+    primaryColor: '#bc0021', //00b970//bc0021
+    primaryColorDark: '#00945a',
+    primaryColorLight: '#00e78c',
+    onPrimaryColor: '#ffffff', //
+    customonOnPrimaryColor: '#bc0021',
 
-    // primary color
-    primaryLightColor: "#bc00218c",
-    primaryColor: "#bc0021",//00b970//bc0021
-    primaryColorDark: "#00945a",
-    primaryColorLight: "#00e78c",
-    onPrimaryColor: "#ffffff",//
-    customonOnPrimaryColor:'#bc0021',
+    accentColor: '#0069b9',
+    onAccentColor: '#fff',
 
-    //dark background
-    //darkBackgroundColor:'#bc0021',
-    //darkScreenPrimaryText:'#ffffff',
-    //darkScreensecondaryText:'#ffffff',
+    secondaryColor: '#b90039',
+    onSecondaryColor: '#fff',
 
-    // accent color, triad
-    accentColor: "#0069b9",
-    onAccentColor: "#fff",
+    tertiaryColor: '#ffa400',
+    onTertiaryColor: '#fff',
 
-    // secondary color, primary color split
-    secondaryColor: "#b90039",
-    onSecondaryColor: "#fff",
+    statusBarColor: '#bc0021', //#fff
 
-    // tertiary color, secondary color intermediately related
-    tertiaryColor: "#ffa400",
-    onTertiaryColor: "#fff",
+    primaryGradientColor: '#bc0021',
+    secondaryGradientColor: '#bc0021',
 
-    // status bar color
-    statusBarColor: "#bc0021",//#fff
+    overlayColor: '#b90039',
 
-    // gradient colors
-    primaryGradientColor: "#bc0021",
-    secondaryGradientColor: "#bc0021",
+    primaryText: '#010203', //#010203
+    secondaryText: '#5d5d5d',
+    disabledText: 'rgba(0, 0, 0, 0.38)',
 
-    // overlay color
-    overlayColor: "#b90039",
-
-    // text color
-    primaryText: "#010203",//#010203
-    secondaryText: "#5d5d5d",
-    disabledText: "rgba(0, 0, 0, 0.38)",
-
-    // background, surface
-    background: "#ffffff",
-    onBackground: "#212121",
-    surface: "#fff",
-    onSurface: "#757575",
-    error: "#cd040b",
-    onError: "#fff",
-    black: "#010203",
-    white: "#fff"
-  }
+    background: '#ffffff',
+    onBackground: '#212121',
+    surface: '#fff',
+    onSurface: '#757575',
+    error: '#cd040b',
+    onError: '#fff',
+    black: '#010203',
+    white: '#fff',
+  },
 };
 
 const theme = themes[config.theme];

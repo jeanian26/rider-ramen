@@ -1,34 +1,23 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/self-closing-comp */
-/**
- *
- *
- * @format
- * @flow
- */
 
-// import dependencies
 import React, {Component} from 'react';
 import {ImageBackground, StatusBar, StyleSheet, View} from 'react-native';
 
-// import components
 import Button from '../../components/buttons/Button';
 import {Heading5, Paragraph} from '../../components/text/CustomText';
 import LinkButton from '../../components/buttons/LinkButton';
 import Logo from '../../components/logo/Logo';
 import SafeAreaView from '../../components/SafeAreaView';
 
-// import colors, layout
 import Colors from '../../theme/colors';
 import Layout from '../../theme/layout';
 
-// Welcome Config
 const headerImg = {
   uri:
     'https://images.pexels.com/photos/884600/pexels-photo-884600.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
 };
 
-// Welcome Styles
 const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,
@@ -94,7 +83,6 @@ const styles = StyleSheet.create({
   },
 });
 
-// Welcome
 export default class Welcome extends Component {
   constructor(props) {
     super(props);

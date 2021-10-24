@@ -1,11 +1,5 @@
-/**
- *
- *
- * @format
- * @flow
- */
+/* eslint-disable prettier/prettier */
 
-// import dependencies
 import React, {Component} from 'react';
 import {
   SafeAreaView,
@@ -16,17 +10,13 @@ import {
   View,
 } from 'react-native';
 
-// import components
 import Button from '../../components/buttons/Button';
 import {Caption} from '../../components/text/CustomText';
 
-// import colors
 import Colors from '../../theme/colors';
 
-// TermsConditions Config
 const APP_NAME = 'App Name';
 
-// TermsConditions Styles
 const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,
@@ -48,7 +38,6 @@ const styles = StyleSheet.create({
     color: Colors.onPrimaryColor,
     letterSpacing: 0.2,
     textAlign: 'left',
-    // writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr' // iOS
   },
   textBlock: {
     paddingBottom: 24,
@@ -74,12 +63,9 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primaryColor,
     color: Colors.onPrimaryColor,
   },
-  buttonDecline: {
-    //backgroundColor:Colors.primaryColor,
-  },
+  buttonDecline: {},
 });
 
-// TermsConditions
 export default class TermsConditions extends Component {
   constructor(props) {
     super(props);

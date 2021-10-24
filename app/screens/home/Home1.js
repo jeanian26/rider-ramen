@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /**
  *
  *
@@ -55,15 +56,11 @@ const styles = StyleSheet.create({
     marginTop: -0.5,
     //backgroundColor:'#000'
   },
-  categoriesContainer: {
-    paddingBottom: 16,
-  },
+  categoriesContainer: {},
   category: {
-    position: 'absolute',
-    bottom: -20,
     alignItems: 'center',
     width: '100%',
-    marginHorizontal: 17,
+
     backgroundColor: '#fff',
     borderWidth: 3,
     borderColor: 'rgba(0, 0, 0, 0.08)',
@@ -247,12 +244,6 @@ export default class Home extends Component {
         <View style={styles.container}>
           <ScrollView>
             <View>
-              <Image
-                key={'image'}
-                //defaultSource={imgHolder}
-                source={require('../../assets/img/home-banner.png')}
-                style={styles.bannerImage}
-              />
               <View style={styles.categoriesContainer}>
                 <View style={styles.titleContainer}>
                   <View style={styles.category}>
