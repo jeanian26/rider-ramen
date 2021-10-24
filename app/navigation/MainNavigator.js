@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /**
  *
  *
@@ -84,6 +85,9 @@ const SAVE_ICON = Platform.OS === 'ios' ? 'ios-checkmark' : 'md-checkmark';
 // create stack navigator
 const Stack = createStackNavigator();
 
+function TESt() {
+  console.log('test');
+}
 // MainNavigatorA
 function MainNavigatorA() {
   return (
@@ -206,7 +210,7 @@ function MainNavigatorA() {
             title: 'Edit Profile',
             headerRight: () => (
               <HeaderIconButton
-                onPress={() => navigation.goBack()}
+                onPress={(data) => TESt()}
                 name={SAVE_ICON}
                 color={Colors.primaryColor}
               />

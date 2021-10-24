@@ -1,11 +1,5 @@
-/**
- *
- *
- * @format
- * @flow
- */
+/* eslint-disable prettier/prettier */
 
-// import dependencies
 import React, {Component} from 'react';
 import {
   Platform,
@@ -13,26 +7,25 @@ import {
   StatusBar,
   StyleSheet,
   View,
+  Alert,
 } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-
-// import components
+import {launchImageLibrary} from 'react-native-image-picker';
+import {getStorage, ref, uploadBytes} from 'firebase/storage';
+import RNFS from 'react-native-fs';
 import Avatar from '../../components/avatar/Avatar';
 import Icon from '../../components/icon/Icon';
 import {Subtitle2} from '../../components/text/CustomText';
 import TouchableItem from '../../components/TouchableItem';
 import UnderlineTextInput from '../../components/textinputs/UnderlineTextInput';
 
-// import colors
 import Colors from '../../theme/colors';
 
-// EditProfile Config
 const AVATAR_SIZE = 100;
 const IOS = Platform.OS === 'ios';
 const CAMERA_ICON = IOS ? 'ios-camera' : 'md-camera';
 const INPUT_FOCUSED_BORDER_COLOR = Colors.primaryColor;
 
-// EditProfile Styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -91,12 +84,19 @@ export default class EditProfile extends Component {
       emailFocused: false,
       phone: '+1 23 4567890',
       phoneFocused: false,
+      imagePickerVisible: false,
+      imagePath: null,
+      uri: require('../../assets/img/profile.jpg'),
     };
   }
 
   goBack = () => {
     const {navigation} = this.props;
     navigation.goBack();
+  };
+
+  saveProfile = () => {
+    console.log('save');
   };
 
   nameChange = (text) => {
@@ -146,6 +146,47 @@ export default class EditProfile extends Component {
       nextFiled.focus();
     }
   };
+  chooseImage = () => {
+    let options = {
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+
+    /** @type {any} */
+    const metadata = {
+      contentType: 'image/jpeg',
+    };
+    const self = this;
+    const storage = getStorage();
+    const storageRef = ref(storage, '/profile_images/save.jpg');
+    launchImageLibrary(options, (res) => {
+      console.log('Response = ', res);
+      if (res.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (res.error) {
+        console.log('ImagePicker Error: ', res.error);
+      } else if (res.customButton) {
+        console.log('User tapped custom button: ', res.customButton);
+        alert(res.customButton);
+      } else {
+        console.log('response', JSON.stringify(res));
+
+        console.log('URI', res.assets[0].uri);
+        const uri = res.assets[0].uri;
+        console.log('URI', uri);
+        uri.replace('file:///', 'file:/');
+        self.setState({
+          uri: uri,
+        });
+
+        uploadBytes(storageRef, uri, metadata).then((snapshot) => {
+          console.log('Uploaded a blob or file!', snapshot);
+        });
+      }
+    });
+  };
 
   render() {
     const {
@@ -166,15 +207,11 @@ export default class EditProfile extends Component {
 
         <KeyboardAwareScrollView enableOnAndroid>
           <View style={styles.avatarSection}>
-            <Avatar
-              imageUri={require('../../assets/img/profile.jpg')}
-              rounded
-              size={AVATAR_SIZE}
-            />
+            <Avatar imageUri={this.state.uri} rounded size={AVATAR_SIZE} />
 
             <View style={styles.whiteCircle}>
               <View style={styles.cameraButtonContainer}>
-                <TouchableItem>
+                <TouchableItem onPress={() => this.chooseImage()}>
                   <View style={styles.cameraButton}>
                     <Icon
                       name={CAMERA_ICON}
