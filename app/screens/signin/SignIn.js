@@ -1,11 +1,5 @@
-/**
- *
- *
- * @format
- * @flow
- */
+/* eslint-disable prettier/prettier */
 
-// import dependencies
 import React, {Component} from 'react';
 import {
   SafeAreaView,
@@ -18,25 +12,21 @@ import {
 } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
-// import components
 import Button from '../../components/buttons/Button';
 import InputModal from '../../components/modals/InputModal';
 import UnderlinePasswordInput from '../../components/textinputs/UnderlinePasswordInput';
 import UnderlineTextInput from '../../components/textinputs/UnderlineTextInput';
 
-// import colors, layout
 import Colors from '../../theme/colors';
 import Layout from '../../theme/layout';
 import {signInWithEmailAndPassword} from 'firebase/auth';
 import {passAuth} from '../../config/firebase';
 
-// SignIn Config
 const PLACEHOLDER_TEXT_COLOR = Colors.onPrimaryColor;
 const INPUT_TEXT_COLOR = Colors.onPrimaryColor;
 const INPUT_BORDER_COLOR = Colors.onPrimaryColor;
 const INPUT_FOCUSED_BORDER_COLOR = Colors.onPrimaryColor;
 
-// SignIn Styles
 const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,
@@ -100,7 +90,6 @@ const styles = StyleSheet.create({
   },
 });
 
-// SignIn
 export default class SignIn extends Component {
   constructor(props) {
     super(props);
@@ -283,23 +272,8 @@ export default class SignIn extends Component {
               </View>
             </View>
 
-            <TouchableWithoutFeedback
-              onPress={this.navigateTo('TermsConditions')}>
-              <View style={styles.footer}>
-                <Text style={styles.footerText}>
-                  By signing in, you accepts our
-                </Text>
-                <View style={styles.termsContainer}>
-                  <Text style={[styles.footerText, styles.footerLink]}>
-                    Terms & Conditions
-                  </Text>
-                  <Text style={styles.footerText}> and </Text>
-                  <Text style={[styles.footerText, styles.footerLink]}>
-                    Privacy Policy
-                  </Text>
-                  <Text style={styles.footerText}>.</Text>
-                </View>
-              </View>
+            <TouchableWithoutFeedback>
+              <View style={styles.footer}></View>
             </TouchableWithoutFeedback>
           </View>
         </KeyboardAwareScrollView>
