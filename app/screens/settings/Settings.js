@@ -21,6 +21,8 @@ import {Heading6, Subtitle1, Subtitle2} from '../../components/text/CustomText';
 import TouchableItem from '../../components/TouchableItem';
 
 import Colors from '../../theme/colors';
+import {passAuth} from '../../config/firebase';
+import {signOut} from 'firebase/auth';
 
 const isRTL = I18nManager.isRTL;
 const IOS = Platform.OS === 'ios';
@@ -168,12 +170,24 @@ export default class Settings extends Component {
   };
 
   logout = () => {
+    const {navigation} = this.props;
     Alert.alert(
       'Logout',
       'Are you sure you want to logout?',
       [
         {text: 'Cancel', onPress: () => {}, style: 'cancel'},
-        {text: 'OK', onPress: () => {}},
+        {
+          text: 'OK',
+          onPress: () => {
+            signOut(passAuth())
+              .then(() => {
+                navigation.navigate('Welcome');
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          },
+        },
       ],
       {cancelable: false},
     );
