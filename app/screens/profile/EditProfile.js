@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /* eslint-disable prettier/prettier */
 
 import React, {Component} from 'react';
@@ -146,7 +147,7 @@ export default class EditProfile extends Component {
       nextFiled.focus();
     }
   };
-  chooseImage = () => {
+  chooseImage = async () => {
     let options = {
       storageOptions: {
         skipBackup: true,
@@ -156,7 +157,7 @@ export default class EditProfile extends Component {
 
     /** @type {any} */
     const metadata = {
-      contentType: 'image/jpeg',
+      contentType: 'image/jpg',
     };
     const self = this;
     const storage = getStorage();
@@ -172,16 +173,14 @@ export default class EditProfile extends Component {
         alert(res.customButton);
       } else {
         console.log('response', JSON.stringify(res));
-
-        console.log('URI', res.assets[0].uri);
         const uri = res.assets[0].uri;
+        const blob = uri.blob();
         console.log('URI', uri);
-        uri.replace('file:///', 'file:/');
         self.setState({
           uri: uri,
         });
-
-        uploadBytes(storageRef, uri, metadata).then((snapshot) => {
+        console.log(blob);
+        uploadBytes(storageRef, blob, metadata).then((snapshot) => {
           console.log('Uploaded a blob or file!', snapshot);
         });
       }
@@ -189,14 +188,8 @@ export default class EditProfile extends Component {
   };
 
   render() {
-    const {
-      name,
-      nameFocused,
-      email,
-      emailFocused,
-      phone,
-      phoneFocused,
-    } = this.state;
+    const {name, nameFocused, email, emailFocused, phone, phoneFocused} =
+      this.state;
 
     return (
       <SafeAreaView style={styles.container}>
