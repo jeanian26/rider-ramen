@@ -10,6 +10,8 @@ import {
 const firebaseConfig = {
   apiKey: 'AIzaSyCwmNKMu__Q_m6g7FcM8Y1dhibgerSnZFI',
   authDomain: 'ramen-nado-86f76.firebaseapp.com',
+  databaseURL:
+    'https://ramen-nado-86f76-default-rtdb.asia-southeast1.firebasedatabase.app/',
   projectId: 'ramen-nado-86f76',
   storageBucket: 'ramen-nado-86f76.appspot.com',
   messagingSenderId: '475279679552',

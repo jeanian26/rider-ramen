@@ -12,17 +12,21 @@ import {
 } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {launchImageLibrary} from 'react-native-image-picker';
-import {getStorage, ref, uploadBytes} from 'firebase/storage';
-import RNFS from 'react-native-fs';
+import {passAuth} from '../../config/firebase';
+import {onAuthStateChanged, getAuth, updateProfile} from 'firebase/auth';
+
+import {getStorage, ref, uploadBytes, getDownloadURL} from 'firebase/storage';
+
 import Avatar from '../../components/avatar/Avatar';
 import Icon from '../../components/icon/Icon';
 import {Subtitle2} from '../../components/text/CustomText';
 import TouchableItem from '../../components/TouchableItem';
 import UnderlineTextInput from '../../components/textinputs/UnderlineTextInput';
+import Button from '../../components/buttons/Button';
 
 import Colors from '../../theme/colors';
 
-const AVATAR_SIZE = 100;
+const AVATAR_SIZE = 150;
 const IOS = Platform.OS === 'ios';
 const CAMERA_ICON = IOS ? 'ios-camera' : 'md-camera';
 const INPUT_FOCUSED_BORDER_COLOR = Colors.primaryColor;
@@ -72,6 +76,11 @@ const styles = StyleSheet.create({
     paddingVertical: 0,
     paddingHorizontal: 0,
   },
+  buttonContainer: {
+    paddingTop: 22,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 // EditProfile
@@ -88,6 +97,7 @@ export default class EditProfile extends Component {
       imagePickerVisible: false,
       imagePath: null,
       uri: require('../../assets/img/profile.jpg'),
+      uid: '',
     };
   }
 
@@ -96,9 +106,22 @@ export default class EditProfile extends Component {
     navigation.goBack();
   };
 
-  saveProfile = () => {
-    console.log('save');
-  };
+  saveProfile() {
+    const {navigation} = this.props;
+    const auth = getAuth();
+    updateProfile(auth.currentUser, {
+      displayName: this.state.name,
+      phoneNumber: '+1235467',
+      email: this.state.email,
+    })
+      .then(() => {
+        console.log('updated');
+        navigation.navigate('Settings');
+      })
+      .catch((error) => {
+        console.log('failed');
+      });
+  }
 
   nameChange = (text) => {
     this.setState({
@@ -160,8 +183,7 @@ export default class EditProfile extends Component {
       contentType: 'image/jpg',
     };
     const self = this;
-    const storage = getStorage();
-    const storageRef = ref(storage, '/profile_images/save.jpg');
+
     launchImageLibrary(options, (res) => {
       console.log('Response = ', res);
       if (res.didCancel) {
@@ -174,16 +196,70 @@ export default class EditProfile extends Component {
       } else {
         console.log('response', JSON.stringify(res));
         const uri = res.assets[0].uri;
-        const blob = uri.blob();
-        console.log('URI', uri);
+        this.uploadImage(uri);
         self.setState({
           uri: uri,
         });
-        console.log(blob);
-        uploadBytes(storageRef, blob, metadata).then((snapshot) => {
-          console.log('Uploaded a blob or file!', snapshot);
-        });
+        //console.log(blob);
+        //uploadBytes(storageRef, blob, metadata).then((snapshot) => {
+        //  console.log('Uploaded a blob or file!', snapshot);
+        //});
       }
+    });
+  };
+  componentDidMount = async () => {
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if (user !== null) {
+      user.providerData.forEach((profile) => {
+        console.log('Sign-in provider: ' + profile.providerId);
+        console.log('  Provider-specific UID: ' + profile.uid);
+        console.log('  Name: ' + profile.displayName);
+        console.log('  Email: ' + profile.email);
+        console.log('  Photo URL: ' + profile.photoURL);
+        console.log(profile.phoneNumber);
+
+        this.setState({name: profile.displayName});
+        this.setState({email: profile.email});
+        this.setState({phone: profile.phoneNumber});
+      });
+    }
+
+    const self = this;
+    const storage = getStorage();
+    getDownloadURL(ref(storage, `profile_images/${user.uid}.jpg`))
+      .then((url) => {
+        self.setState({uri: url});
+      })
+      .catch((error) => {
+        // Handle any errors
+      });
+  };
+
+  uploadImage = async (uri) => {
+    const filename = this.state.uid + '.jpg';
+    const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+    const storage = getStorage();
+    const metadata = {
+      contentType: 'image/jpg',
+    };
+    const storageRef = ref(storage, `/profile_images/${filename}`);
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function (e) {
+        console.log(e);
+        reject(new TypeError('Network request failed'));
+      };
+      xhr.responseType = 'blob';
+      xhr.open('GET', uri, true);
+      xhr.send(null);
+    });
+    uploadBytes(storageRef, blob, metadata).then((snapshot) => {
+      console.log('Uploaded a blob or file!', snapshot);
     });
   };
 
@@ -248,19 +324,17 @@ export default class EditProfile extends Component {
               focusedBorderColor={INPUT_FOCUSED_BORDER_COLOR}
               inputContainerStyle={styles.inputContainerStyle}
             />
-
-            <Subtitle2 style={styles.overline}>Phone Number</Subtitle2>
-            <UnderlineTextInput
-              onRef={(r) => {
-                this.phone = r;
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button
+              onPress={() => {
+                this.saveProfile();
               }}
-              value={phone}
-              keyboardType="phone-pad"
-              onChangeText={this.phoneChange}
-              onFocus={this.phoneFocus}
-              inputFocused={phoneFocused}
-              focusedBorderColor={INPUT_FOCUSED_BORDER_COLOR}
-              inputContainerStyle={styles.inputContainerStyle}
+              color={Colors.primaryColor}
+              small
+              title={'SAVE PROFILE'.toUpperCase()}
+              titleColor={Colors.background}
+              borderRadius={100}
             />
           </View>
         </KeyboardAwareScrollView>

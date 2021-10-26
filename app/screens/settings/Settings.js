@@ -13,7 +13,9 @@ import {
   View,
 } from 'react-native';
 import {color} from 'react-native-reanimated';
-
+import {getAuth} from 'firebase/auth';
+import {getStorage, ref, getDownloadURL} from 'firebase/storage';
+import {getDatabase, ref as refData, child, get, set} from 'firebase/database';
 import Avatar from '../../components/avatar/Avatar';
 import Divider from '../../components/divider/Divider';
 import Icon from '../../components/icon/Icon';
@@ -26,7 +28,7 @@ import {signOut} from 'firebase/auth';
 
 const isRTL = I18nManager.isRTL;
 const IOS = Platform.OS === 'ios';
-const DIVIDER_MARGIN_LEFT = 60;
+const DIVIDER_MARGIN_LEFT = 30;
 const ARROW_ICON = 'ios-arrow-forward';
 const ADDRESS_ICON = IOS ? 'ios-pin' : 'md-pin';
 const NOTIFICATION_OFF_ICON = IOS
@@ -155,6 +157,14 @@ export default class Settings extends Component {
     super(props);
     this.state = {
       notificationsOn: true,
+      name: 'test',
+      email: 'test',
+      imageUri: require('../../assets/img/profile.jpg'),
+      number: '',
+      street: '',
+      district: '',
+      city: '',
+      country: 'Philippines',
     };
   }
 
@@ -167,6 +177,46 @@ export default class Settings extends Component {
     this.setState({
       notificationsOn: value,
     });
+  };
+  componentDidMount = () => {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    const self = this;
+    console.log(user.uid);
+    if (user !== null) {
+      user.providerData.forEach((profile) => {
+        this.setState({name: profile.displayName});
+        this.setState({email: profile.email});
+      });
+    }
+    const storage = getStorage();
+    getDownloadURL(ref(storage, `profile_images/${user.uid}.jpg`))
+      .then((url) => {
+        self.setState({imageUri: url});
+      })
+      .catch((error) => {
+        // Handle any errors
+      });
+    const dbRef = refData(getDatabase());
+    get(child(dbRef, `address/${user.uid}`))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          console.log(snapshot.val());
+          const result = snapshot.val();
+          self.setState({
+            number: result.str_number,
+            street: result.street_name,
+            district: result.barangay,
+            city: result.city,
+            zip: result.zipcode,
+          });
+        } else {
+          console.log('No data available');
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   logout = () => {
@@ -211,16 +261,10 @@ export default class Settings extends Component {
                 {backgroundColor: Colors.primaryColor})
               }>
               <View style={styles.profileCenter}>
-                <Avatar
-                  imageUri={require('../../assets/img/profile.jpg')}
-                  rounded
-                  size={80}
-                />
+                <Avatar imageUri={this.state.imageUri} rounded size={120} />
                 <View style={styles.profileCenter}>
-                  <Subtitle1 style={styles.name}>John Doe</Subtitle1>
-                  <Subtitle2 style={styles.email}>
-                    john.doe@example.com
-                  </Subtitle2>
+                  <Subtitle1 style={styles.name}>{this.state.name}</Subtitle1>
+                  <Subtitle2 style={styles.email}>{this.state.email}</Subtitle2>
                 </View>
               </View>
             </View>
@@ -231,21 +275,6 @@ export default class Settings extends Component {
           <TouchableItem onPress={this.navigateTo('Notifications')}>
             <View style={[styles.row, styles.setting]}>
               <View style={styles.leftSide}>
-                <View style={styles.iconContainer}>
-                  {notificationsOn ? (
-                    <Icon
-                      name={NOTIFICATION_ICON}
-                      size={24}
-                      color={Colors.primaryColor}
-                    />
-                  ) : (
-                    <Icon
-                      name={NOTIFICATION_OFF_ICON}
-                      size={24}
-                      color={Colors.primaryColor}
-                    />
-                  )}
-                </View>
                 <Subtitle1 style={styles.mediumText}>Notifications</Subtitle1>
               </View>
 
@@ -264,15 +293,20 @@ export default class Settings extends Component {
           <Divider type="inset" marginLeft={DIVIDER_MARGIN_LEFT} />
 
           <Setting
-            onPress={this.navigateTo('DeliveryAddress')}
-            icon={ADDRESS_ICON}
+            onPress={this.navigateTo('EditAddress')}
             title="Delivery Address"
             extraData={
               <View>
                 <Subtitle2 style={styles.extraData}>
-                  566 Olen Thomas Drive
+                  {this.state.number + ' ' + this.state.street}
                 </Subtitle2>
-                <Subtitle2 style={styles.extraData}>Dallas TX, USA</Subtitle2>
+                <Subtitle2 style={styles.extraData}>
+                  {this.state.district +
+                    ' ' +
+                    this.state.city +
+                    ' ' +
+                    this.state.country}
+                </Subtitle2>
               </View>
             }
           />
@@ -280,7 +314,6 @@ export default class Settings extends Component {
 
           <Setting
             onPress={this.navigateTo('PaymentMethod')}
-            icon={PAYMENT_ICON}
             title="Payment Method"
             extraData={
               <View>
@@ -293,23 +326,12 @@ export default class Settings extends Component {
           />
           <Divider type="inset" marginLeft={DIVIDER_MARGIN_LEFT} />
 
-          <Setting
-            onPress={this.navigateTo('Orders')}
-            icon={ORDERS_ICON}
-            title="My Orders"
-          />
+          <Setting onPress={this.navigateTo('Orders')} title="My Orders" />
           <Divider type="inset" marginLeft={DIVIDER_MARGIN_LEFT} />
 
           <TouchableItem onPress={this.logout}>
             <View style={[styles.row, styles.setting]}>
               <View style={styles.leftSide}>
-                <View style={styles.iconContainer}>
-                  <Icon
-                    name={LOGOUT_ICON}
-                    size={24}
-                    color={Colors.primaryColor}
-                  />
-                </View>
                 <Subtitle1 style={[styles.logout, styles.mediumText]}>
                   Logout
                 </Subtitle1>

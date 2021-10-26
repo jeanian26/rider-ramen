@@ -85,9 +85,6 @@ const SAVE_ICON = Platform.OS === 'ios' ? 'ios-checkmark' : 'md-checkmark';
 // create stack navigator
 const Stack = createStackNavigator();
 
-function TESt() {
-  console.log('test');
-}
 // MainNavigatorA
 function MainNavigatorA() {
   return (
@@ -208,13 +205,6 @@ function MainNavigatorA() {
           component={EditProfile}
           options={({navigation}) => ({
             title: 'Edit Profile',
-            headerRight: () => (
-              <HeaderIconButton
-                onPress={(data) => TESt()}
-                name={SAVE_ICON}
-                color={Colors.primaryColor}
-              />
-            ),
           })}
         />
         <Stack.Screen
