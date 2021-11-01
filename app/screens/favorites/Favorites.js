@@ -1,11 +1,5 @@
-/**
- *
- *
- * @format
- * @flow
- */
+/* eslint-disable prettier/prettier */
 
-// import dependencies
 import React, {Component, Fragment} from 'react';
 import {
   FlatList,
@@ -16,19 +10,12 @@ import {
   View,
 } from 'react-native';
 import remove from 'lodash/remove';
-
-// import components
 import ActionProductCardHorizontal from '../../components/cards/ActionProductCardHorizontal';
 import EmptyState from '../../components/emptystate/EmptyState';
 import {Heading6, SmallText} from '../../components/text/CustomText';
-
-// import colors
 import Colors from '../../theme/colors';
-
-//import sample data
 import sample_data from '../../config/sample-data';
 
-// Favorites Config
 const isRTL = I18nManager.isRTL;
 const EMPTY_STATE_ICON = 'star-outline';
 
@@ -72,7 +59,8 @@ export default class Favorites extends Component {
     super(props);
 
     this.state = {
-      products: sample_data.favorites_products,
+      //products: sample_data.favorites_products,
+      products: [],
     };
   }
 

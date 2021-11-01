@@ -126,7 +126,6 @@ export default class Home extends Component {
     super(props);
 
     this.state = {
-      products: sample_data.products,
       categories: sample_data.categories,
       popularProducts: sample_data.popularProducts,
     };
@@ -153,11 +152,45 @@ export default class Home extends Component {
   }
   componentDidMount() {
     this.getCategories();
+    this.getMostPopular();
   }
+  getMostPopular() {
+    let products = [];
+    let filteredProducts = [];
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, `products/`))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          console.log(snapshot.val());
+          products = snapshot.val();
+          products = Object.values(products);
+          console.log('converted', products);
 
+          for (var i = 0; i < products.length; i++) {
+            if (products[i].Populer === true) {
+              console.log(products[i].name);
+              filteredProducts.push(products[i]);
+              console.log(filteredProducts);
+            }
+          }
+
+          this.setState({popularProducts: filteredProducts});
+          console.log(this.state.products);
+        } else {
+          console.log('No data available');
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
   navigateTo = (screen, name) => () => {
     const {navigation} = this.props;
     navigation.navigate(screen, {category: name});
+  };
+  navigateToProduct = (screen, name) => () => {
+    const {navigation} = this.props;
+    navigation.navigate(screen, {key: name});
   };
 
   onPressRemove = (item) => () => {
@@ -212,7 +245,7 @@ export default class Home extends Component {
 
   renderPopularProductItem = ({item, index}) => (
     <ActionProductCardHorizontal
-      onPress={this.navigateTo('Product')}
+      onPress={this.navigateToProduct('Product', item.key)}
       onPressRemove={this.onPressRemove(item)}
       onPressAdd={this.onPressAdd(item)}
       onCartPress={this.navigateTo('Cart')}
@@ -229,7 +262,7 @@ export default class Home extends Component {
   );
 
   render() {
-    const {categories, products, popularProducts} = this.state;
+    const {categories, popularProducts} = this.state;
 
     return (
       <SafeAreaView style={styles.screenContainer}>
