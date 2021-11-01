@@ -1,12 +1,5 @@
 /* eslint-disable prettier/prettier */
-/**
- *
- *
- * @format
- * @flow
- */
 
-// import dependencies
 import React, {Component} from 'react';
 import {
   FlatList,
@@ -19,27 +12,20 @@ import {
   View,
   Image,
 } from 'react-native';
-
-// import utils
+import {getDatabase, ref, child, get, set} from 'firebase/database';
 import getImgSource from '../../utils/getImgSource.js';
 
-// import components
 import ActionProductCard from '../../components/cards/ActionProductCard';
 import ActionProductCardHorizontal from '../../components/cards/ActionProductCardHorizontal';
 import LinkButton from '../../components/buttons/LinkButton';
 import {Heading6} from '../../components/text/CustomText';
 import TouchableItem from '../../components/TouchableItem';
 
-// import colors
 import Colors from '../../theme/colors';
 
-//import sample data
 import sample_data from '../../config/sample-data';
 
-// Home Config
 const imgHolder = require('../../assets/img/imgholder.png');
-
-// Home Styles
 const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,
@@ -145,10 +131,33 @@ export default class Home extends Component {
       popularProducts: sample_data.popularProducts,
     };
   }
+  getCategories() {
+    let categories = [];
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, `category/`))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          console.log(snapshot.val());
+          categories = snapshot.val();
+          console.log(typeof products);
+          categories = Object.values(categories);
+          console.log('converted', categories);
+          this.setState({categories: categories});
+        } else {
+          console.log('No data available');
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+  componentDidMount() {
+    this.getCategories();
+  }
 
-  navigateTo = (screen) => () => {
+  navigateTo = (screen, name) => () => {
     const {navigation} = this.props;
-    navigation.navigate(screen);
+    navigation.navigate(screen, {category: name});
   };
 
   onPressRemove = (item) => () => {
@@ -191,7 +200,7 @@ export default class Home extends Component {
       style={styles.card}>
       <View style={styles.cardOverlay}>
         <TouchableItem
-          onPress={this.navigateTo('Category')}
+          onPress={this.navigateTo('Category', item.name)}
           style={styles.cardContainer}
           // borderless
         >
@@ -199,19 +208,6 @@ export default class Home extends Component {
         </TouchableItem>
       </View>
     </ImageBackground>
-  );
-
-  renderProductItem = ({item, index}) => (
-    <ActionProductCard
-      onPress={this.navigateTo('Product')}
-      key={index}
-      imageUri={item.imageUri}
-      title={item.name}
-      price={item.price}
-      rating={item.rating}
-      discountPercentage={item.discountPercentage}
-      label={item.label}
-    />
   );
 
   renderPopularProductItem = ({item, index}) => (
@@ -225,11 +221,8 @@ export default class Home extends Component {
       imageUri={item.imageUri}
       title={item.name}
       description={item.description}
-      rating={item.rating}
-      starRating={true}
       price={item.price}
       quantity={item.quantity}
-      discountPercentage={item.discountPercentage}
       label={item.label}
       cartButton={true}
     />
@@ -244,6 +237,7 @@ export default class Home extends Component {
         <View style={styles.container}>
           <ScrollView>
             <View>
+              <View style={{paddingTop: 30}}></View>
               <View style={styles.categoriesContainer}>
                 <View style={styles.titleContainer}>
                   <View style={styles.category}>
@@ -282,29 +276,12 @@ export default class Home extends Component {
               <Heading6 style={(styles.titleText, {paddingTop: 10})}>
                 Most Popular
               </Heading6>
-              <LinkButton
-                title="View all"
-                titleStyle={styles.viewAllText}
-                onPress={this.navigateTo('SearchResults')}
-              />
             </View>
             <FlatList
               data={popularProducts}
               keyExtractor={this.keyExtractor}
               renderItem={this.renderPopularProductItem}
               contentContainerStyle={styles.popularProductsList}
-            />
-            <View style={styles.titleContainer}>
-              <Heading6 style={styles.titleText}>Special Offers</Heading6>
-            </View>
-            <FlatList
-              data={products}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              alwaysBounceHorizontal={false}
-              keyExtractor={this.keyExtractor}
-              renderItem={this.renderProductItem}
-              contentContainerStyle={styles.productsList}
             />
           </ScrollView>
         </View>

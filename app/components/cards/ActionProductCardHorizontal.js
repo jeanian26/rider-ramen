@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /**
  *
  *
@@ -310,7 +311,6 @@ export default class ActionProductCardHorizontal extends Component<
             <DeleteButton onPress={swipeoutOnPressRemove} />
           </View>
 
-          {/* FIX ME: extra View was added because of iOS ToucableOpacity bug */}
           <View style={styles.bg}>
             <TouchableItem
               activeOpacity={activeOpacity}
@@ -337,12 +337,6 @@ export default class ActionProductCardHorizontal extends Component<
                             price
                           ).toFixed(2)}`}
                         </Text>
-                        <View>
-                          <Text style={styles.oldPrice}>
-                            {`₱ ${price.toFixed(2)}`}
-                          </Text>
-                          <View style={styles.hr} />
-                        </View>
                       </View>
                     ) : (
                       <View style={styles.priceContainer}>
@@ -353,20 +347,7 @@ export default class ActionProductCardHorizontal extends Component<
                     )}
                   </View>
                   <View style={styles.viewContainer}>
-                    <View style={styles.starContainer}>
-                      {starRating ? (
-                        <StarRating rating={rating} starSize={15} />
-                      ) : (
-                        <Text style={styles.starText}>
-                          {rating}{' '}
-                          <Icon
-                            name={RATING_ICON}
-                            size={12}
-                            color={Colors.onPrimaryColor}
-                          />
-                        </Text>
-                      )}
-                    </View>
+                    <View style={styles.starContainer}></View>
                     {!hideCartIcon && plusMinusIcon ? (
                       <View style={styles.actionContainer}>
                         {quantity > 0 && (

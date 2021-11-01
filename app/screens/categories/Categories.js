@@ -148,7 +148,6 @@ export default class Categories extends Component {
               style={styles.cardContainer}>
               <Fragment>
                 <Text style={styles.cardTitle}>{item.name}</Text>
-                <Text style={styles.items}>{`${item.items} items`}</Text>
               </Fragment>
             </TouchableItem>
           </View>

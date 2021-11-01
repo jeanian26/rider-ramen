@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 let data = {
   categories: [
     {
@@ -61,8 +62,8 @@ let data = {
       price: 8.49,
       quantity: 0,
       discountPercentage: 10,
-      label: 'new',
       rating: 4.5,
+      description: 'tesdt',
     },
     {
       imageUri:
@@ -71,6 +72,7 @@ let data = {
       price: 8.49,
       discountPercentage: 10,
       rating: 4,
+      description: 'tesdt',
     },
     {
       imageUri:
@@ -79,6 +81,7 @@ let data = {
       price: 4.99,
       quantity: 0,
       rating: 3.5,
+      description: 'tesdt',
     },
   ],
 
