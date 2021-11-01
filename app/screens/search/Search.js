@@ -118,6 +118,7 @@ export default class Search extends Component {
           products = Object.values(products);
           console.log('converted', products);
           this.setState({products: products});
+          console.log('Products', this.state.products);
         } else {
           console.log('No data available');
         }
@@ -175,6 +176,7 @@ export default class Search extends Component {
       rating: 1,
       description: 'test',
       key: randomID,
+      category: 'Ramen',
     });
   }
 
