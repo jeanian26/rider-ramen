@@ -10,6 +10,8 @@ import {
 const firebaseConfig = {
   apiKey: 'AIzaSyCwmNKMu__Q_m6g7FcM8Y1dhibgerSnZFI',
   authDomain: 'ramen-nado-86f76.firebaseapp.com',
+  databaseURL:
+    'https://ramen-nado-86f76-default-rtdb.asia-southeast1.firebasedatabase.app/',
   projectId: 'ramen-nado-86f76',
   storageBucket: 'ramen-nado-86f76.appspot.com',
   messagingSenderId: '475279679552',
@@ -25,13 +27,18 @@ export function testAPP() {
   console.log(app);
 }
 
+export var USERID;
+export var USERNAME;
+export var USEREMAIL;
+export var USERIMAGE;
+
 export function checkLoggedIn() {
   onAuthStateChanged(auth, (user) => {
     if (user) {
       // User is signed in, see docs for a list of available properties
       // https://firebase.google.com/docs/reference/js/firebase.User
-      const uid = user.uid;
-      console.log(uid);
+
+      console.log(user);
     } else {
       console.log('no user logged in');
     }

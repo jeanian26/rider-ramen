@@ -23,6 +23,8 @@ import Swiper from 'react-native-swiper';
 import ContainedButton from '../../components/buttons/ContainedButton';
 import GradientContainer from '../../components/gradientcontainer/GradientContainer';
 import {Heading5, Paragraph} from '../../components/text/CustomText';
+import {passAuth} from '../../config/firebase';
+import {onAuthStateChanged} from 'firebase/auth';
 
 // import colors
 import Colors from '../../theme/colors';
@@ -31,16 +33,13 @@ const bgImg =
   'https://www.kitchensanctuary.com/wp-content/uploads/2020/12/Quick-Chicken-Ramen-square-FS-22.jpg';
 
 const slide1Img = {
-  uri:
-    'https://ik.imagekit.io/6bxllfhzy/foodvila/assets/img/fyf_Wzj-bXNwsN.png',
+  uri: 'https://ik.imagekit.io/6bxllfhzy/foodvila/assets/img/fyf_Wzj-bXNwsN.png',
 };
 const slide2Img = {
-  uri:
-    'https://ik.imagekit.io/6bxllfhzy/foodvila/assets/img/payment__wcgkxrFjg.png',
+  uri: 'https://ik.imagekit.io/6bxllfhzy/foodvila/assets/img/payment__wcgkxrFjg.png',
 };
 const slide3Img = {
-  uri:
-    'https://ik.imagekit.io/6bxllfhzy/foodvila/assets/img/fast-del_LP8Jfhjai.png',
+  uri: 'https://ik.imagekit.io/6bxllfhzy/foodvila/assets/img/fast-del_LP8Jfhjai.png',
 };
 
 const slides = [
@@ -182,6 +181,20 @@ export default class Introduction extends Component {
   navigateTo = (screen) => () => {
     const {navigation} = this.props;
     navigation.navigate(screen);
+  };
+  componentDidMount = async () => {
+    const {navigation} = this.props;
+    onAuthStateChanged(passAuth(), (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+
+        console.log(user);
+        navigation.navigate('HomeNavigator');
+      } else {
+        console.log('no user logged in');
+      }
+    });
   };
 
   render() {

@@ -1,43 +1,23 @@
-/**
- *
- *
- * @format
- * @flow
- */
+/* eslint-disable prettier/prettier */
 
-// import dependencies
 import React, {Component} from 'react';
-import {
-  Keyboard,
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  View,
-} from 'react-native';
-import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
+import {SafeAreaView, StatusBar, StyleSheet, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
-// import components
 import ActivityIndicatorModal from '../../components/modals/ActivityIndicatorModal';
 import Button from '../../components/buttons/Button';
-import {Caption, Paragraph} from '../../components/text/CustomText';
-import TouchableItem from '../../components/TouchableItem';
+import {Paragraph} from '../../components/text/CustomText';
+import {getAuth} from 'firebase/auth';
+import {getDatabase, ref, child, get, set} from 'firebase/database';
 import UnderlineTextInput from '../../components/textinputs/UnderlineTextInput';
 
-// import colors
 import Colors from '../../theme/colors';
 
-// EditAddress Config
-const HOME_ICON = 'home-variant-outline';
-const OFFICE_ICON = 'briefcase-outline';
-const APARTMAN_ICON = 'office-building';
-const ICON_COLOR = 'rgb(35, 47, 52)';
 const PLACEHOLDER_TEXT_COLOR = 'rgba(0, 0, 0, 0.4)';
 const INPUT_TEXT_COLOR = 'rgba(0, 0, 0, 0.87)';
 const INPUT_BORDER_COLOR = 'rgba(0, 0, 0, 0.2)';
 const INPUT_FOCUSED_BORDER_COLOR = '#000';
 
-// EditAddress Styles
 const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,
@@ -98,7 +78,7 @@ const styles = StyleSheet.create({
   },
   buttonsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
     marginTop: 20,
     paddingHorizontal: 20,
@@ -128,21 +108,9 @@ export default class EditAddress extends Component {
       cityFocused: false,
       modalVisible: false,
       messageTitle: 'Saving address details',
+      userID: '',
     };
   }
-
-  componentDidMount = () => {
-    this.keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      this.keyboardDidHide,
-    );
-  };
-
-  // avoid memory leak
-  componentWillUnmount = () => {
-    clearTimeout(this.timeout);
-    this.keyboardDidHideListener.remove();
-  };
 
   keyboardDidHide = () => {
     this.setState({
@@ -192,50 +160,45 @@ export default class EditAddress extends Component {
     }
   };
 
-  removeAddress = () => {
-    Keyboard.dismiss();
-
-    this.setState(
-      {
-        messageTitle: 'Removing address',
-      },
-      () => {
-        this.setState(
-          {
-            modalVisible: true,
-          },
-          () => {
-            // for demo purpose after 3s close modal
-            this.timeout = setTimeout(() => {
-              this.closeModal();
-            }, 3000);
-          },
-        );
-      },
-    );
-  };
-
   saveAddress = () => {
-    Keyboard.dismiss();
+    const auth = getAuth();
+    const user = auth.currentUser;
+    const {navigation} = this.props;
 
-    this.setState(
-      {
-        messageTitle: 'Saving address details',
-      },
-      () => {
-        this.setState(
-          {
-            modalVisible: true,
-          },
-          () => {
-            // for demo purpose after 3s close modal
-            this.timeout = setTimeout(() => {
-              this.closeModal();
-            }, 3000);
-          },
-        );
-      },
-    );
+    const db = getDatabase();
+    set(ref(db, 'address/' + user.uid), {
+      str_number: this.state.number,
+      street_name: this.state.street,
+      barangay: this.state.district,
+      city: this.state.city,
+      zipcode: this.state.zip,
+    });
+    navigation.navigate('Settings');
+  };
+  componentDidMount = async () => {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    const dbRef = ref(getDatabase());
+    const self = this;
+    get(child(dbRef, `address/${user.uid}`))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          console.log(snapshot.val());
+          const result = snapshot.val();
+          self.setState({
+            number: result.str_number,
+            street: result.street_name,
+            district: result.barangay,
+            city: result.city,
+            zip: result.zipcode,
+          });
+        } else {
+          console.log('No data available');
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   closeModal = () => {
@@ -277,58 +240,6 @@ export default class EditAddress extends Component {
 
         <KeyboardAwareScrollView
           contentContainerStyle={styles.contentContainerStyle}>
-          <View style={styles.row}>
-            <View style={styles.picker}>
-              <View
-                style={[
-                  styles.touchArea,
-                  addressType === 'home' && {
-                    backgroundColor: Colors.primaryColor,
-                  },
-                ]}>
-                <TouchableItem onPress={this.setAddressType('home')}>
-                  <View style={styles.iconContainer}>
-                    <Icon
-                      name={HOME_ICON}
-                      size={19}
-                      color={
-                        addressType === 'home'
-                          ? Colors.onPrimaryColor
-                          : ICON_COLOR
-                      }
-                    />
-                  </View>
-                </TouchableItem>
-              </View>
-              <Caption>Home</Caption>
-            </View>
-
-            <View style={styles.picker}>
-              <View
-                style={[
-                  styles.touchArea,
-                  addressType === 'office' && {
-                    backgroundColor: Colors.primaryColor,
-                  },
-                ]}>
-                <TouchableItem onPress={this.setAddressType('office')}>
-                  <View style={styles.iconContainer}>
-                    <Icon
-                      name={OFFICE_ICON}
-                      size={19}
-                      color={
-                        addressType === 'office'
-                          ? Colors.onPrimaryColor
-                          : ICON_COLOR
-                      }
-                    />
-                  </View>
-                </TouchableItem>
-              </View>
-              <Caption>Office</Caption>
-            </View>
-          </View>
-
           <View style={styles.instructionContainer}>
             <Paragraph style={styles.instruction}>
               Edit your delivery address details
@@ -437,14 +348,6 @@ export default class EditAddress extends Component {
           </View>
 
           <View style={styles.buttonsContainer}>
-            <Button
-              onPress={this.removeAddress}
-              disabled={false}
-              small
-              title={'Remove'.toUpperCase()}
-              buttonStyle={styles.extraSmallButton}
-            />
-
             <Button
               onPress={this.saveAddress}
               disabled={false}

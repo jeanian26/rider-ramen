@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /**
  *
  *
@@ -89,7 +90,6 @@ export default class SearchResults extends Component {
       imageUri={item.imageUri}
       title={item.name}
       description={item.description}
-      rating={item.rating}
       price={item.price}
       quantity={item.quantity}
       discountPercentage={item.discountPercentage}

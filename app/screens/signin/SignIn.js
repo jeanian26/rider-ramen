@@ -20,7 +20,7 @@ import UnderlineTextInput from '../../components/textinputs/UnderlineTextInput';
 import Colors from '../../theme/colors';
 import Layout from '../../theme/layout';
 import {signInWithEmailAndPassword} from 'firebase/auth';
-import {passAuth} from '../../config/firebase';
+import {passAuth, checkLoggedIn} from '../../config/firebase';
 
 const PLACEHOLDER_TEXT_COLOR = Colors.onPrimaryColor;
 const INPUT_TEXT_COLOR = Colors.onPrimaryColor;
@@ -170,6 +170,7 @@ export default class SignIn extends Component {
         const user = userCredential.user;
         console.log('Success');
         navigation.navigate('HomeNavigator');
+        checkLoggedIn();
         ToastAndroid.showWithGravity(
           'SUCCESS LOGGING IN',
           ToastAndroid.SHORT,
