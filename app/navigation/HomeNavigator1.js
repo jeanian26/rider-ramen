@@ -83,7 +83,6 @@ function HomeNavigator() {
           tabBarIcon: (props) => (
             <TabBadgeIcon
               name={`cart${props.focused ? '' : '-outline'}`}
-              badgeCount={5}
               {...props}
             />
           ),

@@ -1,11 +1,5 @@
-/**
- *
- *
- * @format
- * @flow
- */
+/* eslint-disable prettier/prettier */
 
-// import dependencies
 import React, {Component, Fragment} from 'react';
 import {
   FlatList,
@@ -16,23 +10,18 @@ import {
 } from 'react-native';
 import remove from 'lodash/remove';
 
-// import components
 import ActionProductCardHorizontal from '../../components/cards/ActionProductCardHorizontal';
 import Button from '../../components/buttons/Button';
 import {Heading6, Subtitle1} from '../../components/text/CustomText';
 import Divider from '../../components/divider/Divider';
 import EmptyState from '../../components/emptystate/EmptyState';
 
-// import colors
 import Colors from '../../theme/colors';
 
-//import sample data
 import sample_data from '../../config/sample-data';
 
-// Cart Config
 const EMPTY_STATE_ICON = 'cart-remove';
 
-// Cart Styles
 const styles = StyleSheet.create({
   flex1: {
     flex: 1,
@@ -58,7 +47,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   productList: {
-    // spacing = paddingHorizontal + ActionProductCardHorizontal margin = 12 + 4 = 16
     paddingHorizontal: 12,
   },
   subTotalText: {
@@ -77,14 +65,14 @@ const styles = StyleSheet.create({
   },
 });
 
-// Cart
 export default class Cart extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       total: 0.0,
-      products: sample_data.cart_products,
+      // products: sample_data.cart_products,
+      products: [],
     };
   }
 
