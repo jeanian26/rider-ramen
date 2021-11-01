@@ -99,6 +99,7 @@ export default class Search extends Component {
     this.state = {
       //products: sample_data.offers,
       products: [],
+      search: '',
     };
   }
   componentDidMount = () => {
@@ -182,6 +183,10 @@ export default class Search extends Component {
       Category: 'Drinks',
     });
   }
+  typeSearch(text) {
+    //this.setState({search: text});
+    this.filterSearch(text);
+  }
 
   keyExtractor = (item, index) => index.toString();
 
@@ -197,6 +202,21 @@ export default class Search extends Component {
       description={item.description}
     />
   );
+  filterSearch(search) {
+    if (search.length === 0) {
+      this.getData();
+    }
+    let products = this.state.products;
+    let filteredProducts = [];
+    products.forEach(function (item, index) {
+      let itemName = item.name;
+      if (itemName.startsWith(search)) {
+        console.log(true, itemName);
+        filteredProducts.push(item);
+      }
+    });
+    this.setState({products: filteredProducts});
+  }
 
   renderSeparator = () => <Divider />;
 
@@ -252,9 +272,15 @@ export default class Search extends Component {
             returnKeyType="search"
             maxLength={50}
             style={styles.textInput}
+            onChangeText={(text) => {
+              this.typeSearch(text);
+            }}
           />
           <View style={styles.searchButtonContainer}>
-            <TouchableItem onPress={() => {}}>
+            <TouchableItem
+              onPress={() => {
+                this.filterSearch(this.state.search);
+              }}>
               <View style={styles.searchButton}>
                 <Icon
                   name={SEARCH_ICON}
