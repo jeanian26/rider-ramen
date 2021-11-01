@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 
 import getImgSource from '../../utils/getImgSource.js';
-
+import {getDatabase, ref, child, get} from 'firebase/database';
 import Button from '../../components/buttons/Button';
 import {Caption, Heading5, SmallText} from '../../components/text/CustomText';
 import GradientContainer from '../../components/gradientcontainer/GradientContainer';
@@ -204,6 +204,30 @@ export default class Product extends Component {
     };
   }
 
+  getData() {
+    const {route} = this.props;
+    const {key} = route.params;
+    console.log(key);
+    let products = [];
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, `products/${key}`))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          console.log(snapshot.val());
+          products = snapshot.val();
+          this.setState({product: products});
+        } else {
+          console.log('No data available');
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+  componentDidMount() {
+    this.getData();
+  }
+
   navigateTo = (screen) => () => {
     const {navigation} = this.props;
     navigation.navigate(screen);
@@ -337,10 +361,7 @@ export default class Product extends Component {
             <View style={styles.productDescription}>
               <View style={styles.productTitleContainer}>
                 <Heading5 style={styles.productTitle}>{product.name}</Heading5>
-                <Text style={styles.priceText}>{`₱ ${price.toFixed(2)}`}</Text>
-              </View>
-              <View style={styles.categoryStarContainer}>
-                <View style={styles.starContainer}></View>
+                <Text style={styles.priceText}>{`₱ ${price}`}</Text>
               </View>
 
               <SmallText style={styles.shortDescription}>
@@ -368,9 +389,7 @@ export default class Product extends Component {
                       <Text style={styles.dishName}>{item.name}</Text>
                     </View>
 
-                    <Text style={styles.dishPrice}>
-                      + {item.price.toFixed(2)}
-                    </Text>
+                    <Text style={styles.dishPrice}>+ {item.price}</Text>
                   </View>
                 </TouchableItem>
               ))}
@@ -380,7 +399,7 @@ export default class Product extends Component {
           <View style={styles.bottomButtonsContainer}>
             <Button
               onPress={this.navigateTo('Cart')}
-              title={`Add  ₱${total.toFixed(2)}`}
+              title={`Add  ₱${total}`}
               titleColor={Colors.onPrimaryColor}
               height={44}
               color={Colors.primaryColor}
