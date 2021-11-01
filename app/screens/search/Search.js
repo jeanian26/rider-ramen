@@ -1,12 +1,5 @@
 /* eslint-disable prettier/prettier */
-/**
- *
- *
- * @format
- * @flow
- */
 
-// import dependencies
 import React, {Component} from 'react';
 import {
   FlatList,
@@ -19,27 +12,19 @@ import {
   View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Swiper from 'react-native-swiper';
 
-// import components
 import Divider from '../../components/divider/Divider';
 import {Heading6} from '../../components/text/CustomText';
 import TouchableItem from '../../components/TouchableItem';
 import SafeAreaView from '../../components/SafeAreaView';
 import SimpleProductCard from '../../components/cards/SimpleProductCard';
-
-// import colors
+import {getDatabase, ref, child, get, set} from 'firebase/database';
+import uuid from 'react-native-uuid';
 import Colors from '../../theme/colors';
 
-//import sample data
-import sample_data from '../../config/sample-data';
-
-// Search Config
 const isRTL = I18nManager.isRTL;
-const FILTER_ICON = 'filter-variant';
 const SEARCH_ICON = 'magnify';
 
-// Search Styles
 const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,
@@ -108,23 +93,39 @@ const styles = StyleSheet.create({
   },
 });
 
-// Search
 export default class Search extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      filters: sample_data.filters,
-      offers: sample_data.offers,
-      dessert: sample_data.dessert,
-      grill: sample_data.grill,
-      pasta: sample_data.pasta,
-      pizza: sample_data.pizza,
-      salad: sample_data.salad,
-      soup: sample_data.soup,
+      //products: sample_data.offers,
+      products: [],
     };
   }
-
+  componentDidMount = () => {
+    //this.addData();
+    this.getData();
+  };
+  getData() {
+    let products = [];
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, `products/`))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          console.log(snapshot.val());
+          products = snapshot.val();
+          console.log(typeof products);
+          products = Object.values(products);
+          console.log('converted', products);
+          this.setState({products: products});
+        } else {
+          console.log('No data available');
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
   navigateTo = (screen) => () => {
     const {navigation} = this.props;
 
@@ -161,6 +162,20 @@ export default class Search extends Component {
       );
     }
   };
+  //TobeRemoved
+  addData() {
+    let randomID = uuid.v4();
+    const db = getDatabase();
+    set(ref(db, 'products/' + randomID), {
+      imageUri:
+        'https://hips.hearstapps.com/hmg-prod/images/190208-delish-ramen-horizontal-093-1550096715.jpg',
+      name: 'Ramen 2',
+      price: 3,
+      rating: 1,
+      description: 'test',
+      key: randomID,
+    });
+  }
 
   keyExtractor = (item, index) => index.toString();
 
@@ -231,8 +246,7 @@ export default class Search extends Component {
   };
 
   render() {
-    const {filters, offers, dessert, grill, pasta, pizza, salad, soup} =
-      this.state;
+    const {products} = this.state;
 
     return (
       <SafeAreaView style={styles.screenContainer}>
@@ -265,74 +279,12 @@ export default class Search extends Component {
           </View>
         </View>
 
-        <View>
-          <FlatList
-            ref={(r) => (this.filtersList = r)}
-            data={filters}
-            keyExtractor={this.keyExtractor}
-            renderItem={this.renderFilterItem}
-            horizontal
-            alwaysBounceHorizontal={false}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.filtersList}
-          />
-        </View>
-
-        <Swiper
-          ref={(r) => (this.productSwiper = r)}
-          index={isRTL ? filters.length - 1 : 0}
-          onIndexChanged={this.onIndexChanged}
-          loop={false}
-          showsPagination={false}>
-          <FlatList
-            data={offers}
-            keyExtractor={this.keyExtractor}
-            renderItem={this.renderProductItem}
-            ItemSeparatorComponent={this.renderSeparator}
-          />
-
-          <FlatList
-            data={dessert}
-            keyExtractor={this.keyExtractor}
-            renderItem={this.renderProductItem}
-            ItemSeparatorComponent={this.renderSeparator}
-          />
-
-          <FlatList
-            data={grill}
-            keyExtractor={this.keyExtractor}
-            renderItem={this.renderProductItem}
-            ItemSeparatorComponent={this.renderSeparator}
-          />
-
-          <FlatList
-            data={pasta}
-            keyExtractor={this.keyExtractor}
-            renderItem={this.renderProductItem}
-            ItemSeparatorComponent={this.renderSeparator}
-          />
-
-          <FlatList
-            data={pizza}
-            keyExtractor={this.keyExtractor}
-            renderItem={this.renderProductItem}
-            ItemSeparatorComponent={this.renderSeparator}
-          />
-
-          <FlatList
-            data={salad}
-            keyExtractor={this.keyExtractor}
-            renderItem={this.renderProductItem}
-            ItemSeparatorComponent={this.renderSeparator}
-          />
-
-          <FlatList
-            data={soup}
-            keyExtractor={this.keyExtractor}
-            renderItem={this.renderProductItem}
-            ItemSeparatorComponent={this.renderSeparator}
-          />
-        </Swiper>
+        <FlatList
+          data={products}
+          keyExtractor={this.keyExtractor}
+          renderItem={this.renderProductItem}
+          ItemSeparatorComponent={this.renderSeparator}
+        />
       </SafeAreaView>
     );
   }

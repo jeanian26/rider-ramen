@@ -1,28 +1,16 @@
 /* eslint-disable prettier/prettier */
-/**
- *
- *
- * @format
- * @flow
- */
 
-// import dependencies
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 
-// import components
 import Button from '../buttons/Button';
 import {Caption, Subtitle1, Subtitle2} from '../text/CustomText';
 import Divider from '../divider/Divider';
 import TouchableItem from '../TouchableItem';
 
-// import colors, layout
 import Colors from '../../theme/colors';
 import Layout from '../../theme/layout';
 
-// OrderItem Config
-
-// OrderItem Styles
 const styles = StyleSheet.create({
   container: {
     marginTop: 1,
@@ -96,7 +84,6 @@ const renderOrderItemsTotal = (items) => {
   return total;
 };
 
-// OrderItem Props
 type Props = {
   onPress: () => {},
   activeOpacity: number,
@@ -106,7 +93,6 @@ type Props = {
   orderStatus: string,
 };
 
-// OrderItem
 const OrderItem = ({
   onPress,
   activeOpacity,
