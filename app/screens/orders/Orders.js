@@ -1,11 +1,5 @@
-/**
- *
- *
- * @format
- * @flow
- */
+/* eslint-disable prettier/prettier */
 
-// import dependencies
 import React, {Component} from 'react';
 import {
   FlatList,
@@ -15,16 +9,12 @@ import {
   View,
 } from 'react-native';
 
-// import components
 import OrderItem from '../../components/cards/OrderItem';
 
-// import colors
 import Colors from '../../theme/colors';
 
-//import sample data
 import sample_data from '../../config/sample-data';
 
-// Orders Styles
 const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,
@@ -39,13 +29,13 @@ const styles = StyleSheet.create({
   },
 });
 
-// Orders
 export default class Orders extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      orders: sample_data.orders,
+      // orders: sample_data.orders,
+      orders: [],
     };
   }
 

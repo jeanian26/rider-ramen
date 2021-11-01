@@ -7,7 +7,6 @@ import {
   Keyboard,
   StatusBar,
   StyleSheet,
-  Text,
   TextInput,
   View,
 } from 'react-native';
@@ -105,6 +104,10 @@ export default class Search extends Component {
   componentDidMount = () => {
     //this.addData();
     this.getData();
+
+    this.focusListener = this.props.navigation.addListener('focus', () => {
+      this.getData();
+    });
   };
   getData() {
     let products = [];
@@ -170,13 +173,13 @@ export default class Search extends Component {
     const db = getDatabase();
     set(ref(db, 'products/' + randomID), {
       imageUri:
-        'https://hips.hearstapps.com/hmg-prod/images/190208-delish-ramen-horizontal-093-1550096715.jpg',
-      name: 'Ramen 7',
-      price: 3,
+        'https://hips.hearstapps.com/ghk.h-cdn.co/assets/cm/15/12/480x552/5508e9bb6b9a7-0312-water-bottle-xl.jpg?resize=480:*',
+      name: 'Bottled Water',
+      price: 25,
       rating: 1,
-      description: 'test',
+      description: '',
       key: randomID,
-      category: 'Ramen',
+      Category: 'Drinks',
     });
   }
 

@@ -145,10 +145,8 @@ export default class Favorites extends Component {
 
         {products.length === 0 ? (
           <EmptyState
-            showIcon
-            iconName={EMPTY_STATE_ICON}
             title="Your Favorites List is Empty"
-            message="Save your favorite food so you can always find it here and make order easier"
+            message="Save your favorite Ramen so you can always find it here and make order easier"
           />
         ) : (
           <Fragment>

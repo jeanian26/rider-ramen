@@ -208,10 +208,8 @@ export default class Cart extends Component {
 
         {products.length === 0 ? (
           <EmptyState
-            showIcon
-            iconName={EMPTY_STATE_ICON}
             title="Your Cart is Empty"
-            message="Looks like you haven't added any food to your cart yet"
+            message="Looks like you haven't added any ramen to your cart yet"
           />
         ) : (
           <Fragment>
