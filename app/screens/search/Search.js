@@ -170,7 +170,7 @@ export default class Search extends Component {
     set(ref(db, 'products/' + randomID), {
       imageUri:
         'https://hips.hearstapps.com/hmg-prod/images/190208-delish-ramen-horizontal-093-1550096715.jpg',
-      name: 'Ramen 2',
+      name: 'Ramen 7',
       price: 3,
       rating: 1,
       description: 'test',
