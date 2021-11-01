@@ -126,12 +126,13 @@ export default class Search extends Component {
         console.error(error);
       });
   }
-  navigateTo = (screen) => () => {
+  navigateTo = (screen, key) => () => {
     const {navigation} = this.props;
 
     Keyboard.dismiss();
-
-    navigation.navigate(screen);
+    navigation.navigate(screen, {
+      key: key,
+    });
   };
 
   handleFilterPress = (item) => () => {
@@ -179,29 +180,10 @@ export default class Search extends Component {
 
   keyExtractor = (item, index) => index.toString();
 
-  renderFilterItem = ({item, index}) => (
-    <View style={styles.filterItemContainer}>
-      <TouchableItem
-        onPress={this.handleFilterPress(item)}
-        style={[
-          styles.filterItem,
-          item.picked && {backgroundColor: Colors.primaryColor},
-        ]}>
-        <Text
-          style={[
-            styles.filterName,
-            item.picked && {color: Colors.onPrimaryColor},
-          ]}>
-          {item.name}
-        </Text>
-      </TouchableItem>
-    </View>
-  );
-
   renderProductItem = ({item, index}) => (
     <SimpleProductCard
       key={index}
-      onPress={this.navigateTo('Product')}
+      onPress={this.navigateTo('Product', item.key)}
       activeOpacity={0.7}
       imageUri={item.imageUri}
       title={item.name}
