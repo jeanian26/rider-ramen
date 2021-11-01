@@ -1,11 +1,4 @@
-/**
- *
- *
- * @format
- * @flow
- */
-
-// import dependencies
+/* eslint-disable prettier/prettier */
 import React, {Component, Fragment} from 'react';
 import {
   FlatList,
@@ -14,18 +7,11 @@ import {
   StatusBar,
   StyleSheet,
 } from 'react-native';
-
-// import components
 import Divider from '../../components/divider/Divider';
 import ProductCard from '../../components/cards/ProductCard';
-
-// import colors
 import Colors from '../../theme/colors';
-
-//import sample data
 import sample_data from '../../config/sample-data';
-
-// Category Styles
+import {getDatabase, ref, child, get, set} from 'firebase/database';
 const styles = StyleSheet.create({
   topArea: {flex: 0, backgroundColor: Colors.primaryColor},
   container: {
@@ -42,7 +28,7 @@ export default class Category extends Component {
     super(props);
 
     this.state = {
-      products: sample_data.category_product,
+      products: [],
     };
   }
 
@@ -50,10 +36,51 @@ export default class Category extends Component {
     const {navigation} = this.props;
     navigation.goBack();
   };
+  componentDidMount() {
+    this.getData();
+  }
+  getData() {
+    const {route} = this.props;
+    const {category} = route.params;
+    this.props.navigation.setOptions({
+      title: category,
+    });
+    let products = [];
+    let filteredProducts = [];
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, `products/`))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          console.log(snapshot.val());
+          products = snapshot.val();
+          products = Object.values(products);
+          console.log('converted', products);
 
-  navigateTo = (screen) => () => {
+          for (var i = 0; i < products.length; i++) {
+            if (products[i].Category === category) {
+              console.log(products[i].name);
+              filteredProducts.push(products[i]);
+              console.log(filteredProducts);
+            }
+          }
+
+          this.setState({products: filteredProducts});
+          console.log(this.state.products);
+        } else {
+          console.log('No data available');
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  navigateTo = (screen, key) => () => {
     const {navigation} = this.props;
-    navigation.navigate(screen);
+
+    navigation.navigate(screen, {
+      key: key,
+    });
   };
 
   onPressRemove = (item) => () => {
@@ -89,17 +116,16 @@ export default class Category extends Component {
 
   renderProductItem = ({item, index}) => (
     <ProductCard
-      onPress={this.navigateTo('Product')}
-      onPressRemove={this.onPressRemove(item)}
-      onPressAdd={this.onPressAdd(item)}
-      onCartPress={this.navigateTo('Cart')}
       key={index}
+      onPress={this.navigateTo('Product', item.key)}
+      onCartPress={this.navigateTo('Cart')}
       activeOpacity={0.7}
       imageUri={item.imageUri}
       title={item.name}
       price={item.price}
       quantity={item.quantity}
       rating={item.rating}
+      description={item.description}
       swipeoutDisabled
     />
   );
