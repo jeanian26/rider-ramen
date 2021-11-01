@@ -231,16 +231,8 @@ export default class Search extends Component {
   };
 
   render() {
-    const {
-      filters,
-      offers,
-      dessert,
-      grill,
-      pasta,
-      pizza,
-      salad,
-      soup,
-    } = this.state;
+    const {filters, offers, dessert, grill, pasta, pizza, salad, soup} =
+      this.state;
 
     return (
       <SafeAreaView style={styles.screenContainer}>
@@ -292,7 +284,6 @@ export default class Search extends Component {
           onIndexChanged={this.onIndexChanged}
           loop={false}
           showsPagination={false}>
-          {/* OFFERS SLIDE */}
           <FlatList
             data={offers}
             keyExtractor={this.keyExtractor}
@@ -300,7 +291,6 @@ export default class Search extends Component {
             ItemSeparatorComponent={this.renderSeparator}
           />
 
-          {/* DESSERT SLIDE */}
           <FlatList
             data={dessert}
             keyExtractor={this.keyExtractor}
@@ -308,7 +298,6 @@ export default class Search extends Component {
             ItemSeparatorComponent={this.renderSeparator}
           />
 
-          {/* GRILL SLIDE */}
           <FlatList
             data={grill}
             keyExtractor={this.keyExtractor}
@@ -316,7 +305,6 @@ export default class Search extends Component {
             ItemSeparatorComponent={this.renderSeparator}
           />
 
-          {/* PASTA SLIDE */}
           <FlatList
             data={pasta}
             keyExtractor={this.keyExtractor}
@@ -324,7 +312,6 @@ export default class Search extends Component {
             ItemSeparatorComponent={this.renderSeparator}
           />
 
-          {/* PIZZA SLIDE */}
           <FlatList
             data={pizza}
             keyExtractor={this.keyExtractor}
@@ -332,7 +319,6 @@ export default class Search extends Component {
             ItemSeparatorComponent={this.renderSeparator}
           />
 
-          {/* SLALD SLIDE */}
           <FlatList
             data={salad}
             keyExtractor={this.keyExtractor}
@@ -340,7 +326,6 @@ export default class Search extends Component {
             ItemSeparatorComponent={this.renderSeparator}
           />
 
-          {/* SOUP SLIDE */}
           <FlatList
             data={soup}
             keyExtractor={this.keyExtractor}

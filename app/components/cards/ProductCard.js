@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /**
  *
  *
@@ -262,16 +263,6 @@ export default class ProductCard extends Component<Props, State> {
                 </View>
 
                 <View style={styles.secondLine}>
-                  <View style={styles.starContainer}>
-                    <Text style={styles.starText}>
-                      {rating}{' '}
-                      <Icon
-                        name={RATING_ICON}
-                        size={12}
-                        color={Colors.onPrimaryColor}
-                      />
-                    </Text>
-                  </View>
                   <Subtitle2 numberOfLines={2} style={styles.descriptionText}>
                     {description}
                   </Subtitle2>

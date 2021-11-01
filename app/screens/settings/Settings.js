@@ -19,7 +19,7 @@ import {getDatabase, ref as refData, child, get, set} from 'firebase/database';
 import Avatar from '../../components/avatar/Avatar';
 import Divider from '../../components/divider/Divider';
 import Icon from '../../components/icon/Icon';
-import {Heading6, Subtitle1, Subtitle2} from '../../components/text/CustomText';
+import {Subtitle1, Subtitle2} from '../../components/text/CustomText';
 import TouchableItem from '../../components/TouchableItem';
 
 import Colors from '../../theme/colors';
@@ -28,20 +28,8 @@ import {signOut} from 'firebase/auth';
 
 const isRTL = I18nManager.isRTL;
 const IOS = Platform.OS === 'ios';
-const DIVIDER_MARGIN_LEFT = 30;
+const DIVIDER_MARGIN_LEFT = 15;
 const ARROW_ICON = 'ios-arrow-forward';
-const ADDRESS_ICON = IOS ? 'ios-pin' : 'md-pin';
-const NOTIFICATION_OFF_ICON = IOS
-  ? 'ios-notifications-off'
-  : 'md-notifications-off';
-const NOTIFICATION_ICON = IOS ? 'ios-notifications' : 'md-notifications';
-const PAYMENT_ICON = IOS ? 'ios-card' : 'md-card';
-const ORDERS_ICON = IOS ? 'ios-list' : 'md-list';
-const TERMS_ICON = IOS ? 'ios-document' : 'md-document';
-const ABOUT_ICON = IOS
-  ? 'ios-information-circle-outline'
-  : 'md-information-circle-outline';
-const LOGOUT_ICON = IOS ? 'ios-log-out' : 'md-log-out';
 
 const styles = StyleSheet.create({
   container: {
@@ -178,7 +166,8 @@ export default class Settings extends Component {
       notificationsOn: value,
     });
   };
-  componentDidMount = () => {
+
+  loadProfile = () => {
     const auth = getAuth();
     const user = auth.currentUser;
     const self = this;
@@ -217,6 +206,13 @@ export default class Settings extends Component {
       .catch((error) => {
         console.error(error);
       });
+  };
+  componentDidMount = () => {
+    this.loadProfile();
+
+    this.focusListener = this.props.navigation.addListener('focus', () => {
+      this.loadProfile();
+    });
   };
 
   logout = () => {

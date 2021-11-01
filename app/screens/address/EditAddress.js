@@ -1,30 +1,18 @@
 /* eslint-disable prettier/prettier */
 
 import React, {Component} from 'react';
-import {
-  Keyboard,
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  View,
-} from 'react-native';
-import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
+import {SafeAreaView, StatusBar, StyleSheet, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import ActivityIndicatorModal from '../../components/modals/ActivityIndicatorModal';
 import Button from '../../components/buttons/Button';
-import {Caption, Paragraph} from '../../components/text/CustomText';
-import TouchableItem from '../../components/TouchableItem';
-import {onAuthStateChanged, getAuth, updateProfile} from 'firebase/auth';
+import {Paragraph} from '../../components/text/CustomText';
+import {getAuth} from 'firebase/auth';
 import {getDatabase, ref, child, get, set} from 'firebase/database';
 import UnderlineTextInput from '../../components/textinputs/UnderlineTextInput';
 
 import Colors from '../../theme/colors';
 
-const HOME_ICON = 'home-variant-outline';
-const OFFICE_ICON = 'briefcase-outline';
-const APARTMAN_ICON = 'office-building';
-const ICON_COLOR = 'rgb(35, 47, 52)';
 const PLACEHOLDER_TEXT_COLOR = 'rgba(0, 0, 0, 0.4)';
 const INPUT_TEXT_COLOR = 'rgba(0, 0, 0, 0.87)';
 const INPUT_BORDER_COLOR = 'rgba(0, 0, 0, 0.2)';

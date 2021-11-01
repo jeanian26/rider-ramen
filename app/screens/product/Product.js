@@ -1,11 +1,5 @@
-/**
- *
- *
- * @format
- * @flow
- */
+/* eslint-disable prettier/prettier */
 
-// import dependencies
 import React, {Component, Fragment} from 'react';
 import {
   ImageBackground,
@@ -18,23 +12,18 @@ import {
   View,
 } from 'react-native';
 
-// import utils
 import getImgSource from '../../utils/getImgSource.js';
 
-// import components
 import Button from '../../components/buttons/Button';
 import {Caption, Heading5, SmallText} from '../../components/text/CustomText';
 import GradientContainer from '../../components/gradientcontainer/GradientContainer';
 import Icon from '../../components/icon/Icon';
 import TouchableItem from '../../components/TouchableItem';
 
-// import colors
 import Colors from '../../theme/colors';
 
-//import sample data
 import sample_data from '../../config/sample-data';
 
-// Product Config
 const IOS = Platform.OS === 'ios';
 const MINUS_ICON = IOS ? 'ios-remove' : 'md-remove';
 const PLUS_ICON = IOS ? 'ios-add' : 'md-add';
@@ -43,7 +32,6 @@ const CLOSE_ICON = IOS ? 'ios-close' : 'md-close';
 const imgHolder = require('../../assets/img/imgholder.png');
 const RATING_ICON = IOS ? 'ios-star' : 'md-star';
 
-// Product Styles
 const styles = StyleSheet.create({
   topArea: {flex: 0, backgroundColor: Colors.primaryColor},
   screenContainer: {
@@ -352,17 +340,7 @@ export default class Product extends Component {
                 <Text style={styles.priceText}>{`₱ ${price.toFixed(2)}`}</Text>
               </View>
               <View style={styles.categoryStarContainer}>
-                <View style={styles.starContainer}>
-                  <Text style={styles.starText}>
-                    {product.rating}{' '}
-                    <Icon
-                      name={RATING_ICON}
-                      size={12}
-                      color={Colors.onPrimaryColor}
-                    />
-                  </Text>
-                </View>
-                <Text style={styles.categoryText}>Soup</Text>
+                <View style={styles.starContainer}></View>
               </View>
 
               <SmallText style={styles.shortDescription}>
@@ -400,32 +378,6 @@ export default class Product extends Component {
           </ScrollView>
 
           <View style={styles.bottomButtonsContainer}>
-            {/* <View style={styles.amountContainer}>
-              <View style={styles.amountButtonsContainer}>
-                <TouchableItem onPress={this.onPressDecreaseAmount} borderless>
-                  <View style={styles.iconContainer}>
-                    <Icon
-                      name={MINUS_ICON}
-                      size={20}
-                      color={Colors.onPrimaryColor}
-                    />
-                  </View>
-                </TouchableItem>
-
-                <Text style={styles.quantity}>{quantity}</Text>
-
-                <TouchableItem onPress={this.onPressIncreaseAmount} borderless>
-                  <View style={styles.iconContainer}>
-                    <Icon
-                      name={PLUS_ICON}
-                      size={20}
-                      color={Colors.onPrimaryColor}
-                    />
-                  </View>
-                </TouchableItem>
-              </View>
-            </View> */}
-
             <Button
               onPress={this.navigateTo('Cart')}
               title={`Add  ₱${total.toFixed(2)}`}
