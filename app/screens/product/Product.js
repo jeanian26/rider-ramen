@@ -193,9 +193,15 @@ const styles = StyleSheet.create({
 export default class Product extends Component {
   constructor(props) {
     super(props);
+    // this.state = {
+    //   product: sample_data.product_details,
+    //   extras: sample_data.product_variant,
+    //   favorite: false,
+    //   total: '',
+    // };
     this.state = {
-      product: sample_data.product_details,
-      extras: sample_data.product_variant,
+      product: [],
+      extras: [],
       favorite: false,
       total: '',
     };
@@ -279,6 +285,7 @@ export default class Product extends Component {
     });
   };
   addToCart = () => {
+    const {navigation} = this.props;
     const auth = getAuth();
     const user = auth.currentUser;
     console.log('ID:', user.uid);
@@ -298,6 +305,8 @@ export default class Product extends Component {
       price: this.state.total,
       quantity: 1,
       extra: this.state.extras,
+    }).then(() => {
+      navigation.navigate('Cart');
     });
   };
 

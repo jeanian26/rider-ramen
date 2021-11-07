@@ -118,7 +118,7 @@ export default class Category extends Component {
     <ProductCard
       key={index}
       onPress={this.navigateTo('Product', item.key)}
-      onCartPress={this.navigateTo('Cart')}
+      onCartPress={this.navigateTo('Product', item.key)}
       activeOpacity={0.7}
       imageUri={item.imageUri}
       title={item.name}

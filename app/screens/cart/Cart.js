@@ -16,7 +16,7 @@ import {Heading6, Subtitle1} from '../../components/text/CustomText';
 import Divider from '../../components/divider/Divider';
 import EmptyState from '../../components/emptystate/EmptyState';
 import {getAuth} from 'firebase/auth';
-import {getDatabase, ref, child, get, set} from 'firebase/database';
+import {getDatabase, ref, child, get, set, update} from 'firebase/database';
 import Colors from '../../theme/colors';
 
 import sample_data from '../../config/sample-data';
@@ -72,8 +72,8 @@ export default class Cart extends Component {
 
     this.state = {
       total: 0.0,
-      products: sample_data.cart_products,
-      //products: [],
+      //products: sample_data.cart_products,
+      products: [],
     };
   }
 
@@ -91,6 +91,7 @@ export default class Cart extends Component {
   getData() {
     const dbRef = ref(getDatabase());
     let array = [];
+    let newArray = [];
     const auth = getAuth();
     const user = auth.currentUser;
     const self = this;
@@ -98,20 +99,27 @@ export default class Cart extends Component {
     get(child(dbRef, 'cart/'))
       .then((snapshot) => {
         if (snapshot.exists()) {
-          console.log(snapshot.val());
-          console.log(Object.values(snapshot.val()));
           array = Object.values(snapshot.val());
-          for (const index in array) {
-            if (array[index].userid === user.uid) {
-              console.log(array[index].price);
-              total = total + array[index].price;
+          // for (const index in array) {
+          //   if (array[index].userid === user.uid) {
+          //     total = (total + array[index].price) * array[index].quantity;
+          //   } else {
+          //     array.pop(index);
+          //   }
+          // }
+          console.log(array[0]);
+          for (var i = 0; i < array.length; i++) {
+            console.log(array[i].userid, user.uid);
+            if (array[i].userid === user.uid) {
+              total = (total + array[i].price) * array[i].quantity;
+              newArray.push(array[i]);
+              console.log(true);
             } else {
-              console.log(array[index].cartID);
-              array.pop(index);
+              console.log(false);
             }
           }
-          this.setState({total: total});
-          this.setState({products: array});
+          this.setState({total: total, products: newArray});
+          // this.setState({products: array});
         } else {
           console.log('No data available');
         }
@@ -158,8 +166,16 @@ export default class Cart extends Component {
 
     if (quantity === 0) {
       products = remove(products, (n) => products.indexOf(n) !== index);
+      const db = ref(getDatabase());
+      console.log(item.cartID);
+      set(child(db, `cart/${item.cartID}`), {});
     } else {
       products[index].quantity = quantity;
+      const db = getDatabase();
+      const updates = {};
+      console.log(products[index].quantity);
+      updates[`cart/${item.cartID}/quantity`] = products[index].quantity;
+      update(ref(db), updates);
     }
 
     this.setState(
@@ -170,9 +186,6 @@ export default class Cart extends Component {
         this.updateTotalAmount();
       },
     );
-    const db = ref(getDatabase());
-    console.log(item.cartID);
-    set(child(db, `cart/${item.cartID}`), {});
   };
 
   onPressAdd = (item) => () => {
@@ -190,6 +203,11 @@ export default class Cart extends Component {
         this.updateTotalAmount();
       },
     );
+    const db = getDatabase();
+    const updates = {};
+    console.log(products[index].quantity);
+    updates[`cart/${item.cartID}/quantity`] = products[index].quantity;
+    update(ref(db), updates);
   };
 
   updateTotalAmount = () => {
