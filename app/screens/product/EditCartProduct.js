@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class Product extends Component {
+export default class EditCartProduct extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -201,18 +201,31 @@ export default class Product extends Component {
     };
   }
 
-  getData() {
+  async getData() {
     const {route} = this.props;
     const {key} = route.params;
-    console.log(key);
-    let products = [];
+    let productID;
     const dbRef = ref(getDatabase());
-    get(child(dbRef, `products/${key}`))
+    get(child(dbRef, `cart/${key}`))
       .then((snapshot) => {
         if (snapshot.exists()) {
-          console.log(snapshot.val().price);
-          products = snapshot.val();
-          this.setState({product: products, total: snapshot.val().price});
+          productID = snapshot.val().id;
+
+          this.setState({total: snapshot.val().price});
+          let products = [];
+          get(child(dbRef, `products/${productID}`))
+            .then((snapshot) => {
+              if (snapshot.exists()) {
+                console.log(snapshot.val().price);
+                products = snapshot.val();
+                this.setState({product: products});
+              } else {
+                console.log('No data available');
+              }
+            })
+            .catch((error) => {
+              console.error(error);
+            });
         } else {
           console.log('No data available');
         }
@@ -222,9 +235,11 @@ export default class Product extends Component {
       });
   }
   getExtra() {
+    const {route} = this.props;
+    const {key} = route.params;
     const dbRef = ref(getDatabase());
     let array = [];
-    get(child(dbRef, 'Extra/'))
+    get(child(dbRef, 'cart/' + key + '/extra'))
       .then((snapshot) => {
         if (snapshot.exists()) {
           console.log(snapshot.val());
@@ -279,17 +294,15 @@ export default class Product extends Component {
     });
   };
   addToCart = () => {
+    const {navigation} = this.props;
     const auth = getAuth();
     const user = auth.currentUser;
-    console.log('ID:', user.uid);
-    console.log('product:', this.state.product);
-    console.log('extra:', this.state.extras);
-    console.log('total:', this.state.total);
-
-    let randomID = uuid.v4();
+    const {route} = this.props;
+    const {key} = route.params;
+    console.log(key);
     const db = getDatabase();
-    set(ref(db, 'cart/' + randomID), {
-      cartID: randomID,
+    set(ref(db, 'cart/' + key), {
+      cartID: key,
       sold: false,
       userid: user.uid,
       id: this.state.product.key,
@@ -298,6 +311,8 @@ export default class Product extends Component {
       price: this.state.total,
       quantity: 1,
       extra: this.state.extras,
+    }).then(() => {
+      navigation.navigate('Cart');
     });
   };
 
@@ -411,7 +426,7 @@ export default class Product extends Component {
               onPress={() => {
                 this.addToCart();
               }}
-              title={`Add  ₱${this.state.total}`}
+              title={`Save  ₱${this.state.total}`}
               titleColor={Colors.onPrimaryColor}
               height={44}
               color={Colors.primaryColor}

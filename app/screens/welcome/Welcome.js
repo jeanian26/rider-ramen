@@ -3,6 +3,8 @@
 
 import React, {Component} from 'react';
 import {ImageBackground, StatusBar, StyleSheet, View} from 'react-native';
+import {passAuth} from '../../config/firebase';
+import {onAuthStateChanged} from 'firebase/auth';
 
 import Button from '../../components/buttons/Button';
 import {Heading5, Paragraph} from '../../components/text/CustomText';
@@ -14,8 +16,7 @@ import Colors from '../../theme/colors';
 import Layout from '../../theme/layout';
 
 const headerImg = {
-  uri:
-    'https://images.pexels.com/photos/884600/pexels-photo-884600.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
+  uri: 'https://images.pexels.com/photos/884600/pexels-photo-884600.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
 };
 
 const styles = StyleSheet.create({
@@ -94,6 +95,18 @@ export default class Welcome extends Component {
     navigation.navigate(screen);
   };
 
+  componentDidMount = async () => {
+    const {navigation} = this.props;
+    onAuthStateChanged(passAuth(), (user) => {
+      if (user) {
+        console.log(user);
+        navigation.navigate('HomeNavigator');
+      } else {
+        console.log('no user logged in');
+      }
+    });
+  };
+
   render() {
     return (
       <SafeAreaView forceInset={{top: 'never'}} style={styles.screenContainer}>
@@ -114,7 +127,7 @@ export default class Welcome extends Component {
           </View>
 
           <View style={styles.center}>
-            <Paragraph>Find your food online.</Paragraph>
+            <Paragraph>Find your Favorite Ramen online.</Paragraph>
             <Paragraph>Try different flavours. Enjoy!</Paragraph>
           </View>
 

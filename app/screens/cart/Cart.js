@@ -15,7 +15,8 @@ import Button from '../../components/buttons/Button';
 import {Heading6, Subtitle1} from '../../components/text/CustomText';
 import Divider from '../../components/divider/Divider';
 import EmptyState from '../../components/emptystate/EmptyState';
-
+import {getAuth} from 'firebase/auth';
+import {getDatabase, ref, child, get, set} from 'firebase/database';
 import Colors from '../../theme/colors';
 
 import sample_data from '../../config/sample-data';
@@ -71,18 +72,61 @@ export default class Cart extends Component {
 
     this.state = {
       total: 0.0,
-      // products: sample_data.cart_products,
-      products: [],
+      products: sample_data.cart_products,
+      //products: [],
     };
   }
 
   componentDidMount = () => {
     this.updateTotalAmount();
-  };
+    this.getData();
 
-  navigateTo = (screen) => () => {
+    this.focusListener = this.props.navigation.addListener('focus', () => {
+      this.getData();
+    });
+  };
+  getTotalatLoad() {
+    console.log('price', this.state.products[0].price);
+  }
+  getData() {
+    const dbRef = ref(getDatabase());
+    let array = [];
+    const auth = getAuth();
+    const user = auth.currentUser;
+    const self = this;
+    let total = 0;
+    get(child(dbRef, 'cart/'))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          console.log(snapshot.val());
+          console.log(Object.values(snapshot.val()));
+          array = Object.values(snapshot.val());
+          for (const index in array) {
+            if (array[index].userid === user.uid) {
+              console.log(array[index].price);
+              total = total + array[index].price;
+            } else {
+              console.log(array[index].cartID);
+              array.pop(index);
+            }
+          }
+          this.setState({total: total});
+          this.setState({products: array});
+        } else {
+          console.log('No data available');
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  navigateTo = (screen, key) => () => {
     const {navigation} = this.props;
     navigation.navigate(screen);
+    navigation.navigate(screen, {
+      key: key,
+    });
   };
 
   swipeoutOnPressRemove = (item) => () => {
@@ -105,6 +149,7 @@ export default class Cart extends Component {
     let {products} = this.state;
   };
   onPressRemove = (item) => () => {
+    console.log('Remove', item.cartID);
     let {quantity} = item;
     quantity -= 1;
 
@@ -125,6 +170,9 @@ export default class Cart extends Component {
         this.updateTotalAmount();
       },
     );
+    const db = ref(getDatabase());
+    console.log(item.cartID);
+    set(child(db, `cart/${item.cartID}`), {});
   };
 
   onPressAdd = (item) => () => {
@@ -168,7 +216,7 @@ export default class Cart extends Component {
   renderProductItem = ({item}) => (
     <ActionProductCardHorizontal
       key={item.id}
-      onPress={this.navigateTo('Product')}
+      onPress={this.navigateTo('EditCartProduct', item.cartID)}
       onPressRemove={this.onPressRemove(item)}
       onPressAdd={this.onPressAdd(item)}
       imageUri={item.imageUri}
@@ -207,10 +255,7 @@ export default class Cart extends Component {
         </View>
 
         {products.length === 0 ? (
-          <EmptyState
-            title="Your Cart is Empty"
-            message="Looks like you haven't added any ramen to your cart yet"
-          />
+          <EmptyState title="Your Cart is Empty" message="" />
         ) : (
           <Fragment>
             <View style={styles.flex1}>
@@ -226,7 +271,7 @@ export default class Cart extends Component {
             <Divider />
 
             <View style={styles.bottomButtonContainer}>
-              <Button onPress={this.navigateTo('Checkout')} title="Checkout" />
+              <Button onPress={() => console.log('test')} title="Checkout" />
             </View>
           </Fragment>
         )}

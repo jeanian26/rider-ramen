@@ -413,7 +413,6 @@ let data = {
       name: 'Ramen',
       price: 10.0,
       quantity: 2,
-      discountPercentage: 10,
     },
     {
       id: 'product2',

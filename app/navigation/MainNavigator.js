@@ -1,91 +1,38 @@
 /* eslint-disable prettier/prettier */
-/**
- *
- *
- * @format
- * @flow
- */
 
-// import dependencies
 import React from 'react';
 import {Platform} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
-// import components
 import HeaderIconButton from '../components/navigation/HeaderIconButton';
 
-// import Introduction screen
 import Intro from '../screens/introduction/Introduction';
-
-// import Welcome screen
 import Welcome from '../screens/welcome/Welcome';
-
-// import SignUp screen
 import SignUp from '../screens/signup/SignUp';
-
-// import SignIn screen
 import SignIn from '../screens/signin/SignIn';
-
-// import ForgotPassword screen
 import ForgotPassword from '../screens/forgotpassword/ForgotPassword';
-
-// import TermsConditions screen
-import TermsConditions from '../screens/terms/TermsConditions';
-
-// import HomeNavigator
 import HomeNavigator from './HomeNavigator1';
-
-// import Product screen
 import Product from '../screens/product/Product';
-
-// import Categories screen
+import EditCartProduct from '../screens/product/EditCartProduct';
 import Categories from '../screens/categories/Categories';
 import Category from '../screens/categories/Category';
-
-// import Search results screen
 import SearchResults from '../screens/search/SearchResults';
-
-// import Checkout screen
 import Checkout from '../screens/checkout/Checkout';
-
-// import EditProfile screen
 import EditProfile from '../screens/profile/EditProfile';
-
-// import DeliveryAddress screen
 import DeliveryAddress from '../screens/address/DeliveryAddress';
-
-// import AddAddress screen
 import AddAddress from '../screens/address/AddAddress';
-
-// import EditAddress screen
 import EditAddress from '../screens/address/EditAddress';
-
-// import Payment screen
 import PaymentMethod from '../screens/payment/PaymentMethod';
-
-// import AddCreditCard screen
 import AddCreditCard from '../screens/payment/AddCreditCard';
-
-// import Notifications screen
 import Notifications from '../screens/notifications/Notifications';
-
-// import Orders screen
 import Orders from '../screens/orders/Orders';
-
-// import AboutUs screen
-import AboutUs from '../screens/about/AboutUs';
-
-// import colors
 import Colors from '../theme/colors';
 
-// MainNavigatorA Config
 const SAVE_ICON = Platform.OS === 'ios' ? 'ios-checkmark' : 'md-checkmark';
 
-// create stack navigator
 const Stack = createStackNavigator();
 
-// MainNavigatorA
 function MainNavigatorA() {
   return (
     <NavigationContainer>
@@ -104,11 +51,6 @@ function MainNavigatorA() {
           headerTitleAlign: 'center',
         }}>
         <Stack.Screen
-          name="Onboarding"
-          component={Intro}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
           name="Welcome"
           component={Welcome}
           options={{headerShown: false}}
@@ -124,11 +66,6 @@ function MainNavigatorA() {
             },
           }}
         />
-        {/* <Stack.Screen
-          name="Verification"
-          component={Verification}
-          options={{headerShown: false}}
-        /> */}
         <Stack.Screen
           name="SignIn"
           component={SignIn}
@@ -151,13 +88,7 @@ function MainNavigatorA() {
             title: 'Forgot Password?',
           }}
         />
-        <Stack.Screen
-          name="TermsConditions"
-          component={TermsConditions}
-          options={{
-            title: 'Terms and Conditions',
-          }}
-        />
+
         <Stack.Screen
           name="HomeNavigator"
           component={HomeNavigator}
@@ -180,6 +111,11 @@ function MainNavigatorA() {
         <Stack.Screen
           name="Product"
           component={Product}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="EditCartProduct"
+          component={EditCartProduct}
           options={{headerShown: false}}
         />
         <Stack.Screen
@@ -268,13 +204,6 @@ function MainNavigatorA() {
           component={Orders}
           options={{
             title: 'My Orders',
-          }}
-        />
-        <Stack.Screen
-          name="AboutUs"
-          component={AboutUs}
-          options={{
-            title: 'About Us',
           }}
         />
       </Stack.Navigator>

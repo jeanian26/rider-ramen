@@ -96,7 +96,8 @@ export default class EditProfile extends Component {
       phoneFocused: false,
       imagePickerVisible: false,
       imagePath: null,
-      uri: require('../../assets/img/profile.jpg'),
+      // uri: require('../../assets/img/profile.jpg'),
+      uri: 'https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png',
       uid: '',
     };
   }
@@ -228,9 +229,12 @@ export default class EditProfile extends Component {
 
     const self = this;
     const storage = getStorage();
+    console.log('UID', user.uid);
     getDownloadURL(ref(storage, `profile_images/${user.uid}.jpg`))
       .then((url) => {
+        console.log(url);
         self.setState({uri: url});
+        global.USERID = user.id;
       })
       .catch((error) => {
         // Handle any errors
@@ -238,13 +242,6 @@ export default class EditProfile extends Component {
   };
 
   uploadImage = async (uri) => {
-    const filename = this.state.uid + '.jpg';
-    const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
-    const storage = getStorage();
-    const metadata = {
-      contentType: 'image/jpg',
-    };
-    const storageRef = ref(storage, `/profile_images/${filename}`);
     const blob = await new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       xhr.onload = function () {
@@ -258,6 +255,16 @@ export default class EditProfile extends Component {
       xhr.open('GET', uri, true);
       xhr.send(null);
     });
+    console.log(global.USERID);
+    const auth = getAuth();
+    const user = auth.currentUser;
+    console.log(user.uid);
+    const filename = user.uid + '.jpg';
+    const storage = getStorage();
+    const metadata = {
+      contentType: 'image/jpg',
+    };
+    const storageRef = ref(storage, `/profile_images/${filename}`);
     uploadBytes(storageRef, blob, metadata).then((snapshot) => {
       console.log('Uploaded a blob or file!', snapshot);
     });

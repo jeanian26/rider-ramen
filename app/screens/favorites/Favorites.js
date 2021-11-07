@@ -35,7 +35,6 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   productList: {
-    // spacing = paddingHorizontal + ActionProductCardHorizontal margin = 12 + 4 = 16
     paddingHorizontal: 12,
   },
   bottomTextInfo: {
@@ -53,13 +52,11 @@ const styles = StyleSheet.create({
   },
 });
 
-// Favorites
 export default class Favorites extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      //products: sample_data.favorites_products,
       products: [],
     };
   }
@@ -144,10 +141,7 @@ export default class Favorites extends Component {
         </View>
 
         {products.length === 0 ? (
-          <EmptyState
-            title="Your Favorites List is Empty"
-            message="Save your favorite Ramen so you can always find it here and make order easier"
-          />
+          <EmptyState title="Your Favorites List is Empty" message="" />
         ) : (
           <Fragment>
             <FlatList
