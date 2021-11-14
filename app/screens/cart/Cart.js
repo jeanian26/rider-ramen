@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 
-import React, {Component, Fragment} from 'react';
+import React, { Component, Fragment } from 'react';
 import {
   FlatList,
   SafeAreaView,
@@ -12,11 +12,11 @@ import remove from 'lodash/remove';
 
 import ActionProductCardHorizontal from '../../components/cards/ActionProductCardHorizontal';
 import Button from '../../components/buttons/Button';
-import {Heading6, Subtitle1} from '../../components/text/CustomText';
+import { Heading6, Subtitle1 } from '../../components/text/CustomText';
 import Divider from '../../components/divider/Divider';
 import EmptyState from '../../components/emptystate/EmptyState';
-import {getAuth} from 'firebase/auth';
-import {getDatabase, ref, child, get, set, update} from 'firebase/database';
+import { getAuth } from 'firebase/auth';
+import { getDatabase, ref, child, get, set, update } from 'firebase/database';
 import Colors from '../../theme/colors';
 
 import sample_data from '../../config/sample-data';
@@ -94,7 +94,6 @@ export default class Cart extends Component {
     let newArray = [];
     const auth = getAuth();
     const user = auth.currentUser;
-    const self = this;
     let total = 0;
     get(child(dbRef, 'cart/'))
       .then((snapshot) => {
@@ -118,7 +117,7 @@ export default class Cart extends Component {
               console.log(false);
             }
           }
-          this.setState({total: total, products: newArray});
+          this.setState({ total: total, products: newArray });
           // this.setState({products: array});
         } else {
           console.log('No data available');
@@ -130,7 +129,7 @@ export default class Cart extends Component {
   }
 
   navigateTo = (screen, key) => () => {
-    const {navigation} = this.props;
+    const { navigation } = this.props;
     navigation.navigate(screen);
     navigation.navigate(screen, {
       key: key,
@@ -138,7 +137,7 @@ export default class Cart extends Component {
   };
 
   swipeoutOnPressRemove = (item) => () => {
-    let {products} = this.state;
+    let { products } = this.state;
     const index = products.indexOf(item);
 
     products = remove(products, (n) => products.indexOf(n) !== index);
@@ -154,14 +153,14 @@ export default class Cart extends Component {
   };
 
   onRefreshCart = () => {
-    let {products} = this.state;
+    let { products } = this.state;
   };
   onPressRemove = (item) => () => {
     console.log('Remove', item.cartID);
-    let {quantity} = item;
+    let { quantity } = item;
     quantity -= 1;
 
-    let {products} = this.state;
+    let { products } = this.state;
     const index = products.indexOf(item);
 
     if (quantity === 0) {
@@ -189,8 +188,8 @@ export default class Cart extends Component {
   };
 
   onPressAdd = (item) => () => {
-    const {quantity} = item;
-    const {products} = this.state;
+    const { quantity } = item;
+    const { products } = this.state;
 
     const index = products.indexOf(item);
     products[index].quantity = quantity + 1;
@@ -211,12 +210,12 @@ export default class Cart extends Component {
   };
 
   updateTotalAmount = () => {
-    const {products} = this.state;
+    const { products } = this.state;
     let total = 0.0;
 
     products.forEach((product) => {
-      let {price} = product;
-      const {discountPercentage, quantity} = product;
+      let { price } = product;
+      const { discountPercentage, quantity } = product;
 
       if (typeof discountPercentage !== 'undefined') {
         price -= price * discountPercentage * 0.01;
@@ -231,7 +230,7 @@ export default class Cart extends Component {
 
   keyExtractor = (item) => item.id.toString();
 
-  renderProductItem = ({item}) => (
+  renderProductItem = ({ item }) => (
     <ActionProductCardHorizontal
       key={item.id}
       onPress={this.navigateTo('EditCartProduct', item.cartID)}
@@ -251,7 +250,7 @@ export default class Cart extends Component {
   );
 
   render() {
-    const {total, products} = this.state;
+    const { total, products } = this.state;
 
     return (
       <SafeAreaView style={styles.container}>
@@ -289,7 +288,9 @@ export default class Cart extends Component {
             <Divider />
 
             <View style={styles.bottomButtonContainer}>
-              <Button onPress={() => console.log('test')} title="Checkout" />
+              <Button onPress={() => console.log('test')}
+                title="Checkout"
+              />
             </View>
           </Fragment>
         )}

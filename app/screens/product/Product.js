@@ -193,12 +193,6 @@ const styles = StyleSheet.create({
 export default class Product extends Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   product: sample_data.product_details,
-    //   extras: sample_data.product_variant,
-    //   favorite: false,
-    //   total: '',
-    // };
     this.state = {
       product: [],
       extras: [],

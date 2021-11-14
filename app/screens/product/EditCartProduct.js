@@ -194,8 +194,8 @@ export default class EditCartProduct extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      product: sample_data.product_details,
-      extras: sample_data.product_variant,
+      product: [],
+      extras: [],
       favorite: false,
       total: '',
     };
