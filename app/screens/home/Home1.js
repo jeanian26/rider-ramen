@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 
 import React, {Component} from 'react';
@@ -11,19 +12,20 @@ import {
   Text,
   View,
   Image,
+  Button,
 } from 'react-native';
 import {getDatabase, ref, child, get, set} from 'firebase/database';
 import getImgSource from '../../utils/getImgSource.js';
 
-import ActionProductCard from '../../components/cards/ActionProductCard';
 import ActionProductCardHorizontal from '../../components/cards/ActionProductCardHorizontal';
 import LinkButton from '../../components/buttons/LinkButton';
-import {Heading6} from '../../components/text/CustomText';
+import {Heading6, Heading4, Heading5, Paragraph} from '../../components/text/CustomText';
 import TouchableItem from '../../components/TouchableItem';
 
 import Colors from '../../theme/colors';
 
 import sample_data from '../../config/sample-data';
+import Logo from '../../components/logo/Logo.js';
 
 const imgHolder = require('../../assets/img/imgholder.png');
 const styles = StyleSheet.create({
@@ -119,6 +121,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingBottom: 16,
   },
+  buttonContainer: {
+    paddingTop: 10,
+    paddingBottom:15,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  logoContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 52,
+    width: 104,
+    height: 104,
+    backgroundColor: Colors.white,
+  },
 });
 
 export default class Home extends Component {
@@ -133,7 +149,7 @@ export default class Home extends Component {
   getCategories() {
     let categories = [];
     const dbRef = ref(getDatabase());
-    get(child(dbRef, `category/`))
+    get(child(dbRef, 'category/'))
       .then((snapshot) => {
         if (snapshot.exists()) {
           console.log(snapshot.val());
@@ -158,7 +174,7 @@ export default class Home extends Component {
     let products = [];
     let filteredProducts = [];
     const dbRef = ref(getDatabase());
-    get(child(dbRef, `products/`))
+    get(child(dbRef, 'products/'))
       .then((snapshot) => {
         if (snapshot.exists()) {
           console.log(snapshot.val());
@@ -270,8 +286,38 @@ export default class Home extends Component {
         <View style={styles.container}>
           <ScrollView>
             <View>
-              <View style={{paddingTop: 30}}></View>
-              <View style={styles.categoriesContainer}>
+              <View style={{
+                padding:20,
+                paddingTop:30,
+                textAlign:'center',
+                alignContent:'center',
+                alignItems:'center',
+                backgroundColor:Colors.primaryColor,
+              }}>
+                <View style={styles.logoContainer}>
+                  <Logo logoStyle={{borderRadius: 100}} size={96} />
+                </View>
+                <Heading5 style={{
+                  color:'white',
+                  fontWeight:'700',
+                  paddingTop:10}}>Ramen Nado</Heading5>
+                <Text style={{
+                    paddingTop:15,
+                    color:'white',
+                  }}>Cant pick the right Ramen for you?</Text>
+                <Text style={{color:'white'}}>Let me help</Text>
+                <View style={styles.buttonContainer}>
+                  <Button
+                    onPress={this.navigateTo('CustomSearch')}
+                    color={Colors.primaryColor}
+                    small
+                    title={'GET STARTED'.toUpperCase()}
+                    titleColor={Colors.background}
+                    borderRadius={100}
+                  />
+                </View>
+              </View>
+              <View >
                 <View style={styles.titleContainer}>
                   <View style={styles.category}>
                     <View style={styles.categoryView}>

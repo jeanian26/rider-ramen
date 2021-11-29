@@ -18,6 +18,7 @@ import EditCartProduct from '../screens/product/EditCartProduct';
 import Categories from '../screens/categories/Categories';
 import Category from '../screens/categories/Category';
 import SearchResults from '../screens/search/SearchResults';
+import CustomSearch from '../screens/search/CustomSearch';
 import Checkout from '../screens/checkout/Checkout';
 import EditProfile from '../screens/profile/EditProfile';
 import DeliveryAddress from '../screens/address/DeliveryAddress';
@@ -123,6 +124,13 @@ function MainNavigatorA() {
           component={SearchResults}
           options={{
             title: 'Search Results',
+          }}
+        />
+        <Stack.Screen
+          name="CustomSearch"
+          component={CustomSearch}
+          options={{
+            title: 'Custom Search',
           }}
         />
         <Stack.Screen

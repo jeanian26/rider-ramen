@@ -19,10 +19,6 @@ import { getAuth } from 'firebase/auth';
 import { getDatabase, ref, child, get, set, update } from 'firebase/database';
 import Colors from '../../theme/colors';
 
-import sample_data from '../../config/sample-data';
-
-const EMPTY_STATE_ICON = 'cart-remove';
-
 const styles = StyleSheet.create({
   flex1: {
     flex: 1,
@@ -288,7 +284,7 @@ export default class Cart extends Component {
             <Divider />
 
             <View style={styles.bottomButtonContainer}>
-              <Button onPress={() => console.log('test')}
+              <Button onPress={this.navigateTo('Checkout')}
                 title="Checkout"
               />
             </View>

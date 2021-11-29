@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /**
  *
  *
@@ -26,6 +27,8 @@ import InfoModal from '../../components/modals/InfoModal';
 import LinkButton from '../../components/buttons/LinkButton';
 import {Caption, Subtitle1, Subtitle2} from '../../components/text/CustomText';
 import UnderlineTextInput from '../../components/textinputs/UnderlineTextInput';
+import {getAuth} from 'firebase/auth';
+import {getDatabase, ref, child, get, set} from 'firebase/database';
 
 // import colors
 import Colors from '../../theme/colors';
@@ -151,9 +154,9 @@ export default class Checkout extends Component {
 
     this.state = {
       activeIndex: 0,
-      address: '455 Larkspur Dr.',
-      city: 'Baviera',
-      zip: '92908',
+      address: '',
+      city: '',
+      zip: '',
       addressFocused: false,
       cityFocused: false,
       zipFocused: false,
@@ -261,6 +264,42 @@ export default class Checkout extends Component {
       },
     );
   };
+  getAddress() {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, `address/${user.uid}`))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          console.log(snapshot.val());
+          const result = snapshot.val();
+          console.log(result);
+          this.setState({
+            address: result.str_number + result.barangay,
+            city: result.city,
+            zip: result.zipcode,
+          });
+        } else {
+          console.log('No data available');
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+  componentDidMount() {
+    this.getAddress();
+    this.willFocusSubscription = this.props.navigation.addListener(
+      'willFocus',
+      () => {
+        this.getAddress();
+      }
+    );
+  }
+
+  componentWillUnmount() {
+    this.willFocusSubscription();
+  }
 
   render() {
     const {
@@ -282,68 +321,7 @@ export default class Checkout extends Component {
         />
 
         <View style={styles.container}>
-          <View style={styles.headerContainer}>
-            <View style={styles.stepIndicator}>
-              <View style={styles.stepContainer}>
-                <Caption
-                  style={[
-                    styles.stepText,
-                    activeIndex === 0 && styles.activeStepText,
-                  ]}>
-                  Delivery
-                </Caption>
-                <Caption
-                  style={[
-                    styles.stepText,
-                    activeIndex === 0 && styles.activeStepText,
-                  ]}>
-                  address
-                </Caption>
-              </View>
-
-              <View
-                style={[styles.line, activeIndex > 0 && styles.activeLine]}
-              />
-
-              <View style={styles.stepContainer}>
-                <Caption
-                  style={[
-                    styles.stepText,
-                    activeIndex === 1 && styles.activeStepText,
-                  ]}>
-                  Payment
-                </Caption>
-                <Caption
-                  style={[
-                    styles.stepText,
-                    activeIndex === 1 && styles.activeStepText,
-                  ]}>
-                  method
-                </Caption>
-              </View>
-
-              <View
-                style={[styles.line, activeIndex > 1 && styles.activeLine]}
-              />
-
-              <View style={styles.stepContainer}>
-                <Caption
-                  style={[
-                    styles.stepText,
-                    activeIndex === 2 && styles.activeStepText,
-                  ]}>
-                  Confirm
-                </Caption>
-                <Caption
-                  style={[
-                    styles.stepText,
-                    activeIndex === 2 && styles.activeStepText,
-                  ]}>
-                  order
-                </Caption>
-              </View>
-            </View>
-          </View>
+          <View style={styles.headerContainer} />
 
           <View style={styles.swiperContainer}>
             <Swiper

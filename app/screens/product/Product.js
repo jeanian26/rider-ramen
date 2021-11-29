@@ -312,7 +312,7 @@ export default class Product extends Component {
     if (product.extra === true) {
       loopExtras = (
         <View>
-          <Caption style={styles.caption}>CHOOSE EXTRAS</Caption>
+          <Caption style={styles.caption}>CHOOSE INGREDIENTS</Caption>
           {extras.map((item, index) => (
             <TouchableItem
               key={index.toString()}
