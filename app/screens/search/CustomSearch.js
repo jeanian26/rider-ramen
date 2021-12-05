@@ -96,19 +96,21 @@ export default class EditAddress extends Component {
 
     this.state = {
       addressType: 'home',
-      number: '',
+      number: '1',
       numberFocused: false,
-      street: '',
+      street: '2',
       streetFocused: false,
-      district: '',
+      district: '3',
       districtFocused: false,
-      zip: '',
+      zip: '4',
       zipFocused: false,
-      city: '',
+      city: '5',
       cityFocused: false,
       modalVisible: false,
       messageTitle: 'Saving address details',
       userID: '',
+      min:'0',
+      max:'100',
     };
   }
 
@@ -135,7 +137,7 @@ export default class EditAddress extends Component {
 
   onChangeText = (key) => (text) => {
     this.setState({
-      [key]: text,
+      [key]: text.replace(/[^0-9]/g, ''),
     });
   };
 
@@ -160,74 +162,18 @@ export default class EditAddress extends Component {
     }
   };
 
-  saveAddress = () => {
-    const auth = getAuth();
-    const user = auth.currentUser;
-    const {navigation} = this.props;
-
-    const db = getDatabase();
-    set(ref(db, 'address/' + user.uid), {
-      str_number: this.state.number,
-      street_name: this.state.street,
-      barangay: this.state.district,
-      city: this.state.city,
-      zipcode: this.state.zip,
-    });
-    navigation.navigate('Settings');
-  };
   componentDidMount = async () => {
-    const auth = getAuth();
-    const user = auth.currentUser;
-    const dbRef = ref(getDatabase());
-    const self = this;
-    get(child(dbRef, `address/${user.uid}`))
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          console.log(snapshot.val());
-          const result = snapshot.val();
-          self.setState({
-            number: result.str_number,
-            street: result.street_name,
-            district: result.barangay,
-            city: result.city,
-            zip: result.zipcode,
-          });
-        } else {
-          console.log('No data available');
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+
   };
 
-  closeModal = () => {
-    // for demo purpose clear timeout if user request close modal before 3s timeout
-    clearTimeout(this.timeout);
-    this.setState(
-      {
-        modalVisible: false,
-      },
-      () => {
-        this.goBack();
-      },
-    );
-  };
+
 
   render() {
     const {
-      number,
-      numberFocused,
-      street,
-      streetFocused,
-      district,
-      districtFocused,
-      zip,
-      zipFocused,
-      city,
-      cityFocused,
       modalVisible,
       messageTitle,
+      min,
+      max,
     } = this.state;
 
     return (
@@ -248,9 +194,8 @@ export default class EditAddress extends Component {
           <View style={styles.form}>
             <View style={styles.inputContainer}>
               <UnderlineTextInput
-                onChangeText={this.onChangeText('number')}
+                onChangeText={this.onChangeText('min')}
                 onFocus={this.onFocus('numberFocused')}
-                inputFocused={numberFocused}
                 onSubmitEditing={this.focusOn(this.street)}
                 returnKeyType="next"
                 placeholder="Minimum Budget"
@@ -258,6 +203,7 @@ export default class EditAddress extends Component {
                 inputTextColor={INPUT_TEXT_COLOR}
                 borderColor={INPUT_BORDER_COLOR}
                 focusedBorderColor={INPUT_FOCUSED_BORDER_COLOR}
+                value={min}
               />
             </View>
 
@@ -266,9 +212,9 @@ export default class EditAddress extends Component {
                 onRef={(r) => {
                   this.street = r;
                 }}
-                onChangeText={this.onChangeText('street')}
+                value={(max)}
+                onChangeText={this.onChangeText('max')}
                 onFocus={this.onFocus('streetFocused')}
-                inputFocused={streetFocused}
                 onSubmitEditing={this.focusOn(this.district)}
                 returnKeyType="next"
                 blurOnSubmit={false}
@@ -280,46 +226,10 @@ export default class EditAddress extends Component {
               />
             </View>
 
-            <View style={styles.inputContainer}>
-              <UnderlineTextInput
-                onRef={(r) => {
-                  this.district = r;
-                }}
-                onChangeText={this.onChangeText('district')}
-                onFocus={this.onFocus('districtFocused')}
-                inputFocused={districtFocused}
-                onSubmitEditing={this.focusOn(this.zip)}
-                returnKeyType="next"
-                blurOnSubmit={false}
-                placeholder="District"
-                placeholderTextColor={PLACEHOLDER_TEXT_COLOR}
-                inputTextColor={INPUT_TEXT_COLOR}
-                value={district}
-                borderColor={INPUT_BORDER_COLOR}
-                focusedBorderColor={INPUT_FOCUSED_BORDER_COLOR}
-              />
-            </View>
+            <View style={styles.inputContainer} />
 
             <View style={styles.row}>
-              <View style={[styles.inputContainer, styles.small]}>
-                <UnderlineTextInput
-                  onRef={(r) => {
-                    this.zip = r;
-                  }}
-                  onChangeText={this.onChangeText('zip')}
-                  onFocus={this.onFocus('zipFocused')}
-                  inputFocused={zipFocused}
-                  onSubmitEditing={this.focusOn(this.city)}
-                  returnKeyType="next"
-                  blurOnSubmit={false}
-                  placeholder="ZIP Code"
-                  placeholderTextColor={PLACEHOLDER_TEXT_COLOR}
-                  value={zip}
-                  inputTextColor={INPUT_TEXT_COLOR}
-                  borderColor={INPUT_BORDER_COLOR}
-                  focusedBorderColor={INPUT_FOCUSED_BORDER_COLOR}
-                />
-              </View>
+              <View style={[styles.inputContainer, styles.small]} />
             </View>
           </View>
 
@@ -328,7 +238,7 @@ export default class EditAddress extends Component {
               onPress={this.saveAddress}
               disabled={false}
               small
-              title={'Save'.toUpperCase()}
+              title={'Search'.toUpperCase()}
               buttonStyle={styles.extraSmallButton}
             />
           </View>

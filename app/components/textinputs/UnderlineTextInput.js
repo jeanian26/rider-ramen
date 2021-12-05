@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /**
  *
  *
@@ -57,12 +58,12 @@ type Props = {
   blurOnSubmit: boolean,
   onKeyPress: () => {},
   keyboardType:
-    | 'default'
-    | 'number-pad'
-    | 'decimal-pad'
-    | 'numeric'
-    | 'email-address'
-    | 'phone-pad',
+  | 'default'
+  | 'number-pad'
+  | 'decimal-pad'
+  | 'numeric'
+  | 'email-address'
+  | 'phone-pad',
   autoCapitalize: 'none' | 'sentences' | 'words' | 'characters',
   maxLength: number,
   placeholder: string,
@@ -78,7 +79,7 @@ type Props = {
 
 // UnderlineTextInput
 const UnderlineTextInput = ({
-  onRef = () => {},
+  onRef = () => { },
   onChangeText,
   onFocus,
   inputFocused,
@@ -102,8 +103,8 @@ const UnderlineTextInput = ({
   <View
     style={[
       styles.container,
-      borderColor && {borderColor},
-      inputFocused && {borderColor: focusedBorderColor},
+      borderColor && { borderColor },
+      inputFocused && { borderColor: focusedBorderColor },
       inputContainerStyle && inputContainerStyle,
     ]}>
     <TextInput
@@ -124,7 +125,7 @@ const UnderlineTextInput = ({
       secureTextEntry={secureTextEntry}
       style={[
         styles.textInput,
-        inputTextColor && {color: inputTextColor},
+        inputTextColor && { color: inputTextColor },
         inputStyle,
       ]}
     />

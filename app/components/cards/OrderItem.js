@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
 });
 
 const renderOrderItemsTotal = (items) => {
-  const total = items.reduce((prev, next) => prev + next.price, 0);
+  const total = items.reduce((prev, next) => prev + (next.price * next.quantity), 0);
   return total;
 };
 
@@ -120,10 +120,10 @@ const OrderItem = ({
       <View style={styles.pv8}>
         {orderItems.map((item, index) => (
           <View key={index.toString()} style={styles.itemContainer}>
-            <TouchableItem onPress={onPress} activeOpacity={activeOpacity}>
+            <TouchableItem  activeOpacity={activeOpacity}>
               <View style={styles.item}>
-                <Subtitle2>{item.name}</Subtitle2>
-                <Subtitle2>{`₱ ${item.price}`}</Subtitle2>
+                <Subtitle2>{item.name} x {item.quantity}</Subtitle2>
+                <Subtitle2>{`₱ ${item.price * item.quantity}`}</Subtitle2>
               </View>
             </TouchableItem>
           </View>
@@ -137,12 +137,12 @@ const OrderItem = ({
             <Subtitle2 style={styles.onTheWay}>On the way</Subtitle2>
           </View>
 
-          <Button
+          {/* <Button
             color={Colors.primaryColor}
             title="Track"
             titleColor={Colors.white}
             buttonStyle={styles.extraSmallButton}
-          />
+          /> */}
         </View>
       )}
 
@@ -169,12 +169,7 @@ const OrderItem = ({
             <Subtitle2 style={styles.delivered}>Delivered</Subtitle2>
           </View>
 
-          <Button
-            color={Colors.primaryColor}
-            title="Reorder"
-            titleColor={Colors.white}
-            buttonStyle={styles.extraSmallButton}
-          />
+
         </View>
       )}
     </View>

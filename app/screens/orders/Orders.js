@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   FlatList,
   SafeAreaView,
@@ -10,7 +10,8 @@ import {
 } from 'react-native';
 
 import OrderItem from '../../components/cards/OrderItem';
-
+import { getAuth } from 'firebase/auth';
+import { getDatabase, ref, child, get, set } from 'firebase/database';
 import Colors from '../../theme/colors';
 
 import sample_data from '../../config/sample-data';
@@ -38,25 +39,64 @@ export default class Orders extends Component {
       orders: [],
     };
   }
+  componentDidMount() {
+    //this.addData();
+    this.getData();
+
+    this.focusListener = this.props.navigation.addListener('focus', () => {
+      this.getData();
+    });
+  }
+  getData() {
+    let products = [];
+    const auth = getAuth();
+    const user = auth.currentUser;
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, `order/${user.uid}`))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          console.log(snapshot.val());
+          products = snapshot.val();
+          console.log(typeof products);
+          products = Object.values(products);
+          console.log('converted', products);
+          this.setState({ orders: products });
+          console.log('Products', this.state.products);
+        } else {
+          console.log('No data available');
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
 
   goBack = () => {
-    const {navigation} = this.props;
+    const { navigation } = this.props;
     navigation.goBack();
   };
 
   navigateTo = (screen) => () => {
-    const {navigation} = this.props;
+    const { navigation } = this.props;
     navigation.navigate(screen);
   };
+  changeDate(date) {
+    console.log(date);
+    if (!date) {
+      return '';
+    }
+    date = date.slice(0, 24);
+    return date;
+  }
 
   keyExtractor = (item) => item.orderNumber.toString();
 
-  renderItem = ({item, index}) => (
+  renderItem = ({ item, index }) => (
     <OrderItem
       key={index}
       activeOpacity={0.8}
       orderNumber={item.orderNumber}
-      orderDate={item.orderDate}
+      orderDate={this.changeDate(item.orderDate)}
       orderItems={item.orderItems}
       orderStatus={item.orderStatus}
       onPress={this.navigateTo('Product')}
@@ -64,7 +104,7 @@ export default class Orders extends Component {
   );
 
   render() {
-    const {orders} = this.state;
+    const { orders } = this.state;
 
     return (
       <SafeAreaView style={styles.screenContainer}>

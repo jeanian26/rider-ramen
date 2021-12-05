@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 
-import React, {Component, Fragment} from 'react';
+import React, { Component, Fragment } from 'react';
 import {
   ImageBackground,
   Platform,
@@ -10,20 +10,20 @@ import {
   StyleSheet,
   Text,
   View,
+  ToastAndroid,
 } from 'react-native';
-import {getAuth} from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
 import getImgSource from '../../utils/getImgSource.js';
-import {getDatabase, ref, child, get, set} from 'firebase/database';
+import { getDatabase, ref, child, get, set } from 'firebase/database';
 
 import Button from '../../components/buttons/Button';
-import {Caption, Heading5, SmallText} from '../../components/text/CustomText';
+import { Caption, Heading5, SmallText } from '../../components/text/CustomText';
 import GradientContainer from '../../components/gradientcontainer/GradientContainer';
 import Icon from '../../components/icon/Icon';
 import TouchableItem from '../../components/TouchableItem';
 
 import Colors from '../../theme/colors';
 import uuid from 'react-native-uuid';
-import sample_data from '../../config/sample-data';
 
 const IOS = Platform.OS === 'ios';
 const FAVORITE_ICON = IOS ? 'ios-heart' : 'md-heart';
@@ -31,7 +31,7 @@ const CLOSE_ICON = IOS ? 'ios-close' : 'md-close';
 const imgHolder = require('../../assets/img/imgholder.png');
 
 const styles = StyleSheet.create({
-  topArea: {flex: 0, backgroundColor: Colors.primaryColor},
+  topArea: { flex: 0, backgroundColor: Colors.primaryColor },
   screenContainer: {
     flex: 1,
     backgroundColor: Colors.background,
@@ -45,15 +45,15 @@ const styles = StyleSheet.create({
     height: 236,
     resizeMode: 'cover',
   },
-  bottomOverlay: {flex: 1},
+  bottomOverlay: { flex: 1 },
   topButton: {
     position: 'absolute',
     top: 16,
     borderRadius: 18,
     backgroundColor: Colors.background,
   },
-  left: {left: 16},
-  right: {right: 16},
+  left: { left: 16 },
+  right: { right: 16 },
   buttonIconContainer: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -111,7 +111,6 @@ const styles = StyleSheet.create({
     marginRight: 24,
     width: 20,
     height: 20,
-    borderRadius: 10,
     borderWidth: 2,
     borderColor: Colors.primaryColor,
     backgroundColor: Colors.background,
@@ -166,7 +165,7 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: '#efefef',
   },
-  bottomArea: {flex: 0, backgroundColor: '#efefef'},
+  bottomArea: { flex: 0, backgroundColor: '#efefef' },
   starContainer: {
     flex: 1,
     flexDirection: 'row',
@@ -202,8 +201,8 @@ export default class Product extends Component {
   }
 
   getData() {
-    const {route} = this.props;
-    const {key} = route.params;
+    const { route } = this.props;
+    const { key } = route.params;
     console.log(key);
     let products = [];
     const dbRef = ref(getDatabase());
@@ -212,7 +211,7 @@ export default class Product extends Component {
         if (snapshot.exists()) {
           console.log(snapshot.val().price);
           products = snapshot.val();
-          this.setState({product: products, total: snapshot.val().price});
+          this.setState({ product: products, total: snapshot.val().price });
         } else {
           console.log('No data available');
         }
@@ -230,7 +229,7 @@ export default class Product extends Component {
           console.log(snapshot.val());
           console.log(Object.values(snapshot.val()));
           array = Object.values(snapshot.val());
-          this.setState({extras: array});
+          this.setState({ extras: array });
         } else {
           console.log('No data available');
         }
@@ -245,17 +244,17 @@ export default class Product extends Component {
   }
 
   navigateTo = (screen) => () => {
-    const {navigation} = this.props;
+    const { navigation } = this.props;
     navigation.navigate(screen);
   };
 
   goBack = () => {
-    const {navigation} = this.props;
+    const { navigation } = this.props;
     navigation.goBack();
   };
 
   onPressAddToFavorites = () => {
-    const {favorite} = this.state;
+    const { favorite } = this.state;
 
     this.setState({
       favorite: !favorite,
@@ -263,7 +262,7 @@ export default class Product extends Component {
   };
 
   setExtraDish = (item) => () => {
-    const {product, extras} = this.state;
+    const { product, extras } = this.state;
     const index = extras.indexOf(item);
     const picked = extras[index].picked;
 
@@ -279,34 +278,46 @@ export default class Product extends Component {
     });
   };
   addToCart = () => {
-    const {navigation} = this.props;
+    const { navigation } = this.props;
     const auth = getAuth();
     const user = auth.currentUser;
-    console.log('ID:', user.uid);
-    console.log('product:', this.state.product);
-    console.log('extra:', this.state.extras);
-    console.log('total:', this.state.total);
+    let product = this.state.product;
+    if (product.stock != 0) {
+      console.log('ID:', user.uid);
+      console.log('product:', this.state.product);
+      console.log('extra:', this.state.extras);
+      console.log('total:', this.state.total);
+      console.log('stock:', product.stock);
 
-    let randomID = uuid.v4();
-    const db = getDatabase();
-    set(ref(db, 'cart/' + randomID), {
-      cartID: randomID,
-      sold: false,
-      userid: user.uid,
-      id: this.state.product.key,
-      imageUri: this.state.product.imageUri,
-      name: this.state.product.name,
-      price: this.state.total,
-      quantity: 1,
-      extra: this.state.extras,
-    }).then(() => {
-      navigation.navigate('Cart');
-    });
+      let randomID = uuid.v4();
+      const db = getDatabase();
+      set(ref(db, 'cart/' + randomID), {
+        cartID: randomID,
+        sold: false,
+        userid: user.uid,
+        id: this.state.product.key,
+        imageUri: this.state.product.imageUri,
+        name: this.state.product.name,
+        price: this.state.total,
+        quantity: 1,
+        extra: this.state.extras,
+      }).then(() => {
+        navigation.navigate('Cart');
+      });
+    }
+    else {
+      ToastAndroid.showWithGravity(
+        'NO STOCK!',
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
+    }
+
   };
 
   render() {
-    const {product, favorite, extras} = this.state;
-    const {price, description} = product;
+    const { product, favorite, extras } = this.state;
+    const { price, description } = product;
     let loopExtras;
     console.log(product.extra);
     if (product.extra === true) {
@@ -322,7 +333,7 @@ export default class Product extends Component {
                 <View style={styles.indicator}>
                   <View>
                     {item.picked ? (
-                      <View style={styles.filledIndicator} />
+                      <ImageBackground source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZILrdYmnUo8tt46-C3JywEyy37j2mvcFsIw&usqp=CAU' }} style={styles.filledIndicator} />
                     ) : (
                       <View style={styles.emptyIndicator} />
                     )}
@@ -355,8 +366,8 @@ export default class Product extends Component {
                 style={styles.productImg}>
                 <GradientContainer
                   colors={[Colors.primaryLightColor, 'transparent']}
-                  start={{x: 0, y: 1}}
-                  end={{x: 0, y: 0.6}}
+                  start={{ x: 0, y: 1 }}
+                  end={{ x: 0, y: 0.6 }}
                   containerStyle={styles.bottomOverlay}
                 />
               </ImageBackground>

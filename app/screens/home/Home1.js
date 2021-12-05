@@ -183,7 +183,7 @@ export default class Home extends Component {
           console.log('converted', products);
 
           for (var i = 0; i < products.length; i++) {
-            if (products[i].Populer === true) {
+            if (products[i].Popular === true) {
               console.log(products[i].name);
               filteredProducts.push(products[i]);
               console.log(filteredProducts);

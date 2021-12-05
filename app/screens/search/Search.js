@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   FlatList,
   I18nManager,
@@ -9,15 +9,16 @@ import {
   StyleSheet,
   TextInput,
   View,
+  ToastAndroid,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Divider from '../../components/divider/Divider';
-import {Heading6} from '../../components/text/CustomText';
+import { Heading6 } from '../../components/text/CustomText';
 import TouchableItem from '../../components/TouchableItem';
 import SafeAreaView from '../../components/SafeAreaView';
 import SimpleProductCard from '../../components/cards/SimpleProductCard';
-import {getDatabase, ref, child, get, set} from 'firebase/database';
+import { getDatabase, ref, child, get, set } from 'firebase/database';
 import uuid from 'react-native-uuid';
 import Colors from '../../theme/colors';
 
@@ -80,7 +81,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(35, 47, 52, 0.08)',
     overflow: 'hidden',
   },
-  filterItem: {flex: 1, justifyContent: 'center'},
+  filterItem: { flex: 1, justifyContent: 'center' },
   filterName: {
     top: -1,
     fontWeight: '700',
@@ -113,7 +114,7 @@ export default class Search extends Component {
   getData() {
     let products = [];
     const dbRef = ref(getDatabase());
-    get(child(dbRef, `products/`))
+    get(child(dbRef, 'products/'))
       .then((snapshot) => {
         if (snapshot.exists()) {
           console.log(snapshot.val());
@@ -121,7 +122,7 @@ export default class Search extends Component {
           console.log(typeof products);
           products = Object.values(products);
           console.log('converted', products);
-          this.setState({products: products});
+          this.setState({ products: products });
           console.log('Products', this.state.products);
         } else {
           console.log('No data available');
@@ -141,7 +142,7 @@ export default class Search extends Component {
   };
 
   handleFilterPress = (item) => () => {
-    const {filters} = this.state;
+    const { filters } = this.state;
     const index = filters.indexOf(item);
     const filtersActiveIndex = filters.findIndex((e) => e.picked === true);
     let scrollByIndex;
@@ -155,7 +156,7 @@ export default class Search extends Component {
           filters: [...filters],
         },
         () => {
-          this.filtersList.scrollToIndex({animated: true, index: index});
+          this.filtersList.scrollToIndex({ animated: true, index: index });
 
           if (isRTL) {
             scrollByIndex = -(index - filtersActiveIndex);
@@ -190,7 +191,7 @@ export default class Search extends Component {
 
   keyExtractor = (item, index) => index.toString();
 
-  renderProductItem = ({item, index}) => (
+  renderProductItem = ({ item, index }) => (
     <SimpleProductCard
       key={index}
       onPress={this.navigateTo('Product', item.key)}
@@ -200,6 +201,7 @@ export default class Search extends Component {
       price={item.price}
       rating={item.rating}
       description={item.description}
+      stock={item.stock}
     />
   );
   filterSearch(search) {
@@ -215,13 +217,13 @@ export default class Search extends Component {
         filteredProducts.push(item);
       }
     });
-    this.setState({products: filteredProducts});
+    this.setState({ products: filteredProducts });
   }
 
   renderSeparator = () => <Divider />;
 
   onIndexChanged = (index) => {
-    const {filters} = this.state;
+    const { filters } = this.state;
     const filtersLength = filters.length - 1;
     const filtersActiveIndex = filters.findIndex((e) => e.picked === true);
 
@@ -245,7 +247,7 @@ export default class Search extends Component {
               index: filtersLength - index,
             });
           } else {
-            this.filtersList.scrollToIndex({animated: true, index: index});
+            this.filtersList.scrollToIndex({ animated: true, index: index });
           }
         },
       );
@@ -253,7 +255,7 @@ export default class Search extends Component {
   };
 
   render() {
-    const {products} = this.state;
+    const { products } = this.state;
 
     return (
       <SafeAreaView style={styles.screenContainer}>

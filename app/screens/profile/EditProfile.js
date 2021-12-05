@@ -1,7 +1,7 @@
 /* eslint-disable no-alert */
 /* eslint-disable prettier/prettier */
 
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   Platform,
   SafeAreaView,
@@ -10,16 +10,17 @@ import {
   View,
   Alert,
 } from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {launchImageLibrary} from 'react-native-image-picker';
-import {passAuth} from '../../config/firebase';
-import {onAuthStateChanged, getAuth, updateProfile} from 'firebase/auth';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { passAuth } from '../../config/firebase';
+import { onAuthStateChanged, getAuth, updateProfile } from 'firebase/auth';
 
-import {getStorage, ref, uploadBytes, getDownloadURL} from 'firebase/storage';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { getDatabase, ref as refData, child, get, set, update } from 'firebase/database';
 
 import Avatar from '../../components/avatar/Avatar';
 import Icon from '../../components/icon/Icon';
-import {Subtitle2} from '../../components/text/CustomText';
+import { Subtitle2 } from '../../components/text/CustomText';
 import TouchableItem from '../../components/TouchableItem';
 import UnderlineTextInput from '../../components/textinputs/UnderlineTextInput';
 import Button from '../../components/buttons/Button';
@@ -88,11 +89,12 @@ export default class EditProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: 'John Doe',
+      name: '',
+      email:'',
       nameFocused: false,
-      email: 'john.doe@example.com',
+      number: '',
       emailFocused: false,
-      phone: '+1 23 4567890',
+      phone: '',
       phoneFocused: false,
       imagePickerVisible: false,
       imagePath: null,
@@ -103,25 +105,33 @@ export default class EditProfile extends Component {
   }
 
   goBack = () => {
-    const {navigation} = this.props;
+    const { navigation } = this.props;
     navigation.goBack();
   };
 
   saveProfile() {
-    const {navigation} = this.props;
-    const auth = getAuth();
-    updateProfile(auth.currentUser, {
-      displayName: this.state.name,
-      phoneNumber: '+1235467',
-      email: this.state.email,
-    })
-      .then(() => {
-        console.log('updated');
-        navigation.navigate('Settings');
-      })
-      .catch((error) => {
-        console.log('failed');
-      });
+    const { navigation } = this.props;
+    // const auth = getAuth();
+    // // console.log(auth.currentUser);
+    // updateProfile('auth currentuser', auth.currentUser, {
+    //   displayName: this.state.name,
+    //   phoneNumber: '+1235467',
+    //   email: this.state.email,
+    // })
+    //   .then(() => {
+    //     console.log('updated');
+    //     navigation.navigate('Settings');
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+
+    const db = getDatabase();
+    const updates = {};
+    updates[`accounts/${this.state.uid}/email`] = this.state.email;
+    updates[`accounts/${this.state.uid}/name`] = this.state.name;
+    updates[`accounts/${this.state.uid}/phone`] = this.state.phone;
+    update(refData(db), updates);
   }
 
   nameChange = (text) => {
@@ -214,30 +224,38 @@ export default class EditProfile extends Component {
 
     if (user !== null) {
       user.providerData.forEach((profile) => {
-        console.log('Sign-in provider: ' + profile.providerId);
-        console.log('  Provider-specific UID: ' + profile.uid);
-        console.log('  Name: ' + profile.displayName);
-        console.log('  Email: ' + profile.email);
-        console.log('  Photo URL: ' + profile.photoURL);
-        console.log(profile.phoneNumber);
-
-        this.setState({name: profile.displayName});
-        this.setState({email: profile.email});
-        this.setState({phone: profile.phoneNumber});
+        // this.setState({name: profile.displayName});
+        this.setState({ email: profile.email });
       });
+      console.log('USer ID', user.uid);
+      this.setState({ uid: user.uid });
+      const dbRef = refData(getDatabase());
+      get(child(dbRef, `accounts/${user.uid}`))
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            let result = snapshot.val();
+            console.log(result);
+            this.setState({ name: result.name, phone: result.phone });
+          } else {
+            console.log('No data available');
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
 
-    const self = this;
+
     const storage = getStorage();
     console.log('UID', user.uid);
     getDownloadURL(ref(storage, `profile_images/${user.uid}.jpg`))
       .then((url) => {
         console.log(url);
-        self.setState({uri: url});
+        this.setState({ uri: url });
         global.USERID = user.id;
       })
       .catch((error) => {
-        // Handle any errors
+        console.log(error);
       });
   };
 
@@ -271,7 +289,7 @@ export default class EditProfile extends Component {
   };
 
   render() {
-    const {name, nameFocused, email, emailFocused, phone, phoneFocused} =
+    const { name, nameFocused, email, emailFocused, phone, phoneFocused } =
       this.state;
 
     return (
@@ -316,18 +334,18 @@ export default class EditProfile extends Component {
               inputContainerStyle={styles.inputContainerStyle}
             />
 
-            <Subtitle2 style={styles.overline}>E-mail Address</Subtitle2>
+            <Subtitle2 style={styles.overline}>Phone Number</Subtitle2>
             <UnderlineTextInput
               onRef={(r) => {
-                this.email = r;
+                this.phone = r;
               }}
-              value={email}
-              onChangeText={this.emailChange}
-              onFocus={this.emailFocus}
-              inputFocused={emailFocused}
+              value={phone}
+              onChangeText={this.phoneChange}
+              onFocus={this.phoneFocus}
+              inputFocused={phoneFocused}
               onSubmitEditing={this.focusOn(this.phone)}
               returnKeyType="next"
-              keyboardType="email-address"
+              keyboardType="Phone Number"
               focusedBorderColor={INPUT_FOCUSED_BORDER_COLOR}
               inputContainerStyle={styles.inputContainerStyle}
             />

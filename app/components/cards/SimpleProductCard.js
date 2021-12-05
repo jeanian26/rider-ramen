@@ -7,7 +7,7 @@
  */
 
 // import dependencies
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   Image,
   StyleSheet,
@@ -21,7 +21,7 @@ import {
 import getImgSource from '../../utils/getImgSource.js';
 
 // import components
-import {Subtitle1, Subtitle2} from '../text/CustomText';
+import { Subtitle1, Subtitle2 } from '../text/CustomText';
 import Icon from '../../components/icon/Icon';
 
 // import colors, layout
@@ -78,6 +78,12 @@ const styles = StyleSheet.create({
     color: Colors.secondaryText,
     textAlign: 'left',
   },
+  descriptionText2: {
+    flex: 1,
+    lineHeight: 20,
+    color: Colors.primaryColor,
+    textAlign: 'left',
+  },
   priceText: {
     fontWeight: '700',
     fontSize: 16,
@@ -111,6 +117,7 @@ type Props = {
   title: string,
   price: number,
   description: string,
+  stock: number
 };
 
 // SimpleProductCard
@@ -130,7 +137,29 @@ export default class SimpleProductCard extends Component<Props, State> {
       price = 0,
       rating = 4.5,
       description,
+      stock = 0,
     } = this.props;
+
+    let lowStockRender;
+
+    if (stock == 0) {
+      lowStockRender = (<View style={styles.secondLine}>
+        <Subtitle2 numberOfLines={1} style={styles.descriptionText2}>
+          NO STOCK!
+        </Subtitle2>
+      </View>);
+    } else {
+      if (stock <= 10) {
+        lowStockRender = (<View style={styles.secondLine}>
+          <Subtitle2 numberOfLines={1} style={styles.descriptionText2}>
+            LOW STOCK!
+          </Subtitle2>
+        </View>);
+      }
+    }
+
+
+
 
     return (
       <TouchableOpacity onPress={onPress} activeOpacity={activeOpacity}>
@@ -150,10 +179,11 @@ export default class SimpleProductCard extends Component<Props, State> {
               <Text style={styles.priceText}>{`₱ ${price.toFixed(2)}`}</Text>
             </View>
             <View style={styles.secondLine}>
-              <Subtitle2 numberOfLines={2} style={styles.descriptionText}>
+              <Subtitle2 numberOfLines={1} style={styles.descriptionText}>
                 {description}
               </Subtitle2>
             </View>
+            {lowStockRender}
           </View>
         </View>
       </TouchableOpacity>

@@ -145,7 +145,7 @@ export default class Settings extends Component {
     super(props);
     this.state = {
       notificationsOn: true,
-      name: 'test',
+      name: 'Name',
       email: 'test',
       // imageUri: require('../../assets/img/profile.jpg'),
       imageUri:
@@ -176,9 +176,26 @@ export default class Settings extends Component {
     console.log(user.uid);
     if (user !== null) {
       user.providerData.forEach((profile) => {
-        this.setState({name: profile.displayName});
+        // this.setState({name: profile.displayName});
         this.setState({email: profile.email});
       });
+
+      console.log('USer ID', user.uid);
+      this.setState({uid:user.uid});
+      const dbRef = refData(getDatabase());
+      get(child(dbRef, `accounts/${user.uid}`))
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            let result = snapshot.val();
+            console.log(result);
+            this.setState({ name: result.name});
+          } else {
+            console.log('No data available');
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
     const storage = getStorage();
     getDownloadURL(ref(storage, `profile_images/${user.uid}.jpg`))

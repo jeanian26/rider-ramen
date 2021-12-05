@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   SafeAreaView,
   StatusBar,
@@ -10,15 +10,16 @@ import {
   View,
   ToastAndroid,
 } from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Button from '../../components/buttons/Button';
 import UnderlinePasswordInput from '../../components/textinputs/UnderlinePasswordInput';
 import UnderlineTextInput from '../../components/textinputs/UnderlineTextInput';
+import { getDatabase, ref, child, get, update, set } from 'firebase/database';
 
 import Colors from '../../theme/colors';
 import Layout from '../../theme/layout';
-import {passAuth} from '../../config/firebase';
-import {createUserWithEmailAndPassword} from 'firebase/auth';
+import { passAuth } from '../../config/firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 const PLACEHOLDER_TEXT_COLOR = Colors.onPrimaryColor;
 const INPUT_TEXT_COLOR = Colors.onPrimaryColor;
 const INPUT_BORDER_COLOR = Colors.onPrimaryColor;
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
   form: {
     paddingHorizontal: Layout.LARGE_PADDING,
   },
-  inputContainer: {marginBottom: 7},
+  inputContainer: { marginBottom: 7 },
   vSpacer: {
     height: 15,
   },
@@ -142,18 +143,19 @@ export default class SignUp extends Component {
   };
 
   onTogglePress = () => {
-    const {secureTextEntry} = this.state;
+    const { secureTextEntry } = this.state;
     this.setState({
       secureTextEntry: !secureTextEntry,
     });
   };
 
   navigateTo = (screen) => () => {
-    const {navigation} = this.props;
+    const { navigation } = this.props;
     navigation.navigate(screen);
   };
 
   createAccount = async () => {
+    const db = getDatabase();
     this.setState({
       emailFocused: false,
       phoneFocused: false,
@@ -167,8 +169,19 @@ export default class SignUp extends Component {
     )
       .then((userCredential) => {
         const user = userCredential.user;
+        console.log(userCredential);
         if (user) {
-          console.log('success');
+          console.log(user.uid);
+          const db = getDatabase();
+          set(ref(db, 'accounts/' + user.uid), {
+            email: this.state.email,
+            phone:this.state.phone,
+          }).then(() => {
+            console.log('sucess');
+          }).catch((error) => {
+            console.log(error);
+          });
+
           ToastAndroid.showWithGravity(
             'SUCCESS CREATING AN ACCOUNT',
             ToastAndroid.SHORT,
@@ -291,7 +304,7 @@ export default class SignUp extends Component {
             </View>
 
             <TouchableWithoutFeedback>
-              <View style={styles.footer}></View>
+              <View style={styles.footer} />
             </TouchableWithoutFeedback>
           </View>
         </KeyboardAwareScrollView>

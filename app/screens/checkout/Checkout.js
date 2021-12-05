@@ -7,7 +7,7 @@
  */
 
 // import dependencies
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   I18nManager,
   Platform,
@@ -15,9 +15,11 @@ import {
   StatusBar,
   StyleSheet,
   View,
+  Text,
+  ImageBackground,
 } from 'react-native';
 
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Swiper from 'react-native-swiper';
 
 // import components
@@ -25,10 +27,12 @@ import Button from '../../components/buttons/Button';
 import CreditCard from '../../components/creditcard/CreditCard';
 import InfoModal from '../../components/modals/InfoModal';
 import LinkButton from '../../components/buttons/LinkButton';
-import {Caption, Subtitle1, Subtitle2} from '../../components/text/CustomText';
+import { Caption, Subtitle1, Subtitle2 } from '../../components/text/CustomText';
 import UnderlineTextInput from '../../components/textinputs/UnderlineTextInput';
-import {getAuth} from 'firebase/auth';
-import {getDatabase, ref, child, get, set} from 'firebase/database';
+import { getAuth } from 'firebase/auth';
+import { getDatabase, ref, child, get, set } from 'firebase/database';
+import TouchableItem from '../../components/TouchableItem';
+import uuid from 'react-native-uuid';
 
 // import colors
 import Colors from '../../theme/colors';
@@ -43,7 +47,7 @@ const CHECKMARK_ICON =
 
 // Checkout Styles
 const styles = StyleSheet.create({
-  pt16: {paddingTop: 16},
+  pt16: { paddingTop: 16 },
   screenContainer: {
     flex: 1,
     backgroundColor: Colors.background,
@@ -145,6 +149,37 @@ const styles = StyleSheet.create({
     fontSize: 20,
     lineHeight: 24,
   },
+  dishContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 16,
+    height: 56,
+  },
+  indicator: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  emptyIndicator: {
+    marginRight: 24,
+    width: 20,
+    height: 20,
+    borderWidth: 2,
+    borderColor: Colors.primaryColor,
+    backgroundColor: Colors.background,
+  },
+  filledIndicator: {
+    marginRight: 24,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: Colors.primaryColor,
+  },
+  dishName: {
+    top: -1,
+    lineHeight: 22,
+  },
 });
 
 // Checkout
@@ -161,16 +196,21 @@ export default class Checkout extends Component {
       cityFocused: false,
       zipFocused: false,
       infoModalVisible: false,
+      paypal: true,
+      cod: false,
+      products: [],
+      total: 0.0,
+      fullAddress:'',
     };
   }
 
   navigateTo = (screen) => () => {
-    const {navigation} = this.props;
+    const { navigation } = this.props;
     navigation.navigate(screen);
   };
 
   goBack = () => {
-    const {navigation} = this.props;
+    const { navigation } = this.props;
     navigation.goBack();
   };
 
@@ -248,13 +288,52 @@ export default class Checkout extends Component {
     this.swiper.scrollBy(-1, true);
   };
 
-  showInfoModal = (value) => () => {
+  confirmOrder() {
+    const db = getDatabase();
+    const self = this;
+    let randomID = Date.now();
+    let orderPayment;
+    if (this.state.cod === true) {
+      orderPayment = 'COD';
+    }
+    else {
+      orderPayment = 'Paypal';
+    }
+
+    const auth = getAuth();
+    const user = auth.currentUser;
+    set(ref(db, `order/${user.uid}/${randomID}`), {
+      orderNumber: randomID,
+      orderStatus: 'pending',
+      orderDate: new Date(Date.now()).toString(),
+      orderItems: this.state.products,
+      orderPayment: orderPayment,
+      orderAddress: this.state.fullAddress,
+      orderUserId:user.uid,
+    }).then(() => {
+      console.log('success????????????????????');
+      self.showInfoModal(true);
+      self.deleteCart();
+    }).catch((error) => {
+      console.log(error);
+    });
+
+  }
+  deleteCart(){
+    let products = this.state.products;
+    for (let i = 0; i < products.length; i++) {
+      console.log(products[i].cartID);
+    }
+  }
+
+  showInfoModal(value) {
     this.setState({
       infoModalVisible: value,
     });
-  };
+  }
 
   closeInfoModal = (value) => () => {
+    const { navigation } = this.props;
     this.setState(
       {
         infoModalVisible: value,
@@ -263,6 +342,7 @@ export default class Checkout extends Component {
         this.goBack();
       },
     );
+    navigation.navigate('orders');
   };
   getAddress() {
     const auth = getAuth();
@@ -278,6 +358,7 @@ export default class Checkout extends Component {
             address: result.str_number + result.barangay,
             city: result.city,
             zip: result.zipcode,
+            fullAddress: result,
           });
         } else {
           console.log('No data available');
@@ -287,12 +368,66 @@ export default class Checkout extends Component {
         console.error(error);
       });
   }
+
+  getCart() {
+    const dbRef = ref(getDatabase());
+    let array = [];
+    let newArray = [];
+    const auth = getAuth();
+    const user = auth.currentUser;
+    let total = 0;
+    get(child(dbRef, 'cart/'))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          array = Object.values(snapshot.val());
+          // for (const index in array) {
+          //   if (array[index].userid === user.uid) {
+          //     total = (total + array[index].price) * array[index].quantity;
+          //   } else {
+          //     array.pop(index);
+          //   }
+          // }
+          console.log(array[0]);
+          for (var i = 0; i < array.length; i++) {
+            console.log(array[i].userid, user.uid);
+            if (array[i].userid === user.uid) {
+              total = (total + array[i].price) * array[i].quantity;
+              newArray.push(array[i]);
+              console.log(true);
+            } else {
+              console.log(false);
+            }
+          }
+          this.setState({ total: total, products: newArray });
+          console.log('THIS IS THE TOTAL', this.state.total);
+          console.log('THIS IS THE CART', this.state.products);
+        } else {
+          console.log('No data available');
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+
+
+  setPaymentOption(option) {
+    if (option === 'COD') {
+      this.setState({ cod: !this.state.cod, paypal: !this.state.paypal });
+    } else {
+      this.setState({ paypal: !this.state.paypal, cod: !this.state.cod });
+    }
+
+  }
   componentDidMount() {
     this.getAddress();
+    this.getCart();
     this.willFocusSubscription = this.props.navigation.addListener(
       'willFocus',
       () => {
         this.getAddress();
+        this.cart();
       }
     );
   }
@@ -300,6 +435,8 @@ export default class Checkout extends Component {
   componentWillUnmount() {
     this.willFocusSubscription();
   }
+
+
 
   render() {
     const {
@@ -311,6 +448,8 @@ export default class Checkout extends Component {
       zip,
       zipFocused,
       infoModalVisible,
+      paypal,
+      cod,
     } = this.state;
 
     return (
@@ -332,7 +471,7 @@ export default class Checkout extends Component {
               onIndexChanged={this.onIndexChanged}
               loop={false}
               showsPagination={false}
-              // scrollEnabled={false}
+            // scrollEnabled={false}
             >
               {/* STEP 1 */}
               <KeyboardAwareScrollView
@@ -393,7 +532,7 @@ export default class Checkout extends Component {
               </KeyboardAwareScrollView>
 
               {/* STEP 2 */}
-              <View>
+              {/* <View>
                 <CreditCard
                   colors={['#0D324D', '#7F5A83']}
                   brand="discover"
@@ -409,7 +548,7 @@ export default class Checkout extends Component {
                     titleStyle={styles.actionButton}
                   />
                 </View>
-              </View>
+              </View> */}
 
               <KeyboardAwareScrollView>
                 <View style={styles.form}>
@@ -424,32 +563,67 @@ export default class Checkout extends Component {
                   <Subtitle2 style={[styles.overline, styles.pt16]}>
                     Payment Method
                   </Subtitle2>
-                  <Subtitle1 style={styles.orderInfo}>
-                    XXXX XXXX XXXX 3456
-                  </Subtitle1>
+                  <TouchableItem
+                    // key={index.toString()}
+                    onPress={() => (this.setPaymentOption('COD'))}
+                  >
+                    <View style={styles.dishContainer}>
+                      <View style={styles.indicator}>
+                        <View>
+                          {cod ? (
+                            <ImageBackground source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZILrdYmnUo8tt46-C3JywEyy37j2mvcFsIw&usqp=CAU' }} style={styles.filledIndicator} />
+                          ) : (
+                            <View style={styles.emptyIndicator} />
+                          )}
+                        </View>
+
+                        <Text style={styles.dishName}>COD</Text>
+                      </View>
+
+                    </View>
+                  </TouchableItem>
+                  <TouchableItem
+                    // key={index.toString()}
+                    onPress={() => { this.setPaymentOption('Paypal'); }}
+                  >
+                    <View style={styles.dishContainer}>
+                      <View style={styles.indicator}>
+                        <View>
+                          {paypal ? (
+                            <ImageBackground source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZILrdYmnUo8tt46-C3JywEyy37j2mvcFsIw&usqp=CAU' }} style={styles.filledIndicator} />
+                          ) : (
+                            <View style={styles.emptyIndicator} />
+                          )}
+                        </View>
+
+                        <Text style={styles.dishName}>Paypal</Text>
+                      </View>
+
+                    </View>
+                  </TouchableItem>
 
                   <Subtitle2 style={[styles.overline, styles.pt16]}>
                     Your Order
                   </Subtitle2>
                   <View style={styles.row}>
                     <Subtitle1 style={styles.orderInfo}>Total amount</Subtitle1>
-                    <Subtitle1 style={styles.amount}>$ 75.40</Subtitle1>
+                    <Subtitle1 style={styles.amount}>₱ {this.state.total}.00</Subtitle1>
                   </View>
                 </View>
               </KeyboardAwareScrollView>
             </Swiper>
 
             <View style={styles.buttonContainer}>
-              {activeIndex < 2 && (
+              {activeIndex < 1 && (
                 <Button
                   onPress={isRTL ? this.previousStep : this.nextStep}
                   title="Next"
                 />
               )}
 
-              {activeIndex === 2 && (
+              {activeIndex === 1 && (
                 <Button
-                  onPress={this.showInfoModal(true)}
+                  onPress={() => this.confirmOrder()}
                   title="Place Order"
                 />
               )}
