@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   delivered: {
-    color: Colors.primaryColor,
+    color: '#03c04a',
     textAlign: 'left',
   },
 });
