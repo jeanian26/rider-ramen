@@ -143,7 +143,7 @@ export default class Welcome extends Component {
               <Button
                 buttonStyle={styles.customButton}
                 onPress={this.navigateTo('SignUp')}
-                title={'Sing up'.toUpperCase()}
+                title={'Sign up'.toUpperCase()}
                 outlined
               />
             </View>
