@@ -347,7 +347,7 @@ export default class ActionProductCardHorizontal extends Component<
                     )}
                   </View>
                   <View style={styles.viewContainer}>
-                    <View style={styles.starContainer}></View>
+                    <View style={styles.starContainer} />
                     {!hideCartIcon && plusMinusIcon ? (
                       <View style={styles.actionContainer}>
                         {quantity > 0 && (

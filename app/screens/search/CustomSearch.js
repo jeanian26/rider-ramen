@@ -140,6 +140,11 @@ export default class EditAddress extends Component {
       [key]: text.replace(/[^0-9]/g, ''),
     });
   };
+  navigateTo = (screen) => () => {
+    const { navigation } = this.props;
+    navigation.navigate(screen, {min:this.state.min, max:this.state.max});
+  };
+
 
   onFocus = (key) => () => {
     let focusedInputs = {
@@ -235,7 +240,7 @@ export default class EditAddress extends Component {
 
           <View style={styles.buttonsContainer}>
             <Button
-              onPress={this.saveAddress}
+              onPress={this.navigateTo('SearchResults')}
               disabled={false}
               small
               title={'Search'.toUpperCase()}

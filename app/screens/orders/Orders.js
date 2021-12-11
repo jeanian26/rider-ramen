@@ -14,8 +14,6 @@ import { getAuth } from 'firebase/auth';
 import { getDatabase, ref, child, get, set } from 'firebase/database';
 import Colors from '../../theme/colors';
 
-import sample_data from '../../config/sample-data';
-
 const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,
@@ -99,7 +97,7 @@ export default class Orders extends Component {
       orderDate={this.changeDate(item.orderDate)}
       orderItems={item.orderItems}
       orderStatus={item.orderStatus}
-      onPress={this.navigateTo('Product')}
+      onPress={this.navigateTo('Product', item.key)}
     />
   );
 
