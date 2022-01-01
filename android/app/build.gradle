@@ -129,7 +129,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.ramennado"
+        applicationId "com.riderramen"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

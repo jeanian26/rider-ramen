@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   SafeAreaView,
   StatusBar,
@@ -10,17 +10,18 @@ import {
   View,
   ToastAndroid,
 } from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import Button from '../../components/buttons/Button';
 import InputModal from '../../components/modals/InputModal';
 import UnderlinePasswordInput from '../../components/textinputs/UnderlinePasswordInput';
 import UnderlineTextInput from '../../components/textinputs/UnderlineTextInput';
+import { getDatabase, ref, child, get, set } from 'firebase/database';
 
 import Colors from '../../theme/colors';
 import Layout from '../../theme/layout';
-import {signInWithEmailAndPassword} from 'firebase/auth';
-import {passAuth, checkLoggedIn} from '../../config/firebase';
+import { signInWithEmailAndPassword,signOut } from 'firebase/auth';
+import { passAuth, checkLoggedIn } from '../../config/firebase';
 
 const PLACEHOLDER_TEXT_COLOR = Colors.onPrimaryColor;
 const INPUT_TEXT_COLOR = Colors.onPrimaryColor;
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.primaryColor,
   },
-  contentContainerStyle: {flex: 1},
+  contentContainerStyle: { flex: 1 },
   content: {
     flex: 1,
     justifyContent: 'space-between',
@@ -40,9 +41,9 @@ const styles = StyleSheet.create({
   form: {
     paddingHorizontal: Layout.LARGE_PADDING,
   },
-  inputContainer: {marginBottom: 7},
-  buttonContainer: {paddingTop: 23},
-  forgotPassword: {paddingVertical: 23},
+  inputContainer: { marginBottom: 7 },
+  buttonContainer: { paddingTop: 23 },
+  forgotPassword: { paddingVertical: 23 },
   forgotPasswordText: {
     fontWeight: '300',
     fontSize: 13,
@@ -131,7 +132,7 @@ export default class SignIn extends Component {
   };
 
   onTogglePress = () => {
-    const {secureTextEntry} = this.state;
+    const { secureTextEntry } = this.state;
     this.setState({
       secureTextEntry: !secureTextEntry,
     });
@@ -150,12 +151,12 @@ export default class SignIn extends Component {
   };
 
   navigateTo = (screen) => () => {
-    const {navigation} = this.props;
+    const { navigation } = this.props;
     navigation.navigate(screen);
   };
 
   signIn = () => {
-    const {navigation} = this.props;
+    const { navigation } = this.props;
     this.setState({
       emailFocused: false,
       passwordFocused: false,
@@ -167,15 +168,51 @@ export default class SignIn extends Component {
       this.state.password,
     )
       .then((userCredential) => {
-        const user = userCredential.user;
-        console.log('Success');
-        navigation.navigate('HomeNavigator');
-        checkLoggedIn();
-        ToastAndroid.showWithGravity(
-          'SUCCESS LOGGING IN',
-          ToastAndroid.SHORT,
-          ToastAndroid.CENTER,
-        );
+        console.log('userCredential', userCredential._tokenResponse.localId);
+        const dbRef = ref(getDatabase());
+        get(child(dbRef, `accounts/${userCredential._tokenResponse.localId}`))
+          .then((snapshot) => {
+            if (snapshot.exists()) {
+              let result = snapshot.val();
+              console.log(result.rider);
+              if (result.rider === true) {
+                navigation.navigate('HomeNavigator');
+                checkLoggedIn();
+              } else {
+                ToastAndroid.showWithGravity(
+                  'NOT RIDER',
+                  ToastAndroid.SHORT,
+                  ToastAndroid.CENTER,
+                );
+                signOut(passAuth())
+                  .then(() => {
+                    navigation.navigate('Welcome');
+                  })
+                  .catch((error) => {
+                  });
+              }
+            } else {
+              signOut(passAuth())
+              .then(() => {
+                navigation.navigate('Welcome');
+              })
+              .catch((error) => {
+                ToastAndroid.showWithGravity(
+                  'ERROR LOGGING IN',
+                  ToastAndroid.SHORT,
+                  ToastAndroid.CENTER,
+                );
+              });
+            }
+          })
+          .catch((error) => {
+            ToastAndroid.showWithGravity(
+              'ERROR LOGGING IN',
+              ToastAndroid.SHORT,
+              ToastAndroid.CENTER,
+            );
+          });
+
       })
       .catch((error) => {
         ToastAndroid.showWithGravity(
@@ -276,7 +313,7 @@ export default class SignIn extends Component {
 
             <TouchableWithoutFeedback>
               <View style={styles.footer}>
-                <Text></Text>
+                <Text />
               </View>
             </TouchableWithoutFeedback>
           </View>

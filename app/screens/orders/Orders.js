@@ -13,7 +13,7 @@ import OrderItem from '../../components/cards/OrderItem';
 import { getAuth } from 'firebase/auth';
 import { getDatabase, ref, child, get, set } from 'firebase/database';
 import Colors from '../../theme/colors';
-
+import sample_data from '../../config/sample-data';
 const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,
@@ -53,13 +53,15 @@ export default class Orders extends Component {
     get(child(dbRef, `order/${user.uid}`))
       .then((snapshot) => {
         if (snapshot.exists()) {
-          console.log(snapshot.val());
+          console.log('Order lists',snapshot.val());
           products = snapshot.val();
-          console.log(typeof products);
           products = Object.values(products);
-          console.log('converted', products);
+          products = Object.values(products);
+          console.log('testing', products);
+          //
+          // console.log('converted', products);
           this.setState({ orders: products });
-          console.log('Products', this.state.products);
+          // console.log('Products', this.state.products);
         } else {
           console.log('No data available');
         }
