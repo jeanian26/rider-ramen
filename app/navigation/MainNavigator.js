@@ -28,6 +28,7 @@ import PaymentMethod from '../screens/payment/PaymentMethod';
 import AddCreditCard from '../screens/payment/AddCreditCard';
 import Notifications from '../screens/notifications/Notifications';
 import Orders from '../screens/orders/Orders';
+import RiderOrder from '../screens/orders/RiderOrder';
 import Colors from '../theme/colors';
 
 const SAVE_ICON = Platform.OS === 'ios' ? 'ios-checkmark' : 'md-checkmark';
@@ -214,6 +215,14 @@ function MainNavigatorA() {
             title: 'My Orders',
           }}
         />
+        <Stack.Screen
+          name="RiderOrder"
+          component={RiderOrder}
+          options={{
+            title: 'Order Details',
+          }}
+        />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

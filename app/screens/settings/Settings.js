@@ -307,7 +307,7 @@ export default class Settings extends Component {
           </TouchableItem>
           <Divider type="inset" marginLeft={DIVIDER_MARGIN_LEFT} /> */}
 
-          <Setting
+          {/* <Setting
             onPress={this.navigateTo('EditAddress')}
             title="Delivery Address"
             extraData={
@@ -325,7 +325,7 @@ export default class Settings extends Component {
               </View>
             }
           />
-          <Divider type="inset" marginLeft={DIVIDER_MARGIN_LEFT} />
+          <Divider type="inset" marginLeft={DIVIDER_MARGIN_LEFT} /> */}
 
           {/* <Setting
             onPress={this.navigateTo('PaymentMethod')}
@@ -341,8 +341,8 @@ export default class Settings extends Component {
           />
           <Divider type="inset" marginLeft={DIVIDER_MARGIN_LEFT} /> */}
 
-          <Setting onPress={this.navigateTo('Orders')} title="My Orders" />
-          <Divider type="inset" marginLeft={DIVIDER_MARGIN_LEFT} />
+          {/* <Setting onPress={this.navigateTo('Orders')} title="My Orders" />
+          <Divider type="inset" marginLeft={DIVIDER_MARGIN_LEFT} /> */}
 
           <TouchableItem onPress={this.logout}>
             <View style={[styles.row, styles.setting]}>

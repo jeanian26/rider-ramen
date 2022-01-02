@@ -127,8 +127,7 @@ export default class Welcome extends Component {
           </View>
 
           <View style={styles.center}>
-            <Paragraph>Find your Favorite Ramen online.</Paragraph>
-            <Paragraph>Try different flavours. Enjoy!</Paragraph>
+            <Paragraph>Ramen Delivery Rider APP</Paragraph>
           </View>
 
           <View style={styles.center}>

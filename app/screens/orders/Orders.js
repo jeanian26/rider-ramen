@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
 });
-
 export default class Orders extends Component {
   constructor(props) {
     super(props);
@@ -47,21 +46,26 @@ export default class Orders extends Component {
   }
   getData() {
     let products = [];
+    let orderlist = [];
     const auth = getAuth();
     const user = auth.currentUser;
     const dbRef = ref(getDatabase());
-    get(child(dbRef, `order/${user.uid}`))
+    get(child(dbRef, 'order/'))
       .then((snapshot) => {
         if (snapshot.exists()) {
-          console.log('Order lists',snapshot.val());
           products = snapshot.val();
-          products = Object.values(products);
-          products = Object.values(products);
-          console.log('testing', products);
-          //
-          // console.log('converted', products);
-          this.setState({ orders: products });
-          // console.log('Products', this.state.products);
+          for (var key in products) {
+            let ordersItem = products[key];
+            for (var item in ordersItem) {
+              console.log(ordersItem[item]);
+              if (ordersItem[item].orderStatus !== 'delivered'){
+                orderlist.push(products[key][item]);
+              }
+            }
+          }
+
+          console.log('this is the final list', orderlist);
+          this.setState({ orders: orderlist });
         } else {
           console.log('No data available');
         }
@@ -76,12 +80,11 @@ export default class Orders extends Component {
     navigation.goBack();
   };
 
-  navigateTo = (screen) => () => {
+  navigateTo = (screen, orderID, orderUserId) => () => {
     const { navigation } = this.props;
-    navigation.navigate(screen);
+    navigation.navigate(screen, { orderID: orderID, orderUserId: orderUserId });
   };
   changeDate(date) {
-    console.log(date);
     if (!date) {
       return '';
     }
@@ -99,12 +102,14 @@ export default class Orders extends Component {
       orderDate={this.changeDate(item.orderDate)}
       orderItems={item.orderItems}
       orderStatus={item.orderStatus}
-      onPress={this.navigateTo('Product', item.key)}
+      onPress={this.navigateTo('RiderOrder', item.orderNumber, item.orderUserId)}
+    // onPress={()=>{}}
     />
   );
 
   render() {
     const { orders } = this.state;
+
 
     return (
       <SafeAreaView style={styles.screenContainer}>
@@ -112,7 +117,6 @@ export default class Orders extends Component {
           backgroundColor={Colors.statusBarColor}
           barStyle="dark-content"
         />
-
         <View style={styles.container}>
           <FlatList
             data={orders}

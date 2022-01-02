@@ -103,6 +103,7 @@ const OrderItem = ({
 }: Props) => (
   <View style={styles.container}>
     <View style={styles.content}>
+    <TouchableItem  activeOpacity={activeOpacity} onPress={onPress}>
       <View style={styles.header}>
         <View>
           <Subtitle2
@@ -114,21 +115,21 @@ const OrderItem = ({
           <Caption>{`${orderItems.length} items`}</Caption>
         </View>
       </View>
+    </TouchableItem>
+
 
       <Divider type="middle" color={Colors.primaryColor} />
 
-      <View style={styles.pv8}>
+      {/* <View style={styles.pv8}>
         {orderItems.map((item, index) => (
           <View key={index.toString()} style={styles.itemContainer}>
-            <TouchableItem  activeOpacity={activeOpacity}>
               <View style={styles.item}>
                 <Subtitle2>{item.name} x {item.quantity}</Subtitle2>
                 <Subtitle2>{`₱ ${item.price * item.quantity}`}</Subtitle2>
               </View>
-            </TouchableItem>
           </View>
         ))}
-      </View>
+      </View> */}
 
       {orderStatus === 'on-the-way' && (
         <View style={styles.footer}>
@@ -152,13 +153,6 @@ const OrderItem = ({
             <Subtitle2 style={styles.status}>Status</Subtitle2>
             <Subtitle2 style={styles.pending}>Pending delivery</Subtitle2>
           </View>
-
-          <Button
-            color={Colors.primaryColor}
-            title="Cancel"
-            titleColor={Colors.white}
-            buttonStyle={styles.extraSmallButton}
-          />
         </View>
       )}
 
@@ -168,8 +162,6 @@ const OrderItem = ({
             <Subtitle2 style={styles.status}>Status</Subtitle2>
             <Subtitle2 style={styles.delivered}>Delivered</Subtitle2>
           </View>
-
-
         </View>
       )}
     </View>
