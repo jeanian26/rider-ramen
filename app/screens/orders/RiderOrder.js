@@ -140,11 +140,11 @@ export default class Orders extends Component {
         let orders = [];
         let price = 0;
         for (let item in orderList) {
-            price = orderList[item].price + price;
+            price = (orderList[item].price * orderList[item].quantity) + price;
             orders.push(
                 <View style={styles.row}>
-                    <Subtitle1 style={styles.orderInfo}>{orderList[item].name}</Subtitle1>
-                    <Subtitle1 style={styles.amount}>₱ {orderList[item].price}.00</Subtitle1>
+                    <Subtitle1 style={styles.orderInfo}>{orderList[item].name} {orderList[item].quantity} pcs</Subtitle1>
+                    <Subtitle1 style={styles.amount}>₱ {orderList[item].price * orderList[item].quantity}.00</Subtitle1>
                 </View>
             );
 
@@ -199,7 +199,7 @@ export default class Orders extends Component {
                                 }>{data.orderStatus}</Subtitle1>
 
                             <Subtitle2 style={[styles.overline, styles.pt16]}>
-                                Order list
+                                Orders
                             </Subtitle2>
                             {orders}
                             {/* {Object.keys(orderList).map(key => (
@@ -209,7 +209,7 @@ export default class Orders extends Component {
                                 </View>
                             ))} */}
                             <Subtitle2 style={[styles.overline, styles.pt16]}>
-                                Your Order
+                                Total
                             </Subtitle2>
                             <View style={styles.row}>
                                 <Subtitle1 style={styles.orderInfo}>Total amount</Subtitle1>
