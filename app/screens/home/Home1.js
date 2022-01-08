@@ -13,6 +13,9 @@ import {
   View,
   Image,
   Button,
+  BackHandler,
+  ToastAndroid,
+  Alert,
 } from 'react-native';
 import {getDatabase, ref, child, get, set} from 'firebase/database';
 import getImgSource from '../../utils/getImgSource.js';
@@ -177,21 +180,14 @@ export default class Home extends Component {
     get(child(dbRef, 'products/'))
       .then((snapshot) => {
         if (snapshot.exists()) {
-          console.log(snapshot.val());
           products = snapshot.val();
           products = Object.values(products);
-          console.log('converted', products);
-
           for (var i = 0; i < products.length; i++) {
             if (products[i].Popular === true) {
-              console.log(products[i].name);
               filteredProducts.push(products[i]);
-              console.log(filteredProducts);
             }
           }
-
           this.setState({popularProducts: filteredProducts});
-          console.log(this.state.products);
         } else {
           console.log('No data available');
         }

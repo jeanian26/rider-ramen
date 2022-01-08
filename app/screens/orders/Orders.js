@@ -7,6 +7,8 @@ import {
   StatusBar,
   StyleSheet,
   View,
+  BackHandler,
+  Alert,
 } from 'react-native';
 
 import OrderItem from '../../components/cards/OrderItem';
@@ -43,6 +45,28 @@ export default class Orders extends Component {
     this.focusListener = this.props.navigation.addListener('focus', () => {
       this.getData();
     });
+    this.backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      this.backAction
+    );
+  }
+  backAction = () => {
+    const { navigation } = this.props;
+    // console.log(this.props.navigation.state.routeName);
+    if (navigation.isFocused()) {
+      Alert.alert('Hold on!', 'Are you sure you want to exit?', [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        { text: 'YES', onPress: () => BackHandler.exitApp() },
+      ]);
+      return true;
+    }
+  };
+  componentWillUnmount() {
+    this.backHandler.remove();
   }
   getData() {
     let products = [];
