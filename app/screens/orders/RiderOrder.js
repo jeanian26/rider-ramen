@@ -9,17 +9,19 @@ import {
     View,
     Text,
     ImageBackground,
+    ToastAndroid,
 } from 'react-native';
 
 import OrderItem from '../../components/cards/OrderItem';
 import { getAuth } from 'firebase/auth';
-import { getDatabase, ref, child, get, set,update } from 'firebase/database';
+import { getDatabase, ref, child, get, set, update } from 'firebase/database';
 import { Caption, Subtitle1, Subtitle2 } from '../../components/text/CustomText';
 import TouchableItem from '../../components/TouchableItem';
 import Colors from '../../theme/colors';
 import sample_data from '../../config/sample-data';
 import { ScrollView } from 'react-native-gesture-handler';
 import Button from '../../components/buttons/Button';
+import OutlinedButton from '../../components/buttons/OutlinedButton';
 const styles = StyleSheet.create({
     pt16: { paddingTop: 16 },
     screenContainer: {
@@ -120,12 +122,36 @@ export default class Orders extends Component {
         const { navigation } = this.props;
         navigation.navigate(screen);
     };
-    completeOrder(orderID,userID) {
-        console.log('complete ORDER!');
+    completeOrder(orderID, userID) {
+        const { navigation } = this.props;
         const db = getDatabase();
         const updates = {};
         updates[`order/${userID}/${orderID}/orderStatus`] = 'delivered';
-        update(ref(db), updates);
+        update(ref(db), updates).then(() => {
+            ToastAndroid.showWithGravity(
+                'ORDER STATUS UPDATED',
+                ToastAndroid.SHORT,
+                ToastAndroid.CENTER,
+            );
+            navigation.navigate('HomeNavigator');
+        });
+    }
+    returnOrder(orderID, userID) {
+        const { navigation } = this.props;
+        const db = getDatabase();
+        const updates = {};
+        updates[`order/${userID}/${orderID}/orderStatus`] = 'returned';
+        update(ref(db), updates).then(() => {
+            ToastAndroid.showWithGravity(
+                'ORDER STATUS UPDATED',
+                ToastAndroid.SHORT,
+                ToastAndroid.CENTER,
+            );
+            navigation.navigate('HomeNavigator');
+        });
+
+
+
     }
 
 
@@ -149,8 +175,26 @@ export default class Orders extends Component {
             );
 
         }
+        let completeButton;
+        if (data.orderStatus === 'on-the-way') {
+            completeButton =
 
+                <View>
+                    <View style={styles.bottomButtonContainer}>
+                        <Button onPress={() => { this.completeOrder(data.orderNumber, data.orderUserId); }}
+                            title="Complete Order"
+                        />
+                    </View>
+                    <View style={styles.bottomButtonContainer}>
+                        <OutlinedButton
+                            onPress={() => { this.returnOrder(data.orderNumber, data.orderUserId); }}
+                            title="Return Order"
+                        />
+                    </View>
+                </View>;
+        } else {
 
+        }
         return (
             <SafeAreaView style={styles.screenContainer}>
                 <StatusBar
@@ -216,13 +260,10 @@ export default class Orders extends Component {
                                 <Subtitle1 style={styles.amount}>₱ {price}.00</Subtitle1>
                             </View>
                         </View>
+                        {completeButton}
 
                     </ScrollView>
-                    <View style={styles.bottomButtonContainer}>
-                        <Button onPress={() => { this.completeOrder(data.orderNumber,data.orderUserId); }}
-                            title="Complete Order"
-                        />
-                    </View>
+
 
                 </View>
             </SafeAreaView>

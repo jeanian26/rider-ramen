@@ -98,13 +98,11 @@ export default class Search extends Component {
     super(props);
 
     this.state = {
-      //products: sample_data.offers,
       products: [],
       search: '',
     };
   }
   componentDidMount = () => {
-    //this.addData();
     this.getData();
 
     this.focusListener = this.props.navigation.addListener('focus', () => {

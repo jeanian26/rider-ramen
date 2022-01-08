@@ -77,6 +77,10 @@ const styles = StyleSheet.create({
     color: '#03c04a',
     textAlign: 'left',
   },
+  canceled: {
+    color: '#808080',
+    textAlign: 'left',
+  },
 });
 
 const renderOrderItemsTotal = (items) => {
@@ -161,6 +165,22 @@ const OrderItem = ({
           <View>
             <Subtitle2 style={styles.status}>Status</Subtitle2>
             <Subtitle2 style={styles.delivered}>Delivered</Subtitle2>
+          </View>
+        </View>
+      )}
+      {orderStatus === 'returned' &&  (
+        <View style={styles.footer}>
+          <View>
+            <Subtitle2 style={styles.status}>Status</Subtitle2>
+            <Subtitle2 style={styles.canceled}>Returned</Subtitle2>
+          </View>
+        </View>
+      )}
+      {orderStatus === 'canceled' &&  (
+        <View style={styles.footer}>
+          <View>
+            <Subtitle2 style={styles.status}>Status</Subtitle2>
+            <Subtitle2 style={styles.canceled}>Canceled</Subtitle2>
           </View>
         </View>
       )}

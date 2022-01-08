@@ -9,6 +9,7 @@ import {
   StyleSheet,
   View,
   Alert,
+  ToastAndroid,
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { launchImageLibrary } from 'react-native-image-picker';
@@ -111,27 +112,19 @@ export default class EditProfile extends Component {
 
   saveProfile() {
     const { navigation } = this.props;
-    // const auth = getAuth();
-    // // console.log(auth.currentUser);
-    // updateProfile('auth currentuser', auth.currentUser, {
-    //   displayName: this.state.name,
-    //   phoneNumber: '+1235467',
-    //   email: this.state.email,
-    // })
-    //   .then(() => {
-    //     console.log('updated');
-    //     navigation.navigate('Settings');
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-
     const db = getDatabase();
     const updates = {};
     updates[`accounts/${this.state.uid}/email`] = this.state.email;
     updates[`accounts/${this.state.uid}/name`] = this.state.name;
     updates[`accounts/${this.state.uid}/phone`] = this.state.phone;
-    update(refData(db), updates);
+    update(refData(db), updates).then(() => {
+      ToastAndroid.showWithGravity(
+          'PROFILE UPDATED',
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER,
+      );
+      navigation.navigate('Settings');
+  });
   }
 
   nameChange = (text) => {

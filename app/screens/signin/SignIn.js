@@ -184,12 +184,12 @@ export default class SignIn extends Component {
                   ToastAndroid.SHORT,
                   ToastAndroid.CENTER,
                 );
-                signOut(passAuth())
-                  .then(() => {
-                    navigation.navigate('Welcome');
-                  })
-                  .catch((error) => {
-                  });
+                // signOut(passAuth())
+                //   .then(() => {
+                //     navigation.navigate('Welcome');
+                //   })
+                //   .catch((error) => {
+                //   });
               }
             } else {
               signOut(passAuth())
