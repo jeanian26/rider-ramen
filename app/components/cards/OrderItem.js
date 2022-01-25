@@ -155,7 +155,7 @@ const OrderItem = ({
         <View style={styles.footer}>
           <View>
             <Subtitle2 style={styles.status}>Status</Subtitle2>
-            <Subtitle2 style={styles.pending}>Pending delivery</Subtitle2>
+            <Subtitle2 style={styles.pending}>Pending</Subtitle2>
           </View>
         </View>
       )}
@@ -176,11 +176,19 @@ const OrderItem = ({
           </View>
         </View>
       )}
-      {orderStatus === 'canceled' &&  (
+      {orderStatus === 'cancelled' &&  (
         <View style={styles.footer}>
           <View>
             <Subtitle2 style={styles.status}>Status</Subtitle2>
             <Subtitle2 style={styles.canceled}>Canceled</Subtitle2>
+          </View>
+        </View>
+      )}
+      {orderStatus === 'preparing' &&  (
+        <View style={styles.footer}>
+          <View>
+            <Subtitle2 style={styles.status}>Status</Subtitle2>
+            <Subtitle2 style={styles.pending}>Preparing</Subtitle2>
           </View>
         </View>
       )}
